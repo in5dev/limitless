@@ -1,3 +1,6 @@
+export * from './vector';
+export * from './trigonometry';
+
 export function norm(n: number, min: number, max: number): number {
   return (n - min) / (max - min);
 }
