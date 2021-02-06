@@ -31,14 +31,6 @@ export function randomInt(min?: number, max?: number): number {
   return Math.floor(random(min, max));
 }
 
-export function degrees(radians: number): number {
-  return radians * (180 / Math.PI);
-}
-
-export function radians(degrees: number): number {
-  return degrees * (Math.PI / 180);
-}
-
 export function factorial(n: number): number {
   let total = 1;
   for (let i = n; i > 1; i--) {
