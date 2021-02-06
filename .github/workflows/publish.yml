@@ -1,7 +1,7 @@
 name: Publish package
 on:
-  push:
-    branches: [main]
+  release:
+    types: [created]
 
 jobs:
   publish:
@@ -12,8 +12,8 @@ jobs:
         with:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
-          scope: '@limitlesspc'
-      - run: yarn
-      - run: yarn publish
+      - run: npm ci
+      - run: npm run build
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

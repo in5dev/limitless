@@ -16,7 +16,7 @@
     "build/"
   ],
   "scripts": {
-    "preinstall": "npx only-allow yarn",
+    "preinstall": "npx only-allow npm",
     "build": "tsc",
     "lint": "eslint src/ --ext .ts"
   },
