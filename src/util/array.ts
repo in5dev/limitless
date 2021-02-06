@@ -12,6 +12,7 @@ declare global {
     unorderedRemove(index: number): this;
     sort(): this;
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Array<T extends number> {
     min(): number;
     max(): number;
