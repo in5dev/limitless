@@ -2,7 +2,7 @@ import '../../../util/array';
 import type { Vector2 } from '../../vector';
 import type Particle from './particle';
 
-export class ParticleSystem<T extends Particle = Particle> {
+export default class ParticleSystem<T extends Particle = Particle> {
   constructor(public particles: T[] = []) {}
 
   set velocity(v: Vector2) {
