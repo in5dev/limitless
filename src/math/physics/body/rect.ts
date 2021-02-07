@@ -16,6 +16,19 @@ export default class Rect extends Body {
     this.size = vec2(width, height);
   }
 
+  get width(): number {
+    return this.size.x;
+  }
+  set width(width: number) {
+    this.size.x = width;
+  }
+  get height(): number {
+    return this.size.y;
+  }
+  set height(height: number) {
+    this.size.y = height;
+  }
+
   collides(o: Rect | Circle): boolean {
     if (o instanceof Rect) {
       const {
