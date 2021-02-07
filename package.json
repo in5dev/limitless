@@ -15,6 +15,7 @@
   "files": [
     "build/"
   ],
+  "types": "./build/index.d.ts",
   "scripts": {
     "preinstall": "npx only-allow npm",
     "build": "tsc",

@@ -1,4 +1,5 @@
 {
+  "ignorePatterns": "./build",
   "root": true,
   "env": {
     "es2020": true,
