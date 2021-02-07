@@ -1,4 +1,4 @@
-import { clamp, lerp } from '../index';
+import { clamp, lerp } from '../funcs';
 
 type First = number | [number, number, number, number] | Vector4;
 
