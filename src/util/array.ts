@@ -1,6 +1,6 @@
 /* eslint-disable func-names */
 
-import { randomInt } from '../math';
+import { randomInt } from '../math/funcs';
 
 declare global {
   interface Array<T> {
