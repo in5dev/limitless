@@ -9,7 +9,7 @@ export default class Rect extends Body {
     x: number,
     y: number,
     width: number,
-    height: number,
+    height = width,
     mass?: number
   ) {
     super(x, y, mass);
