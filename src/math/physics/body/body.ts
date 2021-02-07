@@ -1,4 +1,4 @@
-import { vec2, Vector2 } from '../vector';
+import { vec2, Vector2 } from '../../vector';
 
 export default class Body {
   position: Vector2;
@@ -13,11 +13,19 @@ export default class Body {
     this.position = vec2(x, y);
   }
 
+  /**
+   * Changes the body's acceleration
+   * @param force a vector
+   */
   applyForce(force: Vector2): this {
     this.acceleration.add(Vector2.div(force, this.mass));
     return this;
   }
 
+  /**
+   * Calculates the new state of the body
+   * @param dt change in time (s)
+   */
   update(dt: number): this {
     const { position, velocity, acceleration } = this;
     velocity.add(Vector2.mult(acceleration, dt));
