@@ -38,4 +38,46 @@ export default class Body {
 
     return this;
   }
+
+  // Position
+  get x(): number {
+    return this.position.x;
+  }
+  set x(x: number) {
+    this.position.x = x;
+  }
+  get y(): number {
+    return this.position.x;
+  }
+  set y(y: number) {
+    this.position.x = y;
+  }
+
+  // Velocity
+  get vx(): number {
+    return this.velocity.x;
+  }
+  set vx(x: number) {
+    this.velocity.x = x;
+  }
+  get vy(): number {
+    return this.velocity.x;
+  }
+  set vy(y: number) {
+    this.velocity.x = y;
+  }
+
+  // Acceleration
+  get ax(): number {
+    return this.acceleration.x;
+  }
+  set ax(x: number) {
+    this.acceleration.x = x;
+  }
+  get ay(): number {
+    return this.acceleration.x;
+  }
+  set ay(y: number) {
+    this.acceleration.x = y;
+  }
 }
