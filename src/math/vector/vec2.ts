@@ -28,8 +28,8 @@ export default class Vector2 extends Vector {
     } else if (x instanceof Array) {
       [this.x, this.y] = x;
     } else if (y === undefined) {
-      this.x += x;
-      this.y += x;
+      this.x = x;
+      this.y = x;
     } else {
       this.x = x;
       this.y = y || 0;
