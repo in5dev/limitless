@@ -1,25 +1,22 @@
 import { clamp, lerp } from '../funcs';
+import Vector from './vec';
 
 type First = number | [number, number, number, number] | Vector4;
 
-export default class Vector4 {
+export default class Vector4 extends Vector {
   x!: number;
   y!: number;
   z!: number;
   w!: number;
 
   constructor(x: First = 0, y?: number, z?: number, w?: number) {
+    super();
     this.set(x, y, z, w);
   }
 
   toString(): string {
     const { x, y, z, w } = this;
     return `vec4 <${x}, ${y}, ${z}, ${w}>`;
-  }
-
-  log(): this {
-    console.log(this.toString());
-    return this;
   }
 
   copy(): Vector4 {
@@ -197,35 +194,9 @@ export default class Vector4 {
     return v1.copy().div(x, y, z, w);
   }
 
-  mag(): number {
-    return Math.sqrt(this.magSq());
-  }
-
-  setMag(n: number): this {
-    return this.normalize().mult(n);
-  }
-
   magSq(): number {
     const { x, y, z, w } = this;
     return x ** 2 + y ** 2 + z ** 2 + w ** 2;
-  }
-
-  limit(max: number): this {
-    const maxSq = max * max;
-    const magSq = this.magSq();
-    if (magSq > maxSq) this.setMag(max);
-    return this;
-  }
-
-  normalize(): this {
-    const mag = this.mag();
-    if (mag === 0) this.mult(0);
-    else this.div(mag);
-    return this;
-  }
-
-  dist(v: Vector4): number {
-    return Math.sqrt(this.distSq(v));
   }
 
   distSq(v: Vector4): number {

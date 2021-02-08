@@ -1,23 +1,20 @@
 import { clamp, lerp, random } from '../funcs';
+import Vector from './vec';
 
-type First = number | [number, number] | Vector2;
+type First = Vector2 | [number, number] | number;
 
-export default class Vector2 {
+export default class Vector2 extends Vector {
   x!: number;
   y!: number;
 
   constructor(x: First = 0, y?: number) {
+    super();
     this.set(x, y);
   }
 
   toString(): string {
     const { x, y } = this;
     return `vec2 <${x}, ${y}>`;
-  }
-
-  log(): this {
-    console.log(this.toString());
-    return this;
   }
 
   copy(): Vector2 {
@@ -30,9 +27,9 @@ export default class Vector2 {
       this.y = x.y;
     } else if (x instanceof Array) {
       [this.x, this.y] = x;
-    } else if (typeof y === 'undefined') {
-      this.x = x;
-      this.y = x;
+    } else if (y === undefined) {
+      this.x += x;
+      this.y += x;
     } else {
       this.x = x;
       this.y = y || 0;
@@ -49,7 +46,6 @@ export default class Vector2 {
   equals(x: First, y = 0): boolean {
     if (x instanceof Vector2) return this.x === x.x && this.y === x.y;
     if (x instanceof Array) return this.x === x[0] && this.y === x[1];
-
     return this.x === x && this.y === y;
   }
 
@@ -60,7 +56,7 @@ export default class Vector2 {
     } else if (x instanceof Array) {
       this.x += x[0];
       this.y += x[1];
-    } else if (typeof y === 'undefined') {
+    } else if (y === undefined) {
       this.x += x;
       this.y += x;
     } else {
@@ -80,7 +76,7 @@ export default class Vector2 {
     } else if (x instanceof Array) {
       this.x -= x[0];
       this.y -= x[1];
-    } else if (typeof y === 'undefined') {
+    } else if (y === undefined) {
       this.x -= x;
       this.y -= x;
     } else {
@@ -100,7 +96,7 @@ export default class Vector2 {
     } else if (x instanceof Array) {
       this.x *= x[0];
       this.y *= x[1];
-    } else if (typeof y === 'undefined') {
+    } else if (y === undefined) {
       this.x *= x;
       this.y *= x;
     } else {
@@ -120,7 +116,7 @@ export default class Vector2 {
     } else if (x instanceof Array) {
       this.x /= x[0];
       this.y /= x[1];
-    } else if (typeof y === 'undefined') {
+    } else if (y === undefined) {
       this.x /= x;
       this.y /= x;
     } else {
@@ -133,35 +129,9 @@ export default class Vector2 {
     return v1.copy().div(x, y);
   }
 
-  mag(): number {
-    return Math.sqrt(this.magSq());
-  }
-
-  setMag(n: number): this {
-    return this.normalize().mult(n);
-  }
-
   magSq(): number {
     const { x, y } = this;
     return x ** 2 + y ** 2;
-  }
-
-  limit(max: number): this {
-    const maxSq = max * max;
-    const magSq = this.magSq();
-    if (magSq > maxSq) this.setMag(max);
-    return this;
-  }
-
-  normalize(): this {
-    const mag = this.mag();
-    if (mag === 0) this.mult(0);
-    else this.div(mag);
-    return this;
-  }
-
-  dist(v: Vector2): number {
-    return Math.sqrt(this.distSq(v));
   }
 
   distSq(v: Vector2): number {
