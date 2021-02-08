@@ -10,7 +10,6 @@ declare global {
     shuffle(): this;
     remove(item: T): boolean;
     unorderedRemove(index: number): this;
-    sort(): this;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Array<T extends number> {
@@ -60,12 +59,6 @@ Array.prototype.remove = function <T>(this: T[], item: T): boolean {
 Array.prototype.unorderedRemove = function <T>(this: T[], index: number): T[] {
   this.swap(index, this.length - 1);
   this.pop();
-  return this;
-};
-
-Array.prototype.sort = function <T extends number | string>(this: T[]): T[] {
-  if (typeof this[0] === 'number') (this as number[]).sort((a, b) => a - b);
-  else this.sort();
   return this;
 };
 
