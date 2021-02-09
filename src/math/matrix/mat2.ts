@@ -4,16 +4,17 @@ type Vec2 = [number, number];
 type Mat2 = [...Vec2, ...Vec2];
 
 export default class Matrix2 extends Matrix {
-  constructor(matrix?: Mat2) {
+  constructor(matrix?: Matrix2 | Mat2) {
     super(4);
     if (matrix) this.set(matrix);
     else this.identity();
   }
 
   toString(): string {
+    const [a, b, c, d] = this;
     return `mat2 [
-  ${this[0]} ${this[1]}
-  ${this[2]} ${this[3]}
+  ${a} ${b}
+  ${c} ${d}
 ]`;
   }
 
@@ -34,7 +35,9 @@ export default class Matrix2 extends Matrix {
 
   equals(m: Matrix2 | Mat2): boolean {
     for (let i = 0; i < 4; i++) {
-      if (this[i] !== m[i]) return false;
+      const a = this[i];
+      const b = m[i];
+      if (Math.abs(a - b) > Number.EPSILON) return false;
     }
     return true;
   }
@@ -45,12 +48,18 @@ export default class Matrix2 extends Matrix {
     }
     return this;
   }
+  static add(m1: Matrix2, m2: Matrix2 | Mat2): Matrix2 {
+    return m1.copy().add(m2);
+  }
 
   sub(m: Matrix2 | Mat2): this {
     for (let i = 0; i < 4; i++) {
       this[i] -= m[i];
     }
     return this;
+  }
+  static sub(m1: Matrix2, m2: Matrix2 | Mat2): Matrix2 {
+    return m1.copy().sub(m2);
   }
 
   mult(m: Matrix2 | Mat2 | number): this {
@@ -69,6 +78,7 @@ export default class Matrix2 extends Matrix {
     return mat2([
       a0 * b0 + a1 * b2,
       a0 * b1 + a1 * b3,
+
       a2 * b0 + a3 * b2,
       a2 * b1 + a3 * b3
     ]);
@@ -79,7 +89,8 @@ export default class Matrix2 extends Matrix {
   }
 
   transpose(): this {
-    [this[1], this[2]] = [this[2], this[1]];
+    const [, b, c] = this;
+    [this[2], this[1]] = [b, c];
     return this;
   }
 
@@ -93,11 +104,11 @@ export default class Matrix2 extends Matrix {
     return mat2([d, -b, -c, a]);
   }
 
-  inverse(): Matrix2 {
+  inv(): Matrix2 {
     return this.adj().div(this.det());
   }
 }
 
-export function mat2(matrix?: Mat2): Matrix2 {
+export function mat2(matrix?: Matrix2 | Mat2): Matrix2 {
   return new Matrix2(matrix);
 }

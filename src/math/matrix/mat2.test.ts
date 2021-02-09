@@ -1,28 +1,24 @@
 import { expect } from 'chai';
-import { mat2 } from './mat2';
+import Matrix2, { mat2 } from './mat2';
 
 describe('mat2', () => {
-  it('should add', () => {
-    const m1 = mat2();
-    const m2 = mat2([6, 3, -7, 2]);
-    m1.add(m2);
-    expect(m1.equals([7, 3, -7, 3])).to.equal(true);
-  });
-  it('should subtract', () => {
-    const m1 = mat2();
-    const m2 = mat2([6, 3, -7, 2]);
-    m1.sub(m2);
-    expect(m1.equals([-5, -3, 7, -1])).to.equal(true);
-  });
-  it('should multiply', () => {
-    let m1 = mat2();
-    let m2 = mat2([6, 3, -7, 2]);
-    m1.mult(m2);
-    expect(m1.equals(m2)).to.equal(true);
+  const a = mat2([5, 8, 3, 8]);
+  const b = mat2([3, 8, 8, 9]);
 
-    m1 = mat2([4, -7, 2, 1]);
-    m2 = mat2([4, -5, 8, 7]);
-    m1.mult(m2);
-    expect(m1.equals([-40, -69, 16, -3])).to.equal(true);
+  it('add', () => {
+    const ans = Matrix2.add(a, b);
+    expect(ans.equals([8, 16, 11, 17])).to.equal(true);
+  });
+  it('subtract', () => {
+    const ans = Matrix2.sub(a, b);
+    expect(ans.equals([2, 0, -5, -1])).to.equal(true);
+  });
+  it('multiply', () => {
+    const ans = Matrix2.mult(a, b);
+    expect(ans.equals([79, 112, 73, 96])).to.equal(true);
+  });
+  it('determinant', () => {
+    const ans = a.det();
+    expect(ans).to.equal(16);
   });
 });

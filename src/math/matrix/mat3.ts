@@ -4,16 +4,18 @@ type Vec3 = [number, number, number];
 type Mat3 = [...Vec3, ...Vec3, ...Vec3];
 
 export default class Matrix3 extends Matrix {
-  constructor(matrix?: Mat3) {
+  constructor(matrix?: Matrix3 | Mat3) {
     super(9);
     if (matrix) this.set(matrix);
     else this.identity();
   }
 
   toString(): string {
-    return `Mat3 [
-  ${this[0]} ${this[1]}
-  ${this[2]} ${this[3]}
+    const [a, b, c, d, e, f, g, h, i] = this;
+    return `mat3 [
+  ${a} ${b} ${c}
+  ${d} ${e} ${f}
+  ${g} ${h} ${i}
 ]`;
   }
 
@@ -34,7 +36,9 @@ export default class Matrix3 extends Matrix {
 
   equals(m: Matrix3 | Mat3): boolean {
     for (let i = 0; i < 9; i++) {
-      if (this[i] !== m[i]) return false;
+      const a = this[i];
+      const b = m[i];
+      if (Math.abs(a - b) > Number.EPSILON) return false;
     }
     return true;
   }
@@ -45,6 +49,9 @@ export default class Matrix3 extends Matrix {
     }
     return this;
   }
+  static add(m1: Matrix3, m2: Matrix3 | Mat3): Matrix3 {
+    return m1.copy().add(m2);
+  }
 
   sub(m: Matrix3 | Mat3): this {
     for (let i = 0; i < 9; i++) {
@@ -52,16 +59,21 @@ export default class Matrix3 extends Matrix {
     }
     return this;
   }
+  static sub(m1: Matrix3, m2: Matrix3 | Mat3): Matrix3 {
+    return m1.copy().sub(m2);
+  }
 
   mult(m: Matrix3 | Mat3 | number): this {
     return this.set(Matrix3.mult(this, m));
   }
   static mult(m1: Matrix3 | Mat3, m2: Matrix3 | Mat3 | number): Matrix3 {
     if (typeof m2 === 'number') {
-      const ans = mat3();
+      const ans = mat3(m1);
+      console.log({ ans });
       for (let i = 0; i < 9; i++) {
         ans[i] *= m2;
       }
+      console.log({ ans });
       return ans;
     }
     const [a0, a1, a2, a3, a4, a5, a6, a7, a8] = m1;
@@ -70,9 +82,11 @@ export default class Matrix3 extends Matrix {
       a0 * b0 + a1 * b3 + a2 * b6,
       a0 * b1 + a1 * b4 + a2 * b7,
       a0 * b2 + a1 * b5 + a2 * b8,
+
       a3 * b0 + a4 * b3 + a5 * b6,
       a3 * b1 + a4 * b4 + a5 * b7,
       a3 * b2 + a4 * b5 + a5 * b8,
+
       a6 * b0 + a7 * b3 + a8 * b6,
       a6 * b1 + a7 * b4 + a8 * b7,
       a6 * b2 + a7 * b5 + a8 * b8
@@ -84,7 +98,10 @@ export default class Matrix3 extends Matrix {
   }
 
   transpose(): this {
-    [this[1], this[2]] = [this[2], this[1]];
+    const [, b, c, d, , f, g, h] = this;
+    [this[3], this[1]] = [b, d];
+    [this[6], this[2]] = [c, g];
+    [this[7], this[5]] = [f, h];
     return this;
   }
 
@@ -96,23 +113,27 @@ export default class Matrix3 extends Matrix {
   adj(): Matrix3 {
     const [a, b, c, d, e, f, g, h, i] = this;
     return mat3([
-      a * (e * i - f * h),
-      b * (d * i - f * g),
-      c * (d * h - e * g),
-      d * (b * i - c * h),
-      e * (a * i - c * g),
-      f * (a * h - b * g),
-      g * (b * f - c * e),
-      h * (a * f - c * d),
-      i * (a * e - b * d)
+      e * i - f * h,
+      -(d * i - f * g),
+      d * h - e * g,
+
+      -(b * i - c * h),
+      a * i - c * g,
+      -(a * h - b * g),
+
+      b * f - c * e,
+      -(a * f - c * d),
+      a * e - b * d
     ]).transpose();
   }
 
-  inverse(): Matrix3 {
+  inv(): Matrix3 {
+    console.log(this.adj());
+    console.log(this.det());
     return this.adj().div(this.det());
   }
 }
 
-export function mat3(matrix?: Mat3): Matrix3 {
+export function mat3(matrix?: Matrix3 | Mat3): Matrix3 {
   return new Matrix3(matrix);
 }
