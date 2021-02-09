@@ -1,6 +1,6 @@
 {
   "name": "@limitlesspc/limitless",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "author": {
     "name": "Izaak Brown",
     "email": "izaakbthunderbird@gmail.com"
@@ -11,7 +11,8 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
-  "main": "./index.js",
+  "type": "module",
+  "module": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
     "preinstall": "npx only-allow npm",
