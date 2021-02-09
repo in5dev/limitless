@@ -1,6 +1,6 @@
 {
   "name": "@limitlesspc/limitless",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "author": {
     "name": "Izaak Brown",
     "email": "izaakbthunderbird@gmail.com"
@@ -12,11 +12,11 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "type": "module",
-  "module": "./index.js",
-  "types": "./index.d.ts",
+  "module": "./esm/index.js",
+  "main": "./cjs/index.js",
   "scripts": {
     "preinstall": "npx only-allow npm",
-    "build": "tsc",
+    "build": "tsc && tsc -p ./tsconfig.cjs.json",
     "lint": "eslint src/ --ext .ts",
     "test": "mocha -r ts-node/register src/**/*.test.ts",
     "pub": "cp package.json build/ && cd build/ && npm publish"
