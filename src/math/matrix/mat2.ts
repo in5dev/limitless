@@ -1,6 +1,7 @@
 import Matrix from './mat';
 
-type Mat2 = [number, number, number, number];
+type Vec2 = [number, number];
+type Mat2 = [...Vec2, ...Vec2];
 
 export default class Matrix2 extends Matrix {
   constructor(matrix?: Mat2) {
