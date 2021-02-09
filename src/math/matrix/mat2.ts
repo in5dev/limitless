@@ -1,80 +1,99 @@
 import Matrix from './mat';
 
-type Vec2 = [number, number];
-type Mat2 = [Vec2, Vec2];
+type Mat2 = [number, number, number, number];
 
 export default class Matrix2 extends Matrix {
-  size = 2;
-
   constructor(matrix?: Mat2) {
-    super();
+    super(4);
     if (matrix) this.set(matrix);
     else this.identity();
   }
 
   toString(): string {
     return `mat2 [
-  ${this[0][0]} ${this[0][1]}
-  ${this[1][0]} ${this[1][1]}
+  ${this[0]} ${this[1]}
+  ${this[2]} ${this[3]}
 ]`;
   }
 
-  identity(): this {
-    this[0] = [1, 0];
-    this[1] = [0, 1];
-    return this;
+  copy(): Matrix2 {
+    return mat2([...this] as Mat2);
   }
 
   set(m: Matrix2 | Mat2): this {
-    // eslint-disable-next-line prefer-destructuring
-    this[0] = m[0];
-    // eslint-disable-next-line prefer-destructuring
-    this[1] = m[1];
+    for (let i = 0; i < 4; i++) {
+      this[i] = m[i];
+    }
     return this;
   }
 
+  identity(): this {
+    return this.set([1, 0, 0, 1]);
+  }
+
   equals(m: Matrix2 | Mat2): boolean {
-    for (let i = 0; i < 2; i++) {
-      for (let j = 0; j < 2; j++) {
-        if (this[i][j] !== m[i][j]) return false;
-      }
+    for (let i = 0; i < 4; i++) {
+      if (this[i] !== m[i]) return false;
     }
     return true;
   }
 
   add(m: Matrix2 | Mat2): this {
-    for (let i = 0; i < 2; i++) {
-      for (let j = 0; j < 2; j++) {
-        this[i][j] += m[i][j];
-      }
+    for (let i = 0; i < 4; i++) {
+      this[i] += m[i];
     }
     return this;
   }
 
   sub(m: Matrix2 | Mat2): this {
-    for (let i = 0; i < 2; i++) {
-      for (let j = 0; j < 2; j++) {
-        this[i][j] -= m[i][j];
-      }
+    for (let i = 0; i < 4; i++) {
+      this[i] -= m[i];
     }
     return this;
   }
 
-  mult(m: Matrix2 | Mat2): this {
+  mult(m: Matrix2 | Mat2 | number): this {
     return this.set(Matrix2.mult(this, m));
   }
-  static mult(m1: Matrix2 | Mat2, m2: Matrix2 | Mat2): Matrix2 {
-    const ans = mat2();
-    for (let i = 0; i < 2; i++) {
-      for (let j = 0; j < 2; j++) {
-        let sum = 0;
-        for (let k = 0; k < 2; k++) {
-          sum += m1[i][k] * m2[k][j];
-        }
-        ans[i][j] = sum;
+  static mult(m1: Matrix2 | Mat2, m2: Matrix2 | Mat2 | number): Matrix2 {
+    if (typeof m2 === 'number') {
+      const ans = mat2();
+      for (let i = 0; i < 4; i++) {
+        ans[i] *= m2;
       }
+      return ans;
     }
-    return ans;
+    const [a0, a1, a2, a3] = m1;
+    const [b0, b1, b2, b3] = m2;
+    return mat2([
+      a0 * b0 + a1 * b2,
+      a0 * b1 + a1 * b3,
+      a2 * b0 + a3 * b2,
+      a2 * b1 + a3 * b3
+    ]);
+  }
+
+  div(m: number): this {
+    return this.mult(1 / m);
+  }
+
+  transpose(): this {
+    [this[1], this[2]] = [this[2], this[1]];
+    return this;
+  }
+
+  det(): number {
+    const [a, b, c, d] = this;
+    return a * d - b * c;
+  }
+
+  adj(): Matrix2 {
+    const [a, b, c, d] = this;
+    return mat2([d, -b, -c, a]);
+  }
+
+  inverse(): Matrix2 {
+    return this.adj().div(this.det());
   }
 }
 

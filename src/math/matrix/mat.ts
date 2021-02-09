@@ -1,6 +1,7 @@
-export default abstract class Matrix {
-  [i: number]: number[];
-  abstract readonly size: number;
+export default abstract class Matrix implements Iterable<number> {
+  [i: number]: number;
+
+  constructor(readonly size: number) {}
 
   abstract toString(): string;
 
@@ -9,24 +10,9 @@ export default abstract class Matrix {
     return this;
   }
 
-  abstract identity(): this;
-
-  abstract set(m: this): this;
-
-  abstract equals(m: this): boolean;
-
-  map(func: (value: number, i: number, j: number) => void): void {
-    const { size } = this;
-    for (let i = 0; i < size; i++) {
-      for (let j = 0; j < size; j++) {
-        func(this[i][j], i, j);
-      }
+  *[Symbol.iterator](): Iterator<number> {
+    for (let i = 0; i < this.size; i++) {
+      yield this[i];
     }
   }
-
-  abstract add(m: this): this;
-
-  abstract sub(m: this): this;
-
-  abstract mult(m: this): this;
 }
