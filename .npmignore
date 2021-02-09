@@ -1,9 +1,0 @@
-node_modules/
-.github/
-.vscode/
-src/
-.eslintrc.json
-.gitignore
-.prettierrc.json
-tsconfig.json
-tsconfig.cjs.json

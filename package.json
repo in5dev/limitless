@@ -1,6 +1,6 @@
 {
   "name": "@limitlesspc/limitless",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "author": {
     "name": "Izaak Brown",
     "email": "izaakbthunderbird@gmail.com"
@@ -15,11 +15,12 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
-    "preinstall": "npx only-allow npm && chmod +x ./mjs.sh",
+    "preinstall": "npx only-allow npm",
+    "setup": "chmod +x ./mjs.sh",
     "build": "tsc && tsc -p ./tsconfig.esm.json && ./mjs.sh",
     "lint": "eslint src/ --ext .ts",
     "test": "mocha -r ts-node/register src/**/*.test.ts",
-    "prepublishOnly": "cp package.json build/ && cd build/ && npm run build"
+    "pub": "npm run build && cp package.json build/ && cd build/ && npm publish"
   },
   "devDependencies": {
     "@types/chai": "^4.2.14",
