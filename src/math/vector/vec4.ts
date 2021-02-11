@@ -231,6 +231,10 @@ export default class Vector4 extends Vector {
   static clamp(v: Vector4, min: Vector4, max: Vector4): Vector4 {
     return v.copy().clamp(min, max);
   }
+
+  reflect(normal: Vector4): this {
+    return this.sub(Vector4.mult(normal, 2 * this.dot(normal)));
+  }
 }
 
 export function vec4(x?: First, y?: number, z?: number, w?: number): Vector4 {

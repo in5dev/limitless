@@ -187,6 +187,10 @@ export default class Vector2 extends Vector {
     this.y = sin * x + cos * y;
     return this;
   }
+
+  reflect(normal: Vector2): this {
+    return this.sub(Vector2.mult(normal, 2 * this.dot(normal)));
+  }
 }
 
 export function vec2(x?: First, y?: number): Vector2 {

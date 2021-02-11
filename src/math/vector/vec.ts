@@ -58,4 +58,6 @@ export default abstract class Vector {
   abstract lerp(v: this, norm: number): this;
 
   abstract clamp(min: this, max: this): this;
+
+  abstract reflect(normal: this): this;
 }

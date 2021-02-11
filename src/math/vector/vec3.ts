@@ -218,6 +218,10 @@ export default class Vector3 extends Vector {
     this.y = sin * x + cos * y;
     return this;
   }
+
+  reflect(normal: Vector3): this {
+    return this.sub(Vector3.mult(normal, 2 * this.dot(normal)));
+  }
 }
 
 export function vec3(x?: First, y?: number, z?: number): Vector3 {
