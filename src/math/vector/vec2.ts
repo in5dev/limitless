@@ -1,7 +1,7 @@
 import { clamp, lerp, random } from '../funcs';
 import Vector from './vec';
 
-type First = Vector2 | [number, number] | number;
+type First = Vector2 | [x: number, y: number] | number;
 
 export default class Vector2 extends Vector {
   x!: number;
@@ -186,6 +186,9 @@ export default class Vector2 extends Vector {
     this.x = cos * x - sin * y;
     this.y = sin * x + cos * y;
     return this;
+  }
+  static rotate(v: Vector2, angle: number): Vector2 {
+    return v.copy().rotate(angle);
   }
 
   reflect(normal: Vector2): this {

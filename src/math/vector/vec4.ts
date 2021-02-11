@@ -1,7 +1,7 @@
 import { clamp, lerp } from '../funcs';
 import Vector from './vec';
 
-type First = number | [number, number, number, number] | Vector4;
+type First = number | [x: number, y: number, z: number, w: number] | Vector4;
 
 export default class Vector4 extends Vector {
   x!: number;
