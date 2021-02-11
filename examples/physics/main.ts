@@ -9,6 +9,7 @@ new p5((p: p5) => {
   const bodies: Polygon[] = [];
   let b1: Polygon;
   let b2: Polygon;
+  let b3: Polygon;
 
   p.setup = () => {
     p.createCanvas(p.windowWidth, p.windowHeight);
@@ -16,7 +17,7 @@ new p5((p: p5) => {
     b1 = new Polygon(
       -300,
       0,
-      [vec2(-50, 50), vec2(75, 50), vec2(50, -50), vec2(-50, -50)],
+      [vec2(-50, 50), vec2(100, 50), vec2(50, -50), vec2(-50, -50)],
       5
     );
     b2 = new Polygon(300, 0, [
@@ -26,7 +27,14 @@ new p5((p: p5) => {
       vec2(-10, -10)
     ]);
     b2.vx = -300;
-    bodies.push(b1, b2);
+    b3 = new Polygon(360, 0, [
+      vec2(-10, 10),
+      vec2(10, 10),
+      vec2(10, -10),
+      vec2(-10, -10)
+    ]);
+    b3.vx = -300;
+    bodies.push(b1, b2, b3);
   };
 
   p.draw = () => {
