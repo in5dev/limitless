@@ -17,6 +17,7 @@
   "scripts": {
     "preinstall": "npx only-allow npm",
     "setup": "chmod +x ./mjs.sh",
+    "dev": "cd examples/ && npm run dev",
     "build": "tsc && tsc -p ./tsconfig.esm.json && ./mjs.sh",
     "lint": "eslint src/ --ext .ts",
     "test": "mocha -r ts-node/register src/**/*.test.ts",

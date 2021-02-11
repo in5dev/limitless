@@ -1,5 +1,6 @@
 import { Vector2 } from '../../vector';
 import Body from './body';
+import Polygon from './polygon';
 import type Rect from './rect';
 
 export default class Circle extends Body {
@@ -7,18 +8,25 @@ export default class Circle extends Body {
     super(x, y, mass);
   }
 
-  collides(o: Circle | Rect): boolean {
+  collides(o: Circle | Rect | Polygon): boolean {
     const { position, radius } = this;
     if (o instanceof Circle) {
       const r = radius + o.radius;
-      return this.position.distSq(position) <= r ** 2;
+      return this.position.distSq(position) < r ** 2;
     }
+    if (o instanceof Polygon) return o.collides(this);
 
     const clamped = Vector2.clamp(
       position,
       o.position,
       Vector2.add(o.position, o.size)
     );
-    return position.distSq(clamped) <= radius;
+    return position.distSq(clamped) < radius;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  project(_axis: Vector2): [min: number, max: number] {
+    const { radius } = this;
+    return [-radius, radius];
   }
 }

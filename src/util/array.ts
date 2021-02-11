@@ -15,6 +15,7 @@ declare global {
   interface Array<T extends number> {
     min(): number;
     max(): number;
+    minmax(): [min: number, max: number];
     sum(): number;
     mean(): number;
     average(): number;
@@ -76,6 +77,16 @@ Array.prototype.max = function (this: number[]): number {
     if (x > max) max = x;
   });
   return max;
+};
+
+Array.prototype.minmax = function (this: number[]): [min: number, max: number] {
+  let min = Infinity;
+  let max = -Infinity;
+  this.forEach(x => {
+    if (x < min) min = x;
+    if (x > max) max = x;
+  });
+  return [min, max];
 };
 
 Array.prototype.sum = function (this: number[]): number {

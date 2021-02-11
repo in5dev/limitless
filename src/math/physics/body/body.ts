@@ -1,5 +1,15 @@
 import { vec2, Vector2 } from '../../vector';
 
+export interface Collision {
+  normal: Vector2;
+  dist: number;
+}
+
+export interface DynamicCollision {
+  body: Body;
+  normal: Vector2;
+}
+
 export default class Body {
   position: Vector2;
   velocity = vec2();
@@ -8,6 +18,8 @@ export default class Body {
   angle = 0;
   angularVelocity = 0;
   angularAcceleration = 0;
+
+  collision?: DynamicCollision;
 
   constructor(x: number, y: number, public mass = 1) {
     this.position = vec2(x, y);
@@ -23,20 +35,73 @@ export default class Body {
   }
 
   /**
+   * Rotates the body by a given angle
+   * @param angle the angle (rad)
+   */
+  rotate(angle: number): this {
+    this.angle += angle;
+    return this;
+  }
+
+  /**
    * Calculates the new state of the body
    * @param dt change in time (s)
    */
   update(dt: number): this {
-    const { position, velocity, acceleration } = this;
+    const { position, velocity, acceleration, collision } = this;
+
+    if (collision) {
+      this.resolveDynamicCollision(collision);
+      this.collision = undefined;
+    }
+
     velocity.add(Vector2.mult(acceleration, dt));
     position.add(Vector2.mult(velocity, dt));
     acceleration.mult(0);
 
     this.angularVelocity += this.angularAcceleration * dt;
-    this.angle += this.angularVelocity * dt;
+    this.rotate(this.angularVelocity * dt);
     this.angularAcceleration = 0;
 
     return this;
+  }
+
+  resolveCollision(o: Body, { normal, dist }: Collision): void {
+    const { position } = this;
+
+    // Static
+    const dpos = Vector2.mult(normal, dist / 2);
+    position.sub(dpos);
+    o.position.add(dpos);
+
+    this.collision = {
+      body: o,
+      normal
+    };
+  }
+
+  private resolveDynamicCollision({ body: o, normal }: DynamicCollision): void {
+    const { velocity, mass } = this;
+
+    // Dynamic
+    const tangent = normal.perp();
+
+    const dpTan1 = velocity.dot(tangent);
+    const dpTan2 = o.velocity.dot(tangent);
+
+    const dpNorm1 = velocity.dot(normal);
+    const dpNorm2 = o.velocity.dot(normal);
+
+    const m = mass + o.mass;
+    const m1 = (dpNorm1 * (mass - o.mass) + 2 * o.mass * dpNorm2) / m;
+    const m2 = (dpNorm2 * (o.mass - mass) + 2 * mass * dpNorm1) / m;
+
+    velocity.set(
+      Vector2.add(Vector2.mult(tangent, dpTan1), Vector2.mult(normal, m1))
+    );
+    o.velocity.set(
+      Vector2.add(Vector2.mult(tangent, dpTan2), Vector2.mult(normal, m2))
+    );
   }
 
   // Position
@@ -47,10 +112,10 @@ export default class Body {
     this.position.x = x;
   }
   get y(): number {
-    return this.position.x;
+    return this.position.y;
   }
   set y(y: number) {
-    this.position.x = y;
+    this.position.y = y;
   }
 
   // Velocity
@@ -61,10 +126,10 @@ export default class Body {
     this.velocity.x = x;
   }
   get vy(): number {
-    return this.velocity.x;
+    return this.velocity.y;
   }
   set vy(y: number) {
-    this.velocity.x = y;
+    this.velocity.y = y;
   }
 
   // Acceleration
@@ -75,9 +140,9 @@ export default class Body {
     this.acceleration.x = x;
   }
   get ay(): number {
-    return this.acceleration.x;
+    return this.acceleration.y;
   }
   set ay(y: number) {
-    this.acceleration.x = y;
+    this.acceleration.y = y;
   }
 }

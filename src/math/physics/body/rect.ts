@@ -4,6 +4,7 @@ import type Circle from './circle';
 
 export default class Rect extends Body {
   size: Vector2;
+  readonly normals = [vec2(1, 0), vec2(0, 1)];
 
   constructor(
     x: number,
@@ -39,8 +40,8 @@ export default class Rect extends Body {
         position: { x: ox, y: oy },
         size: { x: owidth, y: oheight }
       } = o;
-      if (x + width < ox || x > ox + owidth) return false;
-      if (y + height < oy || y > oy + oheight) return false;
+      if (x + width <= ox || x >= ox + owidth) return false;
+      if (y + height <= oy || y >= oy + oheight) return false;
       return true;
     }
     return o.collides(this);
