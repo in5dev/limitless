@@ -1,12 +1,12 @@
-import Matrix from './mat';
 import { mat3 } from './mat3';
 
 type Vec4 = [number, number, number, number];
 type Mat4 = [...Vec4, ...Vec4, ...Vec4, ...Vec4];
 
-export default class Matrix4 extends Matrix {
+export default class Matrix4 {
+  [i: number]: number;
+
   constructor(matrix?: Matrix4 | Mat4) {
-    super(16);
     if (matrix) this.set(matrix);
     else this.identity();
   }
@@ -19,6 +19,17 @@ export default class Matrix4 extends Matrix {
   ${i} ${j} ${k} ${l}
   ${m} ${n} ${o} ${p}
 ]`;
+  }
+
+  log(): this {
+    console.log(this.toString());
+    return this;
+  }
+
+  *[Symbol.iterator](): Iterator<number> {
+    for (let i = 0; i < 16; i++) {
+      yield this[i];
+    }
   }
 
   copy(): Matrix4 {

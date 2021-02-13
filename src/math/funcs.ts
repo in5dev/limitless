@@ -58,11 +58,21 @@ export function factorial(n: number): number {
   return total;
 }
 
+/**
+ * Calculates the greatest common factor between the numbers
+ * a and b using the [Euclidean algorithm](https://www.wikiwand.com/en/Euclidean_algorithm)
+ * @param a a number
+ * @param b a number
+ */
+export function gcd(a: number, b: number): number {
+  while (b !== 0) [a, b] = [b, a % b];
+  return a;
+}
+
 export function fibonacci(n: number): number {
-  let i = 0;
   let a = 0;
   let b = 1;
-  for (; i < n; i++) {
+  for (let i = 0; i < n; i++) {
     [a, b] = [b, b + a];
   }
   return a;

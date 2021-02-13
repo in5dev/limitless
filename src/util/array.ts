@@ -4,6 +4,7 @@ import { randomInt } from '../math/funcs';
 
 declare global {
   interface Array<T> {
+    [-1]: T;
     copy(): T[];
     random(): T;
     swap(i: number, j: number): this;
@@ -27,6 +28,15 @@ declare global {
     meanAbsDev(): number;
   }
 }
+
+Object.defineProperty(Array.prototype, -1, {
+  get<T>(this: T[]) {
+    return this[this.length - 1];
+  },
+  set<T>(this: T[], value: T): void {
+    this[this.length - 1] = value;
+  }
+});
 
 Array.prototype.copy = function <T>(this: T[]): T[] {
   return [...this];
@@ -95,8 +105,8 @@ Array.prototype.sum = function (this: number[]): number {
 
 Array.prototype.mean = function (this: number[]): number {
   const { length } = this;
-  if (length > 0) return this.sum() / length;
-  return 0;
+  if (!length) return 0;
+  return this.sum() / length;
 };
 
 Array.prototype.median = function (this: number[]): number {

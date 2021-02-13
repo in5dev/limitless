@@ -1,11 +1,10 @@
-import Matrix from './mat';
-
 type Vec3 = [number, number, number];
 type Mat3 = [...Vec3, ...Vec3, ...Vec3];
 
-export default class Matrix3 extends Matrix {
+export default class Matrix3 {
+  [i: number]: number;
+
   constructor(matrix?: Matrix3 | Mat3) {
-    super(9);
     if (matrix) this.set(matrix);
     else this.identity();
   }
@@ -17,6 +16,17 @@ export default class Matrix3 extends Matrix {
   ${d} ${e} ${f}
   ${g} ${h} ${i}
 ]`;
+  }
+
+  log(): this {
+    console.log(this.toString());
+    return this;
+  }
+
+  *[Symbol.iterator](): Iterator<number> {
+    for (let i = 0; i < 9; i++) {
+      yield this[i];
+    }
   }
 
   copy(): Matrix3 {
