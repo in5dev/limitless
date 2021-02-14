@@ -77,3 +77,7 @@ export function fibonacci(n: number): number {
   }
   return a;
 }
+
+export const celsius = (fahrenheit: number): number =>
+  (fahrenheit - 32) * (5 / 9);
+export const fahrenheit = (celsius: number): number => celsius * (9 / 5) + 32;
