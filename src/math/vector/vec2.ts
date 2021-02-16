@@ -17,6 +17,10 @@ export default class Vector2 extends Vector {
     return `vec2 <${x}, ${y}>`;
   }
 
+  toArray(): [x: number, y: number] {
+    return [this.x, this.y];
+  }
+
   copy(): Vector2 {
     return vec2(+this.x, +this.y);
   }

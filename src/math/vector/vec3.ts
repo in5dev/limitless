@@ -18,6 +18,10 @@ export default class Vector3 extends Vector {
     return `vec3 <${x}, ${y}, ${z}>`;
   }
 
+  toArray(): [x: number, y: number, z: number] {
+    return [this.x, this.y, this.z];
+  }
+
   copy(): Vector3 {
     return vec3(+this.x, +this.y, +this.z);
   }
