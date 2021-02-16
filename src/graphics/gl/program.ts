@@ -7,13 +7,14 @@ export default class Program {
   attributeLocations = new Map<string, GLint>();
   uniformLocations = new Map<string, WebGLUniformLocation>();
 
-  constructor(private gl: WebGL2RenderingContext, shaders: Shader[]) {
+  constructor(public gl: WebGL2RenderingContext, shaders: Shader[]) {
     // Create the program
     const program = gl.createProgram();
     if (!program) throw new Error('Error creating program');
+    this.program = program;
 
     // Bind the shaders
-    shaders.forEach(shader => gl.attachShader(program, shader));
+    shaders.forEach(shader => gl.attachShader(program, shader.shader));
 
     // Check for program errors
     gl.linkProgram(program);
@@ -29,7 +30,6 @@ export default class Program {
       );
 
     gl.useProgram(program);
-    this.program = program;
   }
 
   /**

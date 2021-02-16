@@ -5,11 +5,32 @@ export class Buffer {
     // Create the buffer
     const buffer = gl.createBuffer();
     if (!buffer) throw new Error('Error creating buffer');
+    this.buffer = buffer;
 
     // Bind the data to the buffer
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    this.bind();
     gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+  }
 
-    this.buffer = buffer;
+  bind(): void {
+    const { gl, buffer } = this;
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  }
+
+  create(
+    attribLocation: GLuint,
+    size: GLint,
+    type: GLenum,
+    stride: GLsizei,
+    offset: GLintptr
+  ): void {
+    this.gl.vertexAttribPointer(
+      attribLocation,
+      size,
+      type,
+      false,
+      stride,
+      offset
+    );
   }
 }

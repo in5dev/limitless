@@ -4,7 +4,7 @@ export enum Type {
 }
 
 export default class Shader {
-  private shader: WebGLShader;
+  shader: WebGLShader;
 
   constructor(private gl: WebGL2RenderingContext, type: Type, source: string) {
     // Create the vertex shader
@@ -13,6 +13,7 @@ export default class Shader {
     );
     const name = Type[type];
     if (!shader) throw new Error(`Error creating ${name.toLowerCase()} shader`);
+    this.shader = shader;
 
     // Bind the source
     gl.shaderSource(shader, source);
@@ -23,7 +24,5 @@ export default class Shader {
       throw new Error(
         `Error compiling vertex shader: ${gl.getShaderInfoLog(shader)}`
       );
-
-    this.shader = shader;
   }
 }
