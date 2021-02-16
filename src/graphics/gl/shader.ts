@@ -6,7 +6,7 @@ export enum Type {
 export default class Shader {
   shader: WebGLShader;
 
-  constructor(private gl: WebGL2RenderingContext, type: Type, source: string) {
+  constructor(gl: WebGL2RenderingContext, type: Type, source: string) {
     // Create the vertex shader
     const shader = gl.createShader(
       type === Type.Vertex ? gl.VERTEX_SHADER : gl.FRAGMENT_SHADER
