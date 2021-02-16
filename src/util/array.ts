@@ -31,10 +31,14 @@ declare global {
 
 Object.defineProperty(Array.prototype, -1, {
   get<T>(this: T[]) {
-    return this[this.length - 1];
+    const { length } = this;
+    if (!length) return undefined;
+    return this[length - 1];
   },
   set<T>(this: T[], value: T): void {
-    this[this.length - 1] = value;
+    const { length } = this;
+    if (!length) this[0] = value;
+    else this[this.length - 1] = value;
   }
 });
 
