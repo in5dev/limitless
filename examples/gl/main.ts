@@ -1,3 +1,5 @@
+/// <reference path="./imports.d.ts" />
+
 import vertexSource from './shader.vert';
 import fragmentSource from './shader.frag';
 
