@@ -1,3 +1,5 @@
+import type { Vector2 } from './vector';
+
 /* eslint-disable no-multi-assign */
 export function norm(n: number, min: number, max: number): number {
   return (n - min) / (max - min);
@@ -81,3 +83,24 @@ export function fibonacci(n: int): number {
 export const celsius = (fahrenheit: number): number =>
   (fahrenheit - 32) * (5 / 9);
 export const fahrenheit = (celsius: number): number => celsius * (9 / 5) + 32;
+
+export function bestFitLine(points: Vector2[]): [m: number, b: number] {
+  const xs = points.map(p => p.x);
+  const ys = points.map(p => p.y);
+
+  const meanX = xs.mean();
+  const meanY = ys.mean();
+
+  let num = 0;
+  let den = 0;
+  for (let i = 0; i < points.length; i++) {
+    const x = xs[i];
+    const y = ys[i];
+    num += (x - meanX) * (y - meanY);
+    den += (x - meanX) ** 2;
+  }
+
+  const m = num / den;
+  const b = meanY - m * meanX;
+  return [m, b];
+}

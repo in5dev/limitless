@@ -8,5 +8,7 @@ export const Φ = (1 + Math.sqrt(5)) / 2;
 export const PHI = Φ;
 export const i = complex(0, 1);
 
-export const g = 9.80665;
+// Physics
+export const g = 9.80665; // m/s²
 export const G = 6.6743e-11;
+export const c = 299_792_458; // m/s
