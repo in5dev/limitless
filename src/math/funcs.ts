@@ -66,12 +66,12 @@ export function factorial(n: number): number {
  * @param a a number
  * @param b a number
  */
-export function gcd(a: int, b: int): int {
+export function gcd(a: number, b: number): number {
   while (b !== 0) [a, b] = [b, a % b];
   return a;
 }
 
-export function fibonacci(n: int): number {
+export function fibonacci(n: number): number {
   let a = 0;
   let b = 1;
   for (let i = 0; i < n; i++) {

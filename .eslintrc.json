@@ -15,8 +15,7 @@
   "extends": [
     "airbnb-typescript/base",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/@typescript-eslint"
+    "prettier"
   ],
   "rules": {
     "no-bitwise": ["error", { "allow": ["|"] }],
