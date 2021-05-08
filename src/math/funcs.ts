@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { Vector2 } from './vector';
 
 /* eslint-disable no-multi-assign */
@@ -94,8 +95,8 @@ export function bestFitLine(points: Vector2[]): [m: number, b: number] {
   let num = 0;
   let den = 0;
   for (let i = 0; i < points.length; i++) {
-    const x = xs[i];
-    const y = ys[i];
+    const x = xs[i]!;
+    const y = ys[i]!;
     num += (x - meanX) * (y - meanY);
     den += (x - meanX) ** 2;
   }

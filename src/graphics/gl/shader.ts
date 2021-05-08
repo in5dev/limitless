@@ -11,7 +11,8 @@ export default class Shader {
     const shader = gl.createShader(
       type === Type.Vertex ? gl.VERTEX_SHADER : gl.FRAGMENT_SHADER
     );
-    const name = Type[type];
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const name = Type[type]!;
     if (!shader) throw new Error(`Error creating ${name.toLowerCase()} shader`);
     this.shader = shader;
 
