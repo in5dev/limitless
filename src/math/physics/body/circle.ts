@@ -8,6 +8,10 @@ export default class Circle extends Body {
     super(x, y, mass);
   }
 
+  get rotationalInertia(): number {
+    return (this.mass * this.radius ** 2) / 2;
+  }
+
   collides(o: Circle | Rect | Polygon): boolean {
     const { position, radius } = this;
     if (o instanceof Circle) {

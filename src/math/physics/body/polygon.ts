@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable no-restricted-syntax */
 import { overlap } from '../../funcs';
 import { Vector2 } from '../../vector';
@@ -5,6 +6,8 @@ import Body, { Collision } from './body';
 import type Circle from './circle';
 
 export default class Polygon extends Body {
+  rotationalInertia = 1;
+
   constructor(x: number, y: number, public vertices: Vector2[], mass?: number) {
     super(x, y, mass);
   }
@@ -12,7 +15,7 @@ export default class Polygon extends Body {
   get normals(): Vector2[] {
     const { vertices } = this;
     return vertices.map((vertex, i) => {
-      const next = vertices[i + 1] || vertices[0];
+      const next = vertices[i + 1] || vertices[0]!;
       const diff = Vector2.sub(next, vertex);
       return diff.perp().normalize();
     });
@@ -53,7 +56,7 @@ export default class Polygon extends Body {
 
     const dists = overlaps.map(o => o.dist);
     const minDistIndex = dists.indexOf(dists.min());
-    const minOverlap = overlaps[minDistIndex];
+    const minOverlap = overlaps[minDistIndex]!;
 
     const { normal } = minOverlap;
     const diff = Vector2.sub(body.position, this.position);

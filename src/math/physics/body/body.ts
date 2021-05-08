@@ -10,7 +10,7 @@ export interface DynamicCollision {
   normal: Vector2;
 }
 
-export default class Body {
+export default abstract class Body {
   position: Vector2;
   velocity = vec2();
   acceleration = vec2();
@@ -18,6 +18,8 @@ export default class Body {
   angle = 0;
   angularVelocity = 0;
   angularAcceleration = 0;
+
+  abstract rotationalInertia: number;
 
   collision?: DynamicCollision;
 
@@ -29,8 +31,24 @@ export default class Body {
    * Changes the body's acceleration
    * @param force a vector
    */
-  applyForce(force: Vector2): this {
+  force(force: Vector2): this {
     this.acceleration.add(Vector2.div(force, this.mass));
+    return this;
+  }
+
+  /**
+   * Changes the body's angular acceleration
+   * @param force a vector
+   * @param location where the force was applied
+   */
+  torque(force: Vector2, location: Vector2): this {
+    const r = Vector2.sub(location, this.position);
+    const angle = force.angle() - r.angle();
+    const torque = Vector2.mult(force, r.mag() * Math.sin(angle));
+    this.angularAcceleration += Vector2.div(
+      torque,
+      this.rotationalInertia
+    ).mag();
     return this;
   }
 

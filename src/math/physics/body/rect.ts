@@ -30,6 +30,27 @@ export default class Rect extends Body {
     this.size.y = height;
   }
 
+  get rotationalInertia(): number {
+    return (this.mass * this.size.magSq()) / 12;
+  }
+
+  get vertices(): Vector2[] {
+    const { position, width, height, angle } = this;
+    const { x, y } = position;
+    return [
+      vec2(x - width / 2, y - height / 2),
+      vec2(x + width / 2, y - height / 2),
+      vec2(x - width / 2, y + height / 2),
+      vec2(x + width / 2, y + height / 2)
+    ].map(v => v.rotateAbout(angle, position));
+  }
+
+  project(axis: Vector2): [min: number, max: number] {
+    const { position, vertices } = this;
+    const projections = vertices.map(v => Vector2.add(position, v).dot(axis));
+    return projections.minmax();
+  }
+
   collides(o: Rect | Circle): boolean {
     if (o instanceof Rect) {
       const {

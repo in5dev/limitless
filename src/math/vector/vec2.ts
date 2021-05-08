@@ -195,6 +195,10 @@ export default class Vector2 extends Vector {
     return v.copy().rotate(angle);
   }
 
+  rotateAbout(angle: number, center: Vector2): this {
+    return this.sub(center).rotate(angle).add(center);
+  }
+
   reflect(normal: Vector2): this {
     return this.sub(Vector2.mult(normal, 2 * this.dot(normal)));
   }
