@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable func-names */
 
 import { randomInt } from '../math/funcs';
@@ -48,11 +49,11 @@ Array.prototype.copy = function <T>(this: T[]): T[] {
 
 Array.prototype.random = function <T>(this: T[]): T {
   const index = randomInt(this.length);
-  return this[index];
+  return this[index]!;
 };
 
 Array.prototype.swap = function <T>(this: T[], i: number, j: number): T[] {
-  [this[i], this[j]] = [this[j], this[i]];
+  [this[i], this[j]] = [this[j]!, this[i]!];
   return this;
 };
 
@@ -122,7 +123,7 @@ Array.prototype.mode = function (this: number[]): number[] {
   this.forEach(n => (counts[n] ? counts[n]++ : (counts[n] = 1)));
   const sortedCounts = Object.entries(counts).sort((a, b) => a[1] - b[1]);
   const sortedNumbers = sortedCounts.map(n => n[1]);
-  return sortedNumbers.filter(n => n === sortedCounts[0][1]);
+  return sortedNumbers.filter(n => n === sortedCounts[0]![1]);
 };
 
 Array.prototype.range = function (this: number[]): number {
