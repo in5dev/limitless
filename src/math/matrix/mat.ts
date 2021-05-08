@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { random } from '../funcs';
 
 type Mat = number[][];
@@ -26,7 +27,7 @@ export default class Matrix {
   *[Symbol.iterator](): Iterator<Float64Array> {
     const { rows } = this;
     for (let i = 0; i < rows; i++) {
-      yield this[i];
+      yield this[i]!;
     }
   }
 
@@ -39,7 +40,7 @@ export default class Matrix {
     const { length } = arr;
     const m = mat(length, 1);
     for (let i = 0; i < length; i++) {
-      m[i][0] = arr[i];
+      m[i]![0] = arr[i]!;
     }
     return m;
   }
@@ -52,7 +53,7 @@ export default class Matrix {
     const m = mat(rows, cols);
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        m[i][j] = random(-1, 1);
+        m[i]![j] = random(-1, 1);
       }
     }
     return m;
@@ -62,7 +63,7 @@ export default class Matrix {
     const { rows, cols } = this;
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        this[i][j] = m[i][j];
+        this[i]![j] = m[i]![j]!;
       }
     }
     return this;
@@ -72,8 +73,8 @@ export default class Matrix {
     const { rows, cols } = this;
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        const a = this[i][j];
-        const b = m[i][j];
+        const a = this[i]![j]!;
+        const b = m[i]![j]!;
         if (Math.abs(a - b) > Number.EPSILON) return false;
       }
     }
@@ -84,7 +85,7 @@ export default class Matrix {
     const { rows, cols } = this;
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        this[i][j] += m[i][j];
+        this[i]![j] += m[i]![j]!;
       }
     }
     return this;
@@ -97,7 +98,7 @@ export default class Matrix {
     const { rows, cols } = this;
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        this[i][j] -= m[i][j];
+        this[i]![j] -= m[i]![j]!;
       }
     }
     return this;
@@ -115,7 +116,7 @@ export default class Matrix {
       const ans = mat(rows, cols);
       for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
-          ans[i][j] = m1[i][j] * m2;
+          ans[i]![j] = m1[i]![j]! * m2;
         }
       }
       return ans;
@@ -127,9 +128,9 @@ export default class Matrix {
       for (let j = 0; j < cols; j++) {
         let sum = 0;
         for (let k = 0; k < m1.cols; k++) {
-          sum += m1[i][k] * m2[k][j];
+          sum += m1[i]![k]! * m2[k]![j]!;
         }
-        ans[i][j] = sum;
+        ans[i]![j] = sum;
       }
     }
     return ans;
@@ -144,7 +145,7 @@ export default class Matrix {
     const ans = mat(cols, rows);
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        ans[j][i] = m[i][j];
+        ans[j]![i] = m[i]![j]!;
       }
     }
     return m;
@@ -154,7 +155,7 @@ export default class Matrix {
     const { rows, cols } = this;
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        this[i][j] = func(this[i][j], i, j);
+        this[i]![j] = func(this[i]![j]!, i, j);
       }
     }
     return this;
