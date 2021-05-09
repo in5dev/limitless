@@ -1,4 +1,6 @@
-import { vec2, Vector2 } from '../../vector';
+import type p5 from 'p5';
+
+import { vec2, Vector2 } from '../../math/vector';
 import Body from './body';
 import type Circle from './circle';
 
@@ -65,5 +67,21 @@ export default class Rect extends Body {
       return true;
     }
     return o.collides(this);
+  }
+
+  render(p: p5): void {
+    const { position, width, height, angle } = this;
+    const { x, y } = position;
+    p.push();
+    p.translate(x, p.height - y);
+    p.rotate(-angle);
+    p.stroke(61, 69, 224);
+    p.strokeWeight(2);
+    p.fill(81, 89, 232);
+    p.rect(0, 0, width, height);
+    p.stroke(0);
+    p.strokeWeight(4);
+    p.point(0, 0);
+    p.pop();
   }
 }

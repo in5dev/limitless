@@ -1,4 +1,6 @@
-import { vec2, Vector2 } from '../../vector';
+import type p5 from 'p5';
+
+import { vec2, Vector2 } from '../../math/vector';
 
 export interface Collision {
   normal: Vector2;
@@ -44,11 +46,8 @@ export default abstract class Body {
   torque(force: Vector2, location: Vector2): this {
     const r = Vector2.sub(location, this.position);
     const angle = force.angle() - r.angle();
-    const torque = Vector2.mult(force, r.mag() * Math.sin(angle));
-    this.angularAcceleration += Vector2.div(
-      torque,
-      this.rotationalInertia
-    ).mag();
+    const torque = force.mag() * r.mag() * Math.sin(angle);
+    this.angularAcceleration += torque / this.rotationalInertia;
     return this;
   }
 
@@ -83,6 +82,10 @@ export default abstract class Body {
 
     return this;
   }
+
+  abstract render(p: p5): void;
+
+  abstract collides(other: Body): boolean;
 
   resolveCollision(o: Body, { normal, dist }: Collision): void {
     const { position } = this;

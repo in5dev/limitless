@@ -1,5 +1,5 @@
-import '../../../util/array';
-import type { Vector2 } from '../../vector';
+import '../../util/array';
+import type { Vector2 } from '../../math/vector';
 import type Particle from './particle';
 
 export default class ParticleSystem<T extends Particle = Particle> {

@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable no-restricted-syntax */
-import { overlap } from '../../funcs';
-import { Vector2 } from '../../vector';
+import type p5 from 'p5';
+
+import { overlap } from '../../math/funcs';
+import { Vector2 } from '../../math/vector';
 import Body, { Collision } from './body';
 import type Circle from './circle';
+import type Rect from './rect';
 
 export default class Polygon extends Body {
   rotationalInertia = 1;
@@ -36,7 +39,7 @@ export default class Polygon extends Body {
     return projections.minmax();
   }
 
-  private sat(body: Polygon | Circle): boolean {
+  private sat(body: Polygon | Circle | Rect): boolean {
     const normals = [...this.normals];
     if (body instanceof Polygon) normals.push(...body.normals);
 
@@ -66,5 +69,22 @@ export default class Polygon extends Body {
     this.resolveCollision(body, minOverlap);
 
     return true;
+  }
+
+  render(p: p5): void {
+    const { position, vertices } = this;
+    const { x, y } = position;
+    p.push();
+    p.translate(x, p.height - y);
+    p.stroke(46, 184, 22);
+    p.strokeWeight(2);
+    p.fill(61, 227, 32);
+    p.beginShape();
+    vertices.forEach(v => p.vertex(v.x, -v.y));
+    p.endShape(p.CLOSE);
+    p.stroke(0);
+    p.strokeWeight(4);
+    p.point(0, 0);
+    p.pop();
   }
 }
