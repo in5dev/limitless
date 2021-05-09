@@ -36,12 +36,11 @@ export default class Rect extends Body {
 
   get vertices(): Vector2[] {
     const { position, width, height, angle } = this;
-    const { x, y } = position;
     return [
-      vec2(x - width / 2, y - height / 2),
-      vec2(x + width / 2, y - height / 2),
-      vec2(x - width / 2, y + height / 2),
-      vec2(x + width / 2, y + height / 2)
+      vec2(-width / 2, -height / 2),
+      vec2(+width / 2, -height / 2),
+      vec2(-width / 2, +height / 2),
+      vec2(+width / 2, +height / 2)
     ].map(v => v.rotateAbout(angle, position));
   }
 
