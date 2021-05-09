@@ -35,13 +35,13 @@ export default class Rect extends Body {
   }
 
   get vertices(): Vector2[] {
-    const { position, width, height, angle } = this;
+    const { width, height, angle } = this;
     return [
       vec2(-width / 2, -height / 2),
       vec2(+width / 2, -height / 2),
       vec2(-width / 2, +height / 2),
       vec2(+width / 2, +height / 2)
-    ].map(v => v.rotateAbout(angle, position));
+    ].map(v => v.rotate(angle));
   }
 
   project(axis: Vector2): [min: number, max: number] {
