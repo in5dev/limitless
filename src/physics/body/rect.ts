@@ -49,7 +49,7 @@ export default class Rect extends ConvexPolygon {
     const { x, y, width, height, angle } = this;
     p.push();
     p.translate(x, y);
-    p.rotate(-angle);
+    p.rotate(angle);
 
     p.stroke(61, 69, 224);
     p.strokeWeight(2);

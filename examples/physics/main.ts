@@ -21,18 +21,14 @@ new p5((p: p5) => {
     b2.vx = -300;
     const b3 = new AABB(360, p.height / 2, 25);
     b3.vx = -300;
-    spinner = new Rect(p.width / 2, p.height - 100, 40);
+    spinner = new Rect(p.width / 2, p.height - 160, 40, 80);
     world.bodies.push(b1, b2, b3, spinner);
   };
 
   p.draw = () => {
     p.background(69);
 
-    const seconds = performance.now() / 1000;
-    spinner.torque(
-      vec2(0, 1000).setMag(Math.cos(seconds * Math.PI)),
-      Vector2.add(spinner.position, 10, 0)
-    );
+    spinner.torque(vec2(10, 0), Vector2.add(spinner.position, 0, -40));
 
     const dt = p.deltaTime / 1000;
     world.update(dt);
