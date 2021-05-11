@@ -1,11 +1,16 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type p5 from 'p5';
 
+import AABody from './aabody';
 import { vec2, Vector2 } from '../../math/vector';
+import type Circle from './circle';
+import type ConvexPolygon from './convex-polygon';
 import type { RenderOptions } from '../types';
-import ConvexPolygon from './convex-polygon';
 
-export default class Rect extends ConvexPolygon {
+export default class AABB extends AABody {
   size: Vector2;
+  vertices: Vector2[];
+  readonly normals = [vec2(1, 0), vec2(0, 1)];
 
   constructor(
     x: number,
@@ -14,14 +19,14 @@ export default class Rect extends ConvexPolygon {
     height = width,
     mass?: number
   ) {
-    const vertices = [
+    super(x, y, mass);
+    this.size = vec2(width, height);
+    this.vertices = [
       vec2(-width / 2, +height / 2),
       vec2(-width / 2, -height / 2),
       vec2(+width / 2, -height / 2),
       vec2(+width / 2, +height / 2)
     ];
-    super(x, y, vertices, mass);
-    this.size = vec2(width, height);
   }
 
   get width(): number {
@@ -37,23 +42,36 @@ export default class Rect extends ConvexPolygon {
     this.size.y = height;
   }
 
-  get rotationalInertia(): number {
-    return (this.mass * this.size.magSq()) / 12;
+  project(axis: Vector2): [min: number, max: number] {
+    const { position, vertices } = this;
+    const projections = vertices.map(v => Vector2.add(position, v).dot(axis));
+    return projections.minmax();
   }
 
-  get normals(): Vector2[] {
-    return [vec2(1, 0), vec2(0, 1)].map(v => v.setAngle(this.angle));
+  collides(o: AABB | Circle | ConvexPolygon): boolean {
+    if (o instanceof AABB) {
+      const { x, y, width, height } = this;
+      const { x: ox, y: oy, width: owidth, height: oheight } = o;
+      if (x + width / 2 <= ox - owidth / 2 || x - width / 2 >= ox + owidth / 2)
+        return false;
+      if (
+        y + height / 2 <= oy - oheight / 2 ||
+        y - height / 2 >= oy + oheight / 2
+      )
+        return false;
+      return true;
+    }
+    return o.collides(this);
   }
 
   render(p: p5, options?: RenderOptions): void {
-    const { x, y, width, height, angle } = this;
+    const { x, y, width, height } = this;
     p.push();
     p.translate(x, y);
-    p.rotate(-angle);
 
-    p.stroke(61, 69, 224);
+    p.stroke(208, 93, 240);
     p.strokeWeight(2);
-    p.fill(81, 89, 232);
+    p.fill(227, 125, 255);
     p.rectMode(p.CENTER);
     p.rect(0, 0, width, height);
 

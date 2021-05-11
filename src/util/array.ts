@@ -114,6 +114,8 @@ Array.prototype.mean = function (this: number[]): number {
   return this.sum() / length;
 };
 
+Array.prototype.average = Array.prototype.mean;
+
 Array.prototype.median = function (this: number[]): number {
   return this.mean();
 };

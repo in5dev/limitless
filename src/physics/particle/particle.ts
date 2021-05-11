@@ -1,8 +1,6 @@
-import Body from '../body';
+import { Point } from '../body';
 
-export default class Particle extends Body {
-  rotationalInertia = 0;
-
+export default class Particle extends Point {
   constructor(x: number, y: number, public life = 4) {
     super(x, y);
   }

@@ -2,55 +2,44 @@
 /* eslint-disable new-cap */
 /* eslint-disable no-new */
 import p5 from 'p5';
-import { vec2, Vector2, World } from '../../src';
-import Polygon from '../../src/physics/body/polygon';
+import { AABB, ConvexPolygon, Rect, vec2, Vector2, World } from '../../src';
 
 new p5((p: p5) => {
   const world = new World();
-  let spinner: Polygon;
+  let spinner: ConvexPolygon;
 
   p.setup = () => {
     p.createCanvas(p.windowWidth, p.windowHeight);
 
-    const b1 = new Polygon(
-      0,
+    const b1 = new ConvexPolygon(
+      50,
       p.height / 2,
-      [vec2(-50, 50), vec2(100, 50), vec2(50, -50), vec2(-50, -50)],
+      [vec2(-50, -50), vec2(50, -50), vec2(100, 50), vec2(-50, 50)],
       5
     );
-    const b2 = new Polygon(300, p.height / 2, [
-      vec2(-10, 10),
-      vec2(10, 10),
-      vec2(10, -10),
-      vec2(-10, -10)
-    ]);
+    const b2 = new AABB(300, p.height / 2, 20);
     b2.vx = -300;
-    const b3 = new Polygon(360, p.height / 2, [
-      vec2(-10, 10),
-      vec2(10, 10),
-      vec2(10, -10),
-      vec2(-10, -10)
-    ]);
+    const b3 = new AABB(360, p.height / 2, 25);
     b3.vx = -300;
-    spinner = new Polygon(p.width / 2, p.height - 100, [
-      vec2(-20, 20),
-      vec2(20, 20),
-      vec2(20, -20),
-      vec2(-20, -20)
-    ]);
+    spinner = new Rect(p.width / 2, p.height - 100, 40);
     world.bodies.push(b1, b2, b3, spinner);
   };
 
   p.draw = () => {
     p.background(69);
 
+    const seconds = performance.now() / 1000;
     spinner.torque(
-      vec2(0, 1).setMag(Math.cos((performance.now() / 1000) * Math.PI)),
+      vec2(0, 1000).setMag(Math.cos(seconds * Math.PI)),
       Vector2.add(spinner.position, 10, 0)
     );
 
     const dt = p.deltaTime / 1000;
     world.update(dt);
-    world.render(p);
+    world.render(p, {
+      position: true,
+      vertices: true,
+      normals: true
+    });
   };
 });

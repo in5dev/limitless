@@ -2,17 +2,23 @@
 /* eslint-disable no-restricted-syntax */
 import type p5 from 'p5';
 
+import Body, { Collision } from './body';
 import { overlap } from '../../math/funcs';
 import { Vector2 } from '../../math/vector';
-import Body, { Collision } from './body';
+import '../../util/array';
 import type Circle from './circle';
 import type Rect from './rect';
+import type AABB from './aabb';
+import type { RenderOptions } from '../types';
 
-export default class Polygon extends Body {
-  rotationalInertia = 1;
-
+export default class ConvexPolygon extends Body {
   constructor(x: number, y: number, public vertices: Vector2[], mass?: number) {
     super(x, y, mass);
+  }
+
+  get rotationalInertia(): number {
+    const r = this.vertices.map(v => v.mag()).average();
+    return (this.mass * r ** 2) / 2;
   }
 
   get normals(): Vector2[] {
@@ -29,19 +35,15 @@ export default class Polygon extends Body {
     return super.rotate(angle);
   }
 
-  collides(body: Polygon | Circle): boolean {
-    return this.sat(body);
-  }
-
   project(axis: Vector2): [min: number, max: number] {
     const { position, vertices } = this;
     const projections = vertices.map(v => Vector2.add(position, v).dot(axis));
     return projections.minmax();
   }
 
-  private sat(body: Polygon | Circle | Rect): boolean {
+  collides(body: ConvexPolygon | AABB | Circle | Rect): boolean {
     const normals = [...this.normals];
-    if (body instanceof Polygon) normals.push(...body.normals);
+    if (body instanceof ConvexPolygon) normals.push(...body.normals);
 
     const overlaps: Collision[] = [];
     for (const n of normals) {
@@ -71,20 +73,34 @@ export default class Polygon extends Body {
     return true;
   }
 
-  render(p: p5): void {
-    const { position, vertices } = this;
-    const { x, y } = position;
+  render(p: p5, options?: RenderOptions): void {
+    const { x, y, vertices } = this;
     p.push();
-    p.translate(x, p.height - y);
+    p.translate(x, y);
+
     p.stroke(46, 184, 22);
     p.strokeWeight(2);
     p.fill(61, 227, 32);
     p.beginShape();
-    vertices.forEach(v => p.vertex(v.x, -v.y));
+    vertices.forEach(v => p.vertex(v.x, v.y));
     p.endShape(p.CLOSE);
+
     p.stroke(0);
     p.strokeWeight(4);
-    p.point(0, 0);
+    if (options?.position) p.point(0, 0);
+    if (options?.vertices) vertices.forEach(v => p.point(v.x, v.y));
+    if (options?.normals) {
+      p.stroke(0, 0, 255);
+      p.strokeWeight(2);
+      for (let i = 0; i < vertices.length; i++) {
+        const v1 = vertices[i]!;
+        const v2 = vertices[i + 1]! || vertices[0]!;
+        const mid = Vector2.lerp(v1, v2, 0.5);
+        const normal = Vector2.sub(v2, v1).perp().setMag(20);
+        p.line(mid.x, mid.y, mid.x + normal.x, mid.y + normal.y);
+      }
+    }
+
     p.pop();
   }
 }

@@ -1,8 +1,9 @@
 import type p5 from 'p5';
 import { Vector2 } from '../../math/vector';
 import Body from './body';
-import Polygon from './polygon';
-import type Rect from './rect';
+import ConvexPolygon from './convex-polygon';
+import type AABB from './aabb';
+import type { RenderOptions } from '../types';
 
 export default class Circle extends Body {
   constructor(x: number, y: number, public radius: number, mass?: number) {
@@ -13,13 +14,13 @@ export default class Circle extends Body {
     return (this.mass * this.radius ** 2) / 2;
   }
 
-  collides(o: Circle | Rect | Polygon): boolean {
+  collides(o: Circle | AABB | ConvexPolygon): boolean {
     const { position, radius } = this;
     if (o instanceof Circle) {
       const r = radius + o.radius;
       return this.position.distSq(position) < r ** 2;
     }
-    if (o instanceof Polygon) return o.collides(this);
+    if (o instanceof ConvexPolygon) return o.collides(this);
 
     const clamped = Vector2.clamp(
       position,
@@ -35,18 +36,27 @@ export default class Circle extends Body {
     return [-radius, radius];
   }
 
-  render(p: p5): void {
-    const { position, radius } = this;
-    const { x, y } = position;
+  render(p: p5, options?: RenderOptions): void {
+    const { x, y, radius } = this;
     p.push();
-    p.translate(x, p.height - y);
+    p.translate(x, y);
+
     p.stroke(199, 48, 28);
     p.strokeWeight(2);
     p.fill(247, 68, 45);
     p.circle(0, 0, radius * 2);
-    p.stroke(0);
-    p.strokeWeight(4);
-    p.point(0, 0);
+
+    if (options?.position) {
+      p.stroke(0);
+      p.strokeWeight(4);
+      p.point(0, 0);
+    }
+    if (options?.normals) {
+      p.stroke(0, 0, 255);
+      p.strokeWeight(2);
+      p.line(0, 0, radius, 0);
+    }
+
     p.pop();
   }
 }
