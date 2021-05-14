@@ -1,8 +1,9 @@
 import type p5 from 'p5';
-import { Vector2 } from '../../math/vector';
+
 import Body from './body';
-import ConvexPolygon from './convex-polygon';
-import type AABB from './aabb';
+import AABB from './aabb';
+import Vector2 from '../../math/vector/vec2';
+import type ConvexPolygon from './convex-polygon';
 import type { RenderOptions } from '../types';
 
 export default class Circle extends Body {
@@ -14,20 +15,27 @@ export default class Circle extends Body {
     return (this.mass * this.radius ** 2) / 2;
   }
 
-  collides(o: Circle | AABB | ConvexPolygon): boolean {
+  get aabb(): AABB {
+    const { x, y, radius } = this;
+    return new AABB(x - radius, y - radius, radius * 2);
+  }
+
+  collides(o: Circle | ConvexPolygon): boolean {
     const { position, radius } = this;
     if (o instanceof Circle) {
       const r = radius + o.radius;
-      return this.position.distSq(position) < r ** 2;
+      const colliding = position.distSq(o.position) < r ** 2;
+      if (colliding) {
+        const d = Vector2.sub(o.position, position);
+        this.resolveCollision(o, {
+          normal: Vector2.normalize(d),
+          dist: r - d.mag()
+        });
+        return true;
+      }
+      return false;
     }
-    if (o instanceof ConvexPolygon) return o.collides(this);
-
-    const clamped = Vector2.clamp(
-      position,
-      o.position,
-      Vector2.add(o.position, o.size)
-    );
-    return position.distSq(clamped) < radius;
+    return o.collides(this);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

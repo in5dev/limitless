@@ -4,11 +4,11 @@ import type p5 from 'p5';
 
 import Body, { Collision } from './body';
 import { overlap } from '../../math/funcs';
-import { Vector2 } from '../../math/vector';
+import Vector2 from '../../math/vector/vec2';
 import '../../util/array';
+import AABB from './aabb';
 import type Circle from './circle';
 import type Rect from './rect';
-import type AABB from './aabb';
 import type { RenderOptions } from '../types';
 
 export default class ConvexPolygon extends Body {
@@ -19,6 +19,18 @@ export default class ConvexPolygon extends Body {
   get rotationalInertia(): number {
     const r = this.vertices.map(v => v.mag()).average();
     return (this.mass * r ** 2) / 2;
+  }
+
+  get aabb(): AABB {
+    const { x, y, vertices } = this;
+
+    const xs = vertices.map(v => v.x);
+    const ys = vertices.map(v => v.y);
+
+    const [minx, maxx] = xs.minmax();
+    const [miny, maxy] = ys.minmax();
+
+    return new AABB(x + minx, y + miny, maxx - minx, maxy - miny);
   }
 
   get normals(): Vector2[] {
@@ -41,7 +53,7 @@ export default class ConvexPolygon extends Body {
     return projections.minmax();
   }
 
-  collides(body: ConvexPolygon | AABB | Circle | Rect): boolean {
+  collides(body: ConvexPolygon | Circle | Rect): boolean {
     const normals = [...this.normals];
     if (body instanceof ConvexPolygon) normals.push(...body.normals);
 

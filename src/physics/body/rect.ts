@@ -1,8 +1,8 @@
 import type p5 from 'p5';
 
+import ConvexPolygon from './convex-polygon';
 import { vec2, Vector2 } from '../../math/vector';
 import type { RenderOptions } from '../types';
-import ConvexPolygon from './convex-polygon';
 
 export default class Rect extends ConvexPolygon {
   size: Vector2;
@@ -49,13 +49,14 @@ export default class Rect extends ConvexPolygon {
     const { x, y, width, height, angle } = this;
     p.push();
     p.translate(x, y);
-    p.rotate(angle);
+    p.rotate(-angle);
 
     p.stroke(61, 69, 224);
     p.strokeWeight(2);
     p.fill(81, 89, 232);
     p.rectMode(p.CENTER);
     p.rect(0, 0, width, height);
+    p.rectMode(p.CORNER);
 
     p.stroke(0);
     p.strokeWeight(4);

@@ -138,6 +138,10 @@ export default class Vector2 extends Vector {
     return x ** 2 + y ** 2;
   }
 
+  static normalize(v: Vector2): Vector2 {
+    return v.copy().normalize();
+  }
+
   distSq(v: Vector2): number {
     return Vector2.sub(v, this).magSq();
   }

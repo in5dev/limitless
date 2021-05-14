@@ -4,6 +4,11 @@
 import { randomInt } from '../math/funcs';
 
 declare global {
+  interface ReadonlyArray<T> {
+    [-1]: T;
+    copy(): T[];
+    random(): T;
+  }
   interface Array<T> {
     [-1]: T;
     copy(): T[];
@@ -13,8 +18,24 @@ declare global {
     remove(item: T): boolean;
     unorderedRemove(index: number): this;
   }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Array<T extends number> {
+    min(): number;
+    max(): number;
+    minmax(): [min: number, max: number];
+    sum(): number;
+    mean(): number;
+    average(): number;
+    median(): number;
+    mode(): number[];
+    range(): number;
+    variance(): number;
+    stddev(): number;
+    meanAbsDev(): number;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface ReadonlyArray<T extends number> {
     min(): number;
     max(): number;
     minmax(): [min: number, max: number];
@@ -43,11 +64,11 @@ Object.defineProperty(Array.prototype, -1, {
   }
 });
 
-Array.prototype.copy = function <T>(this: T[]): T[] {
+Array.prototype.copy = function <T>(this: readonly T[]): T[] {
   return [...this];
 };
 
-Array.prototype.random = function <T>(this: T[]): T {
+Array.prototype.random = function <T>(this: readonly T[]): T {
   const index = randomInt(this.length);
   return this[index]!;
 };
@@ -78,7 +99,7 @@ Array.prototype.unorderedRemove = function <T>(this: T[], index: number): T[] {
   return this;
 };
 
-Array.prototype.min = function (this: number[]): number {
+Array.prototype.min = function (this: readonly number[]): number {
   let min = Infinity;
   this.forEach(x => {
     if (x < min) min = x;
@@ -86,7 +107,7 @@ Array.prototype.min = function (this: number[]): number {
   return min;
 };
 
-Array.prototype.max = function (this: number[]): number {
+Array.prototype.max = function (this: readonly number[]): number {
   let max = -Infinity;
   this.forEach(x => {
     if (x > max) max = x;
@@ -94,7 +115,9 @@ Array.prototype.max = function (this: number[]): number {
   return max;
 };
 
-Array.prototype.minmax = function (this: number[]): [min: number, max: number] {
+Array.prototype.minmax = function (
+  this: readonly number[]
+): [min: number, max: number] {
   let min = Infinity;
   let max = -Infinity;
   this.forEach(x => {
@@ -104,11 +127,11 @@ Array.prototype.minmax = function (this: number[]): [min: number, max: number] {
   return [min, max];
 };
 
-Array.prototype.sum = function (this: number[]): number {
+Array.prototype.sum = function (this: readonly number[]): number {
   return this.reduce((sum, cur) => sum + cur, 0);
 };
 
-Array.prototype.mean = function (this: number[]): number {
+Array.prototype.mean = function (this: readonly number[]): number {
   const { length } = this;
   if (!length) return 0;
   return this.sum() / length;
@@ -116,11 +139,11 @@ Array.prototype.mean = function (this: number[]): number {
 
 Array.prototype.average = Array.prototype.mean;
 
-Array.prototype.median = function (this: number[]): number {
+Array.prototype.median = function (this: readonly number[]): number {
   return this.mean();
 };
 
-Array.prototype.mode = function (this: number[]): number[] {
+Array.prototype.mode = function (this: readonly number[]): number[] {
   const counts: Record<number, number> = {};
   this.forEach(n => (counts[n] ? counts[n]++ : (counts[n] = 1)));
   const sortedCounts = Object.entries(counts).sort((a, b) => a[1] - b[1]);
@@ -128,22 +151,20 @@ Array.prototype.mode = function (this: number[]): number[] {
   return sortedNumbers.filter(n => n === sortedCounts[0]![1]);
 };
 
-Array.prototype.range = function (this: number[]): number {
+Array.prototype.range = function (this: readonly number[]): number {
   return this.max() - this.min();
 };
 
-Array.prototype.variance = function (this: number[]): number {
+Array.prototype.variance = function (this: readonly number[]): number {
   const mean = this.mean();
   return this.map(n => (n - mean) ** 2).mean();
 };
 
-Array.prototype.stddev = function (this: number[]): number {
+Array.prototype.stddev = function (this: readonly number[]): number {
   return Math.sqrt(this.variance());
 };
 
-Array.prototype.meanAbsDev = function (this: number[]): number {
+Array.prototype.meanAbsDev = function (this: readonly number[]): number {
   const mean = this.mean();
   return this.map(n => n - mean).mean();
 };
-
-export {};
