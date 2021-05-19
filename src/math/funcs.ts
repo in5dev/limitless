@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import '../util/array';
 import type { Vector2 } from './vector';
 
 /* eslint-disable no-multi-assign */

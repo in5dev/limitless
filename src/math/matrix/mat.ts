@@ -6,9 +6,26 @@ type Mat = number[][];
 export default class Matrix {
   [i: number]: Float64Array;
 
-  constructor(readonly rows: number, readonly cols: number) {
-    for (let i = 0; i < rows; i++) {
-      this[i] = new Float64Array(cols).fill(0);
+  rows: number;
+  cols: number;
+
+  constructor(rows: number, cols: number);
+  constructor(mat: Mat);
+  constructor(rowsOrMat: number | Mat, cols?: number) {
+    if (typeof rowsOrMat === 'number') {
+      cols = cols || 0;
+      for (let i = 0; i < rowsOrMat; i++) {
+        this[i] = new Float64Array(cols).fill(0);
+      }
+      this.rows = rowsOrMat;
+      this.cols = cols;
+    } else {
+      for (let i = 0; i < rowsOrMat.length; i++) {
+        const row = rowsOrMat[i]!;
+        this[i] = new Float64Array(row);
+      }
+      this.rows = rowsOrMat.length;
+      this.cols = rowsOrMat[0]!.length;
     }
   }
 
@@ -122,7 +139,7 @@ export default class Matrix {
       return ans;
     }
 
-    const ans = mat(m1.cols, m2.rows);
+    const ans = mat(m1.rows, m2.cols);
     const { rows, cols } = ans;
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
@@ -148,7 +165,7 @@ export default class Matrix {
         ans[j]![i] = m[i]![j]!;
       }
     }
-    return m;
+    return ans;
   }
 
   map(func: (value: number, i: number, j: number) => number): this {
@@ -168,6 +185,9 @@ export default class Matrix {
   }
 }
 
-export function mat(rows: number, cols: number): Matrix {
-  return new Matrix(rows, cols);
+export function mat(rows: number, cols: number): Matrix;
+export function mat(mat: Mat): Matrix;
+export function mat(rowsOrMat: number | Mat, cols?: number): Matrix {
+  if (typeof rowsOrMat === 'number') return new Matrix(rowsOrMat, cols || 0);
+  return new Matrix(rowsOrMat);
 }

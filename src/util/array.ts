@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable func-names */
 
-import { randomInt } from '../math/funcs';
-
 declare global {
   interface ReadonlyArray<T> {
     [-1]: T;
@@ -168,3 +166,16 @@ Array.prototype.meanAbsDev = function (this: readonly number[]): number {
   const mean = this.mean();
   return this.map(n => n - mean).mean();
 };
+
+function random(min?: number, max?: number): number {
+  if (!min) return Math.random();
+  if (!max) return Math.random() * min;
+  const Min = Math.min(min, max);
+  return (Math.max(min, max) - Min) * Math.random() + Min;
+}
+
+function randomInt(min?: number, max?: number): number {
+  return Math.floor(random(min, max));
+}
+
+export {};
