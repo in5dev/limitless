@@ -1,8 +1,7 @@
+/* eslint-disable no-multi-assign */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import '../util/array';
-import type { Vector2 } from './vector';
 
-/* eslint-disable no-multi-assign */
 export function norm(n: number, min: number, max: number): number {
   return (n - min) / (max - min);
 }
@@ -86,7 +85,9 @@ export const celsius = (fahrenheit: number): number =>
   (fahrenheit - 32) * (5 / 9);
 export const fahrenheit = (celsius: number): number => celsius * (9 / 5) + 32;
 
-export function bestFitLine(points: Vector2[]): [m: number, b: number] {
+export function bestFitLine(
+  points: { x: number; y: number }[]
+): [m: number, b: number] {
   const xs = points.map(p => p.x);
   const ys = points.map(p => p.y);
 
