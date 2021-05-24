@@ -3,5 +3,5 @@ export interface RenderOptions {
   vertices?: boolean;
   normals?: boolean;
   aabb?: boolean;
-  quadtree?: boolean;
+  structure?: boolean;
 }

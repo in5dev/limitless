@@ -1,12 +1,12 @@
 import type p5 from 'p5';
 
 import type Body from './body';
-import QuadTree from './quadtree';
+import { QuadTree, SpatialHashGrid, Naive } from './structures';
 import type { RenderOptions } from './types';
 
 export default class World {
   bodies: Body[] = [];
-  quadtree: QuadTree;
+  structure: QuadTree | SpatialHashGrid | Naive;
   collisions = 0;
 
   constructor(
@@ -14,9 +14,26 @@ export default class World {
     y: number,
     width: number,
     height: number,
-    capacity?: number
+    structure: 'quadtree' | 'hashgrid' | 'naive' = 'quadtree',
+    options?: { capacity?: number; divisionSize?: number }
   ) {
-    this.quadtree = new QuadTree(x, y, width, height, capacity);
+    // eslint-disable-next-line default-case
+    switch (structure) {
+      case 'quadtree':
+        this.structure = new QuadTree(x, y, width, height, options?.capacity);
+        break;
+      case 'hashgrid':
+        this.structure = new SpatialHashGrid(
+          x,
+          y,
+          width,
+          height,
+          options?.divisionSize
+        );
+        break;
+      default:
+        this.structure = new Naive(x, y, width, height);
+    }
   }
 
   add(...bodies: Body[]): void {
@@ -24,13 +41,13 @@ export default class World {
   }
 
   update(dt: number): this {
-    const { bodies, quadtree } = this;
+    const { bodies, structure } = this;
     this.collisions = 0;
 
-    quadtree.reset();
-    bodies.forEach(body => quadtree.add(body));
+    structure.reset();
+    bodies.forEach(body => structure.add(body));
     bodies.forEach(body => {
-      const others = quadtree.query(body.aabb);
+      const others = structure.query(body.aabb);
       others.forEach(other => {
         if (body !== other) {
           if (body.collides(other)) this.collisions++;
@@ -42,10 +59,10 @@ export default class World {
   }
 
   render(p: p5, options?: RenderOptions): this {
-    const { bodies, quadtree } = this;
-    const { x, y, width, height } = quadtree;
+    const { bodies, structure } = this;
+    const { x, y, width, height } = structure;
 
-    if (options?.quadtree) quadtree.render(p);
+    if (options?.structure) structure.render(p);
     bodies.forEach(body => {
       const { aabb } = body;
       if (aabb.x < x) {

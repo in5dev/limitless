@@ -8,7 +8,6 @@ import Vector2 from '../../math/vector/vec2';
 import '../../util/array';
 import AABB from './aabb';
 import type Circle from './circle';
-import type Rect from './rect';
 import type { RenderOptions } from '../types';
 
 export default class ConvexPolygon extends Body {
@@ -53,7 +52,7 @@ export default class ConvexPolygon extends Body {
     return projections.minmax();
   }
 
-  collides(body: ConvexPolygon | Circle | Rect): boolean {
+  collides(body: ConvexPolygon | Circle): boolean {
     const normals = [...this.normals];
     if (body instanceof ConvexPolygon) normals.push(...body.normals);
 

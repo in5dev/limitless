@@ -6,11 +6,13 @@ declare global {
     [-1]: T;
     copy(): T[];
     random(): T;
+    zip<U>(arr: U[]): Generator<[T, U]>;
   }
   interface Array<T> {
     [-1]: T;
     copy(): T[];
     random(): T;
+    zip<U>(arr: U[]): Generator<[T, U]>;
     swap(i: number, j: number): this;
     shuffle(): this;
     remove(item: T): boolean;
@@ -69,6 +71,16 @@ Array.prototype.copy = function <T>(this: readonly T[]): T[] {
 Array.prototype.random = function <T>(this: readonly T[]): T {
   const index = randomInt(this.length);
   return this[index]!;
+};
+
+Array.prototype.zip = function* <T, U>(
+  this: readonly T[],
+  arr: readonly U[]
+): Generator<[T, U]> {
+  const length = Math.min(this.length, arr.length);
+  for (let i = 0; i < length; i++) {
+    yield [this[i]!, arr[i]!];
+  }
 };
 
 Array.prototype.swap = function <T>(this: T[], i: number, j: number): T[] {
