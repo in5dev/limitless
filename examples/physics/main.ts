@@ -11,7 +11,7 @@ new p5((p: p5) => {
   p.setup = () => {
     p.createCanvas(p.windowWidth, p.windowHeight);
 
-    world = new World(0, 0, p.width, p.height, 1);
+    world = new World(0, 0, p.width, p.height, 'quadtree', { capacity: 1 });
 
     const b1 = new ConvexPolygon(
       50,
@@ -24,6 +24,7 @@ new p5((p: p5) => {
     const b3 = new Rect(360, p.height / 2, 25);
     b3.vx = -300;
     spinner = new Rect(p.width / 2, 160, 40, 80);
+    spinner.ω = 0.1;
 
     world.add(b1, b2, b3, spinner);
   };
@@ -39,7 +40,7 @@ new p5((p: p5) => {
       vertices: true,
       normals: true,
       aabb: true,
-      quadtree: true
+      structure: true
     });
   };
 });
