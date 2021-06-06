@@ -1,4 +1,4 @@
-import { Vector2 } from '../../math';
+import { Vector2 } from '../../../math';
 import type Shader from './shader';
 
 export default class Program {
@@ -7,7 +7,7 @@ export default class Program {
   attributeLocations = new Map<string, GLint>();
   uniformLocations = new Map<string, WebGLUniformLocation>();
 
-  constructor(public gl: WebGL2RenderingContext, shaders: Shader[]) {
+  constructor(private gl: WebGL2RenderingContext, shaders: Shader[]) {
     // Create the program
     const program = gl.createProgram();
     if (!program) throw new Error('Error creating program');
@@ -29,7 +29,11 @@ export default class Program {
         `Error validating program: ${gl.getProgramInfoLog(program)}`
       );
 
-    gl.useProgram(program);
+    this.use();
+  }
+
+  use(): void {
+    this.gl.useProgram(this.program);
   }
 
   /**
