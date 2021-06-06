@@ -2,6 +2,7 @@
 export class VertexBuffer {
   private buffer: WebGLBuffer;
   readonly size: number;
+  readonly count: number;
 
   constructor(private gl: WebGL2RenderingContext, data: readonly number[][]) {
     // Create the buffer
@@ -10,6 +11,7 @@ export class VertexBuffer {
     this.buffer = buffer;
 
     this.size = data[0]?.length || 0;
+    this.count = data.length;
 
     // Bind the data to the buffer
     this.bind();

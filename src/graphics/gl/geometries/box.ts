@@ -5,42 +5,50 @@ export default class Box implements Geometry {
   private vao: VertexArrayObject;
 
   constructor(gl: WebGL2RenderingContext, program: Program) {
+    const vertices = [
+      // x, y, z
+      [-1, -1, -1],
+      [1, -1, -1],
+      [-1, 1, -1],
+      [1, 1, -1],
+      [-1, -1, 1],
+      [1, -1, 1],
+      [-1, 1, 1],
+      [1, 1, 1]
+    ];
     const positions = [
-      // x, y, z
-      [-1, -1, -1],
-      [1, -1, -1],
-      [-1, 1, -1],
-      [1, 1, -1],
-      [-1, -1, 1],
-      [1, -1, 1],
-      [-1, 1, 1],
-      [1, 1, 1]
-    ];
-    const normals = [
-      // x, y, z
-      [-1, -1, -1],
-      [1, -1, -1],
-      [-1, 1, -1],
-      [1, 1, -1],
-      [-1, -1, 1],
-      [1, -1, 1],
-      [-1, 1, 1],
-      [1, 1, 1]
-    ];
-    const indices = [
       // Left -x
-      [6, 4, 2, 2, 4, 0],
+      [6, 2, 4, 0],
       // Right +x
-      [3, 1, 7, 7, 1, 5],
+      [3, 7, 1, 5],
       // Bottom -y
-      [0, 4, 1, 1, 4, 5],
+      [0, 1, 4, 5],
       // Top +y
-      [6, 2, 7, 7, 2, 3],
+      [6, 7, 2, 3],
       // Back -z
-      [7, 5, 6, 6, 5, 4],
+      [2, 3, 0, 1],
       // Front +z
-      [2, 0, 3, 3, 0, 1]
-    ].flat() as unknown as number[];
+      [7, 6, 5, 4]
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    ].flatMap(posIndices => posIndices.map(posI => vertices[posI]!));
+    const normals = [
+      // Left -x
+      [-1, 0, 0],
+      // Right +x
+      [1, 0, 0],
+      // Bottom -y
+      [0, -1, 0],
+      // Top +y
+      [0, 1, 0],
+      // Back -z
+      [0, 0, -1],
+      // Front +z
+      [0, 0, 1]
+    ].flatMap(normal => [normal, normal, normal, normal]);
+    const indices: number[] = [];
+    for (let i = 0; i < 24; i += 4) {
+      indices.push(...[0, 2, 1, 1, 2, 3].map(n => n + i));
+    }
 
     const vao = new VertexArrayObject(
       gl,
