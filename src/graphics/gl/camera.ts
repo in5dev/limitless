@@ -11,7 +11,7 @@ export default class Camera {
     private gl: WebGL2RenderingContext,
     public fov: number,
     public near = 0.1,
-    public far = 100
+    public far = 1000
   ) {
     const { clientWidth, clientHeight } = gl.canvas as HTMLCanvasElement;
     this.aspect = clientWidth / clientHeight;

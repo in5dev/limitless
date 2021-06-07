@@ -56,9 +56,9 @@ export default class GL {
    * @param h the height
    */
   setSize(w: number, h: number): this {
-    const { canvas, gl } = this;
+    const { canvas, gl, camera } = this;
 
-    const dpr = devicePixelRatio || 1;
+    const dpr = window.devicePixelRatio || 1;
     const pixw = w * dpr;
     const pixh = h * dpr;
 
@@ -71,6 +71,9 @@ export default class GL {
     canvas.style.height = `${h}px`;
     // GL
     gl.viewport(0, 0, pixw, pixh);
+
+    const { clientWidth, clientHeight } = canvas;
+    if (camera) camera.aspect = clientWidth / clientHeight;
     return this;
   }
 
