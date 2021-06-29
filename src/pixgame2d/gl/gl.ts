@@ -16,6 +16,8 @@ export default class GL {
 
   textures = new Map<string, Texture>();
 
+  rect = this.Rect();
+
   time = 0;
   animateFn?: (time: number) => void;
 

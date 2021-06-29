@@ -19,9 +19,8 @@ export default class Game {
   }
 
   Sprite(path: string): Sprite {
-    const rect = this.gl.Rect();
     const texture = this.gl.Texture(path);
-    const sprite = new Sprite(rect, texture);
+    const sprite = new Sprite(this.gl.rect, texture);
     this.sprites.push(sprite);
     return sprite;
   }
