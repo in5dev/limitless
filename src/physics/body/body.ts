@@ -89,7 +89,7 @@ export default abstract class Body {
 
   abstract render(p: p5, options?: RenderOptions): void;
 
-  abstract collides(other: Body): boolean;
+  abstract collides(other: Body, resolve?: boolean): boolean;
 
   protected resolveCollision(o: Body, { normal, dist }: Collision): void {
     const { position } = this;

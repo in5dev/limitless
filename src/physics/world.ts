@@ -61,15 +61,8 @@ export default class World {
         });
       });
     }
-    bodies.forEach(body => body.update(dt));
-    return this;
-  }
 
-  render(p: p5, options?: RenderOptions): this {
-    const { bodies, structure } = this;
     const { x, y, width, height } = structure;
-
-    if (options?.structure) structure.render(p);
     bodies.forEach(body => {
       const { aabb } = body;
       if (aabb.x < x) {
@@ -87,7 +80,17 @@ export default class World {
         body.vy *= -1;
       }
 
-      if (options?.aabb) aabb.render(p);
+      body.update(dt);
+    });
+    return this;
+  }
+
+  render(p: p5, options?: RenderOptions): this {
+    const { bodies, structure } = this;
+
+    if (options?.structure) structure.render(p);
+    bodies.forEach(body => {
+      if (options?.aabb) body.aabb.render(p);
       body.render(p, options);
     });
 

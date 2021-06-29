@@ -52,7 +52,7 @@ export default class ConvexPolygon extends Body {
     return projections.minmax();
   }
 
-  collides(body: ConvexPolygon | Circle): boolean {
+  collides(body: ConvexPolygon | Circle, resolve = false): boolean {
     const normals = [...this.normals];
     if (body instanceof ConvexPolygon) normals.push(...body.normals);
 
@@ -79,7 +79,7 @@ export default class ConvexPolygon extends Body {
 
     if (normal.dot(diff) < 0) normal.mult(-1);
 
-    this.resolveCollision(body, minOverlap);
+    if (resolve) this.resolveCollision(body, minOverlap);
 
     return true;
   }

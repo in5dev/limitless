@@ -20,17 +20,18 @@ export default class Circle extends Body {
     return new AABB(x - radius, y - radius, radius * 2);
   }
 
-  collides(o: Circle | ConvexPolygon): boolean {
+  collides(o: Circle | ConvexPolygon, resolve = false): boolean {
     const { position, radius } = this;
     if (o instanceof Circle) {
       const r = radius + o.radius;
       const colliding = position.distSq(o.position) < r ** 2;
       if (colliding) {
         const d = Vector2.sub(o.position, position);
-        this.resolveCollision(o, {
-          normal: Vector2.normalize(d),
-          dist: r - d.mag()
-        });
+        if (resolve)
+          this.resolveCollision(o, {
+            normal: Vector2.normalize(d),
+            dist: r - d.mag()
+          });
         return true;
       }
       return false;
