@@ -1,7 +1,12 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 type Vec2 = [number, number];
 type Mat2 = [...Vec2, ...Vec2];
 
 export default class Matrix2 {
+  [0]: number;
+  [1]: number;
+  [2]: number;
+  [3]: number;
   [i: number]: number;
 
   constructor(matrix?: Matrix2 | Mat2) {
@@ -24,7 +29,7 @@ export default class Matrix2 {
 
   *[Symbol.iterator](): Iterator<number> {
     for (let i = 0; i < 4; i++) {
-      yield this[i];
+      yield this[i]!;
     }
   }
 
@@ -34,7 +39,7 @@ export default class Matrix2 {
 
   set(m: Matrix2 | Mat2): this {
     for (let i = 0; i < 4; i++) {
-      this[i] = m[i];
+      this[i] = m[i]!;
     }
     return this;
   }
@@ -45,8 +50,8 @@ export default class Matrix2 {
 
   equals(m: Matrix2 | Mat2): boolean {
     for (let i = 0; i < 4; i++) {
-      const a = this[i];
-      const b = m[i];
+      const a = this[i]!;
+      const b = m[i]!;
       if (Math.abs(a - b) > Number.EPSILON) return false;
     }
     return true;
@@ -54,7 +59,7 @@ export default class Matrix2 {
 
   add(m: Matrix2 | Mat2): this {
     for (let i = 0; i < 4; i++) {
-      this[i] += m[i];
+      this[i] += m[i]!;
     }
     return this;
   }
@@ -64,7 +69,7 @@ export default class Matrix2 {
 
   sub(m: Matrix2 | Mat2): this {
     for (let i = 0; i < 4; i++) {
-      this[i] -= m[i];
+      this[i] -= m[i]!;
     }
     return this;
   }

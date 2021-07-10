@@ -1,20 +1,23 @@
 import { clamp, lerp, random } from '../funcs';
-import Vector from './vec';
 
 type First = Vector2 | [x: number, y: number] | number;
 
-export default class Vector2 extends Vector {
+export default class Vector2 {
   x!: number;
   y!: number;
 
   constructor(x: First = 0, y?: number) {
-    super();
     this.set(x, y);
   }
 
   toString(): string {
     const { x, y } = this;
     return `vec2 <${x}, ${y}>`;
+  }
+
+  log(): this {
+    console.log(this.toString());
+    return this;
   }
 
   toArray(): [x: number, y: number] {
@@ -133,9 +136,35 @@ export default class Vector2 extends Vector {
     return v1.copy().div(x, y);
   }
 
+  mag(): number {
+    return Math.sqrt(this.magSq());
+  }
+  setMag(n: number): this {
+    return this.normalize().mult(n);
+  }
   magSq(): number {
     const { x, y } = this;
     return x ** 2 + y ** 2;
+  }
+
+  limit(max: number): this {
+    const maxSq = max * max;
+    const magSq = this.magSq();
+    if (magSq > maxSq) this.setMag(max);
+    return this;
+  }
+
+  normalize(): this {
+    const mag = this.mag();
+    if (mag !== 0) this.div(mag);
+    return this;
+  }
+  static normalize(v: Vector2): Vector2 {
+    return v.copy().normalize();
+  }
+
+  dist(v: this): number {
+    return Math.sqrt(this.distSq(v));
   }
 
   distSq(v: Vector2): number {
@@ -193,6 +222,10 @@ export default class Vector2 extends Vector {
   }
   static rotate(v: Vector2, angle: number): Vector2 {
     return v.copy().rotate(angle);
+  }
+
+  rotateAbout(angle: number, center: Vector2): this {
+    return this.sub(center).rotate(angle).add(center);
   }
 
   reflect(normal: Vector2): this {

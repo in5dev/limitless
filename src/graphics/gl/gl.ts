@@ -1,7 +1,13 @@
-import type { Vector2 } from '../../math';
-import { Points } from './geometry';
-import Program from './program';
-import Shader, { Type } from './shader';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { Box } from './geometries';
+import { Program, Shader } from './core';
+import Camera from './camera';
+import Model from './model';
+import DirectionalLight from './lights/directional-light';
+import type { Vector2, Vector3 } from '../../math';
+
+import vertexSource from './shader.vert';
+import fragmentSource from './shader.frag';
 
 export default class GL {
   canvas: HTMLCanvasElement;
@@ -12,7 +18,13 @@ export default class GL {
   time = 0;
   animateFn?: (time: number) => void;
 
-  constructor(vertexSource: string, fragmentSource: string) {
+  camera?: Camera;
+  light?: DirectionalLight;
+  models: Model[] = [];
+
+  bg: [r: number, g: number, b: number, a: number] = [0, 0, 0, 1];
+
+  constructor() {
     const canvas = document.createElement('canvas');
     this.canvas = canvas;
     canvas.textContent = 'Your browser does not support HTML5';
@@ -24,15 +36,17 @@ export default class GL {
     this.gl = gl;
 
     gl.enable(gl.DEPTH_TEST);
+    gl.depthFunc(gl.LESS);
+
     gl.enable(gl.CULL_FACE);
     gl.frontFace(gl.CCW);
     gl.cullFace(gl.BACK);
 
-    this.setSize(400, 400).background(0, 0, 0);
+    this.setSize(400, 400);
 
     this.program = new Program(gl, [
-      new Shader(gl, Type.Vertex, vertexSource),
-      new Shader(gl, Type.Fragment, fragmentSource)
+      new Shader(gl, 'vertex', vertexSource),
+      new Shader(gl, 'fragment', fragmentSource)
     ]);
   }
 
@@ -42,9 +56,9 @@ export default class GL {
    * @param h the height
    */
   setSize(w: number, h: number): this {
-    const { canvas, gl } = this;
+    const { canvas, gl, camera } = this;
 
-    const dpr = devicePixelRatio || 1;
+    const dpr = window.devicePixelRatio || 1;
     const pixw = w * dpr;
     const pixh = h * dpr;
 
@@ -57,6 +71,9 @@ export default class GL {
     canvas.style.height = `${h}px`;
     // GL
     gl.viewport(0, 0, pixw, pixh);
+
+    const { clientWidth, clientHeight } = canvas;
+    if (camera) camera.aspect = clientWidth / clientHeight;
     return this;
   }
 
@@ -78,13 +95,11 @@ export default class GL {
    * @param a alpha value
    */
   background(r: number, g: number, b: number, a = 1): this {
-    const { gl } = this;
-    gl.clearColor(r, g, b, a);
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    this.bg = [r, g, b, a];
     return this;
   }
 
-  animate(fn: (dt: number) => void): this {
+  animate(fn?: (dt: number) => void): this {
     this.animateFn = fn;
     this.time = performance.now();
     requestAnimationFrame(this.loop.bind(this));
@@ -96,6 +111,9 @@ export default class GL {
     const nowTime = performance.now();
     const dt = (nowTime - this.time) / 2;
     this.time = nowTime;
+
+    this.program.use();
+    this.render();
 
     if (this.animateFn) this.animateFn(dt);
     requestAnimationFrame(this.loop.bind(this));
@@ -113,116 +131,46 @@ export default class GL {
     this.program.setUniforms(uniforms);
   }
 
-  Points(attribute: string, points: Vector2[]): Points {
-    return new Points(this.gl, this.getAttributeLocation(attribute), points);
+  Camera(fov: number, near?: number, far?: number): Camera {
+    const camera = new Camera(this.gl, fov, near, far);
+    this.camera = camera;
+    return camera;
   }
 
-  static unitCubeTextured = {
-    vertexData: [
-      // X, Y, Z --- U, V
-      // Top
-      [
-        [-1.0, 1.0, -1.0, 0, 0],
-        [-1.0, 1.0, 1.0, 0, 1],
-        [1.0, 1.0, 1.0, 1, 1],
-        [1.0, 1.0, -1.0, 1, 0]
-      ],
+  DirectionalLight(direction: Vector3): DirectionalLight {
+    const light = new DirectionalLight(this.gl, direction);
+    this.light = light;
+    return light;
+  }
 
-      // Left
-      [
-        [-1.0, 1.0, 1.0, 0, 0],
-        [-1.0, -1.0, 1.0, 1, 0],
-        [-1.0, -1.0, -1.0, 1, 1],
-        [-1.0, 1.0, -1.0, 0, 1]
-      ],
+  Box(): Model {
+    const box = new Box(this.gl, this.program);
+    const model = new Model(this.gl, box);
+    this.models.push(model);
+    return model;
+  }
 
-      // Right
-      [
-        [1.0, 1.0, 1.0, 1, 1],
-        [1.0, -1.0, 1.0, 0, 1],
-        [1.0, -1.0, -1.0, 0, 0],
-        [1.0, 1.0, -1.0, 1, 0]
-      ],
+  render(): void {
+    const { gl, bg, camera, light, models } = this;
 
-      // Front
-      [
-        [1.0, 1.0, 1.0, 1, 1],
-        [1.0, -1.0, 1.0, 1, 0],
-        [-1.0, -1.0, 1.0, 0, 0],
-        [-1.0, 1.0, 1.0, 0, 1]
-      ],
+    gl.clearColor(...bg);
+    gl.clearDepth(1);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-      // Back
-      [
-        [1.0, 1.0, -1.0, 0, 0],
-        [1.0, -1.0, -1.0, 0, 1],
-        [-1.0, -1.0, -1.0, 1, 1],
-        [-1.0, 1.0, -1.0, 1, 0]
-      ],
+    if (camera && light) {
+      const projectionUniform = this.getUniformLocation('projectionMatrix')!;
+      camera.setProjectionUniform(projectionUniform);
 
-      // Bottom
-      [
-        [-1.0, -1.0, -1.0, 1, 1],
-        [-1.0, -1.0, 1.0, 1, 0],
-        [1.0, -1.0, 1.0, 0, 0],
-        [1.0, -1.0, -1.0, 0, 1]
-      ]
-    ],
-    indexData: [
-      // Top
-      [
-        [0, 1, 2],
-        [0, 2, 3]
-      ],
+      const directionUniform = this.getUniformLocation('direction')!;
+      light.setDirectionUniform(directionUniform);
 
-      // Left
-      [
-        [5, 4, 6],
-        [6, 4, 7]
-      ],
-
-      // Right
-      [
-        [8, 9, 10],
-        [8, 10, 11]
-      ],
-
-      // Front
-      [
-        [13, 12, 14],
-        [15, 14, 12]
-      ],
-
-      // Back
-      [
-        [16, 17, 18],
-        [16, 18, 19]
-      ],
-
-      // Bottom
-      [
-        [21, 20, 22],
-        [22, 20, 23]
-      ]
-    ]
-  };
-
-  static screen = {
-    vertexData: [
-      [
-        [-1, 1],
-        [1, 1],
-        [-1, -1],
-        [1, -1]
-      ]
-    ],
-    indexData: [
-      [
-        [0, 2, 3],
-        [3, 1, 0]
-      ]
-    ]
-  };
+      const modelViewUniform = this.getUniformLocation('modelViewMatrix')!;
+      models.forEach(model => {
+        model.setModelViewUniform(modelViewUniform);
+        model.render();
+      });
+    }
+  }
 }
 
 // interface GLShader {

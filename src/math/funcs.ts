@@ -1,4 +1,7 @@
 /* eslint-disable no-multi-assign */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import '../util/array';
+
 export function norm(n: number, min: number, max: number): number {
   return (n - min) / (max - min);
 }
@@ -64,12 +67,12 @@ export function factorial(n: number): number {
  * @param a a number
  * @param b a number
  */
-export function gcd(a: int, b: int): int {
+export function gcd(a: number, b: number): number {
   while (b !== 0) [a, b] = [b, a % b];
   return a;
 }
 
-export function fibonacci(n: int): number {
+export function fibonacci(n: number): number {
   let a = 0;
   let b = 1;
   for (let i = 0; i < n; i++) {
@@ -81,3 +84,26 @@ export function fibonacci(n: int): number {
 export const celsius = (fahrenheit: number): number =>
   (fahrenheit - 32) * (5 / 9);
 export const fahrenheit = (celsius: number): number => celsius * (9 / 5) + 32;
+
+export function bestFitLine(
+  points: { x: number; y: number }[]
+): [m: number, b: number] {
+  const xs = points.map(p => p.x);
+  const ys = points.map(p => p.y);
+
+  const meanX = xs.mean();
+  const meanY = ys.mean();
+
+  let num = 0;
+  let den = 0;
+  for (let i = 0; i < points.length; i++) {
+    const x = xs[i]!;
+    const y = ys[i]!;
+    num += (x - meanX) * (y - meanY);
+    den += (x - meanX) ** 2;
+  }
+
+  const m = num / den;
+  const b = meanY - m * meanX;
+  return [m, b];
+}

@@ -1,14 +1,18 @@
-/// <reference path="./imports.d.ts" />
-
-import vertexSource from './shader.vert';
-import fragmentSource from './shader.frag';
-
-import { vec2 } from '../../src';
 import GL from '../../src/graphics/gl/gl';
+import { vec3 } from '../../src/math';
 
-const gl = new GL(vertexSource, fragmentSource).fullscreen();
-const points = gl.Points('position', [vec2(0, 0), vec2(0.5, 0.5)]);
+const gl = new GL().fullscreen().background(0, 0, 0);
+
+gl.Camera(Math.PI / 3);
+gl.DirectionalLight(vec3(0, 0, -1));
+
+const boxes = new Array(10);
+for (let i = 0; i < 10; i++) {
+  const box = gl.Box();
+  box.position.set(i * 2, 0, -10 - i * 4);
+  boxes[i] = box;
+}
 
 gl.animate(() => {
-  points.render();
+  boxes.forEach(box => box.rotation.add(0.01, 0.02, 0.03));
 });

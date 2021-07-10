@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { random } from '../funcs';
 
 type Mat = number[][];
@@ -5,9 +6,26 @@ type Mat = number[][];
 export default class Matrix {
   [i: number]: Float64Array;
 
-  constructor(readonly rows: number, readonly cols: number) {
-    for (let i = 0; i < rows; i++) {
-      this[i] = new Float64Array(cols).fill(0);
+  rows: number;
+  cols: number;
+
+  constructor(rows: number, cols: number);
+  constructor(mat: Mat);
+  constructor(rowsOrMat: number | Mat, cols?: number) {
+    if (typeof rowsOrMat === 'number') {
+      cols = cols || 0;
+      for (let i = 0; i < rowsOrMat; i++) {
+        this[i] = new Float64Array(cols).fill(0);
+      }
+      this.rows = rowsOrMat;
+      this.cols = cols;
+    } else {
+      for (let i = 0; i < rowsOrMat.length; i++) {
+        const row = rowsOrMat[i]!;
+        this[i] = new Float64Array(row);
+      }
+      this.rows = rowsOrMat.length;
+      this.cols = rowsOrMat[0]!.length;
     }
   }
 
@@ -26,7 +44,7 @@ export default class Matrix {
   *[Symbol.iterator](): Iterator<Float64Array> {
     const { rows } = this;
     for (let i = 0; i < rows; i++) {
-      yield this[i];
+      yield this[i]!;
     }
   }
 
@@ -39,7 +57,7 @@ export default class Matrix {
     const { length } = arr;
     const m = mat(length, 1);
     for (let i = 0; i < length; i++) {
-      m[i][0] = arr[i];
+      m[i]![0] = arr[i]!;
     }
     return m;
   }
@@ -52,7 +70,7 @@ export default class Matrix {
     const m = mat(rows, cols);
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        m[i][j] = random(-1, 1);
+        m[i]![j] = random(-1, 1);
       }
     }
     return m;
@@ -62,7 +80,7 @@ export default class Matrix {
     const { rows, cols } = this;
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        this[i][j] = m[i][j];
+        this[i]![j] = m[i]![j]!;
       }
     }
     return this;
@@ -72,8 +90,8 @@ export default class Matrix {
     const { rows, cols } = this;
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        const a = this[i][j];
-        const b = m[i][j];
+        const a = this[i]![j]!;
+        const b = m[i]![j]!;
         if (Math.abs(a - b) > Number.EPSILON) return false;
       }
     }
@@ -84,7 +102,7 @@ export default class Matrix {
     const { rows, cols } = this;
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        this[i][j] += m[i][j];
+        this[i]![j] += m[i]![j]!;
       }
     }
     return this;
@@ -97,7 +115,7 @@ export default class Matrix {
     const { rows, cols } = this;
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        this[i][j] -= m[i][j];
+        this[i]![j] -= m[i]![j]!;
       }
     }
     return this;
@@ -115,21 +133,21 @@ export default class Matrix {
       const ans = mat(rows, cols);
       for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
-          ans[i][j] = m1[i][j] * m2;
+          ans[i]![j] = m1[i]![j]! * m2;
         }
       }
       return ans;
     }
 
-    const ans = mat(m1.cols, m2.rows);
+    const ans = mat(m1.rows, m2.cols);
     const { rows, cols } = ans;
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
         let sum = 0;
         for (let k = 0; k < m1.cols; k++) {
-          sum += m1[i][k] * m2[k][j];
+          sum += m1[i]![k]! * m2[k]![j]!;
         }
-        ans[i][j] = sum;
+        ans[i]![j] = sum;
       }
     }
     return ans;
@@ -144,17 +162,17 @@ export default class Matrix {
     const ans = mat(cols, rows);
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        ans[j][i] = m[i][j];
+        ans[j]![i] = m[i]![j]!;
       }
     }
-    return m;
+    return ans;
   }
 
   map(func: (value: number, i: number, j: number) => number): this {
     const { rows, cols } = this;
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        this[i][j] = func(this[i][j], i, j);
+        this[i]![j] = func(this[i]![j]!, i, j);
       }
     }
     return this;
@@ -167,6 +185,9 @@ export default class Matrix {
   }
 }
 
-export function mat(rows: number, cols: number): Matrix {
-  return new Matrix(rows, cols);
+export function mat(rows: number, cols: number): Matrix;
+export function mat(mat: Mat): Matrix;
+export function mat(rowsOrMat: number | Mat, cols?: number): Matrix {
+  if (typeof rowsOrMat === 'number') return new Matrix(rowsOrMat, cols || 0);
+  return new Matrix(rowsOrMat);
 }

@@ -1,9 +1,26 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { mat3 } from './mat3';
 
 type Vec4 = [number, number, number, number];
 type Mat4 = [...Vec4, ...Vec4, ...Vec4, ...Vec4];
 
 export default class Matrix4 {
+  [0]: number;
+  [1]: number;
+  [2]: number;
+  [3]: number;
+  [4]: number;
+  [5]: number;
+  [6]: number;
+  [7]: number;
+  [8]: number;
+  [9]: number;
+  [10]: number;
+  [11]: number;
+  [12]: number;
+  [13]: number;
+  [14]: number;
+  [15]: number;
   [i: number]: number;
 
   constructor(matrix?: Matrix4 | Mat4) {
@@ -28,7 +45,7 @@ export default class Matrix4 {
 
   *[Symbol.iterator](): Iterator<number> {
     for (let i = 0; i < 16; i++) {
-      yield this[i];
+      yield this[i]!;
     }
   }
 
@@ -38,7 +55,7 @@ export default class Matrix4 {
 
   set(m: Matrix4 | Mat4): this {
     for (let i = 0; i < 16; i++) {
-      this[i] = m[i];
+      this[i] = m[i]!;
     }
     return this;
   }
@@ -49,8 +66,8 @@ export default class Matrix4 {
 
   equals(m: Matrix4 | Mat4): boolean {
     for (let i = 0; i < 16; i++) {
-      const a = this[i];
-      const b = m[i];
+      const a = this[i]!;
+      const b = m[i]!;
       if (Math.abs(a - b) > Number.EPSILON) return false;
     }
     return true;
@@ -58,7 +75,7 @@ export default class Matrix4 {
 
   add(m: Matrix4 | Mat4): this {
     for (let i = 0; i < 16; i++) {
-      this[i] += m[i];
+      this[i] += m[i]!;
     }
     return this;
   }
@@ -68,7 +85,7 @@ export default class Matrix4 {
 
   sub(m: Matrix4 | Mat4): this {
     for (let i = 0; i < 16; i++) {
-      this[i] -= m[i];
+      this[i] -= m[i]!;
     }
     return this;
   }

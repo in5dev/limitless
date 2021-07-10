@@ -1,38 +1,140 @@
-export default abstract class Vector {
-  abstract toString(): string;
+type First = number | number[] | Vector;
+
+export default class Vector {
+  components!: Float64Array;
+
+  constructor(v: number[] | Float64Array | Vector) {
+    this.set(v);
+  }
+
+  toString(): string {
+    return `⟨${this.components.join(',')}⟩`;
+  }
 
   log(): this {
     console.log(this.toString());
     return this;
   }
 
-  abstract set(v: this): this;
-  abstract set(x: number): this;
+  copy(): Vector {
+    return vec(this);
+  }
 
-  abstract equals(v: this): boolean;
-  abstract equals(x: number): boolean;
+  set(v: number[] | Float64Array | Vector): this {
+    if (v instanceof Float64Array) this.components = v;
+    else if (v instanceof Vector) this.components = v.components.slice(0);
+    else this.components = new Float64Array(v);
+    return this;
+  }
 
-  abstract add(v: this): this;
-  abstract add(x: number): this;
+  equals(v: number[] | Float64Array | Vector): boolean {
+    return this.components.every((x, i) => {
+      if (v instanceof Vector) return x === v.components[i];
+      return x === v[i];
+    });
+  }
 
-  abstract sub(v: this): this;
-  abstract sub(x: number): this;
+  add(v: First): this {
+    const { components } = this;
+    if (v instanceof Vector) {
+      v.components.forEach((x, i) => {
+        if (!components[i]) components[i] = x;
+        else components[i] += x;
+      });
+    } else if (Array.isArray(v)) {
+      v.forEach((x, i) => {
+        if (!components[i]) components[i] = x;
+        else components[i] += x;
+      });
+    } else {
+      for (let i = 0; i < components.length; i++) {
+        components[i] += v;
+      }
+    }
+    return this;
+  }
+  static add(v1: Vector, v2: First): Vector {
+    return v1.copy().add(v2);
+  }
 
-  abstract mult(v: this): this;
-  abstract mult(x: number): this;
+  sub(v: First): this {
+    const { components } = this;
+    if (v instanceof Vector) {
+      v.components.forEach((x, i) => {
+        if (!components[i]) components[i] = -x;
+        else components[i] -= x;
+      });
+    } else if (Array.isArray(v)) {
+      v.forEach((x, i) => {
+        if (!components[i]) components[i] = -x;
+        else components[i] -= x;
+      });
+    } else {
+      for (let i = 0; i < components.length; i++) {
+        components[i] -= v;
+      }
+    }
+    return this;
+  }
+  static sub(v1: Vector, v2: First): Vector {
+    return v1.copy().sub(v2);
+  }
 
-  abstract div(v: this): this;
-  abstract div(x: number): this;
+  mult(v: First): this {
+    const { components } = this;
+    if (v instanceof Vector) {
+      v.components.forEach((x, i) => {
+        if (!components[i]) components[i] = 0;
+        else components[i] *= x;
+      });
+    } else if (Array.isArray(v)) {
+      v.forEach((x, i) => {
+        if (!components[i]) components[i] = 0;
+        else components[i] *= x;
+      });
+    } else {
+      for (let i = 0; i < components.length; i++) {
+        components[i] *= v;
+      }
+    }
+    return this;
+  }
+  static mult(v1: Vector, v2: First): Vector {
+    return v1.copy().mult(v2);
+  }
+
+  div(v: First): this {
+    const { components } = this;
+    if (v instanceof Vector) {
+      v.components.forEach((x, i) => {
+        if (!components[i]) components[i] = 0;
+        else components[i] /= x;
+      });
+    } else if (Array.isArray(v)) {
+      v.forEach((x, i) => {
+        if (!components[i]) components[i] = 0;
+        else components[i] /= x;
+      });
+    } else {
+      for (let i = 0; i < components.length; i++) {
+        components[i] /= v;
+      }
+    }
+    return this;
+  }
+  static div(v1: Vector, v2: First): Vector {
+    return v1.copy().div(v2);
+  }
 
   mag(): number {
     return Math.sqrt(this.magSq());
   }
-
   setMag(n: number): this {
     return this.normalize().mult(n);
   }
-
-  abstract magSq(): number;
+  magSq(): number {
+    return this.components.reduce((sum, x) => sum + x ** 2, 0);
+  }
 
   limit(max: number): this {
     const maxSq = max * max;
@@ -47,17 +149,22 @@ export default abstract class Vector {
     return this;
   }
 
-  dist(v: this): number {
+  dist(v: Vector): number {
     return Math.sqrt(this.distSq(v));
   }
 
-  abstract distSq(v: this): number;
+  distSq(v: Vector): number {
+    return Vector.sub(v, this).magSq();
+  }
 
-  abstract dot(v: this): number;
+  dot(v: Vector): number {
+    return this.components.reduce(
+      (sum, x, i) => sum + x * (v.components[i] || 0),
+      0
+    );
+  }
+}
 
-  abstract lerp(v: this, norm: number): this;
-
-  abstract clamp(min: this, max: this): this;
-
-  abstract reflect(normal: this): this;
+export function vec(v: number[] | Float64Array | Vector): Vector {
+  return new Vector(v);
 }
