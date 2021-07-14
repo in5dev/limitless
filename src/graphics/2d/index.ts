@@ -107,4 +107,83 @@ export default class Renderer2D {
     if (doStroke) context.stroke();
     if (doFill) context.fill();
   }
+
+  triangle(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    x3: number,
+    y3: number
+  ): void {
+    this.poly([
+      { x: x1, y: y1 },
+      { x: x2, y: y2 },
+      { x: x3, y: y3 }
+    ]);
+  }
+
+  quad(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    x3: number,
+    y3: number,
+    x4: number,
+    y4: number
+  ): void {
+    this.poly([
+      { x: x1, y: y1 },
+      { x: x2, y: y2 },
+      { x: x3, y: y3 },
+      { x: x4, y: y4 }
+    ]);
+  }
+
+  arc(
+    x: number,
+    y: number,
+    r: number,
+    startAngle: number,
+    endAngle: number,
+    anticlockwise = false
+  ): void {
+    const { context, doStroke, doFill } = this;
+    context.beginPath();
+    context.arc(x, y, r, startAngle, endAngle, anticlockwise);
+    if (doStroke) context.stroke();
+    if (doFill) context.fill();
+  }
+
+  arcTo(x1: number, y1: number, x2: number, y2: number, radius: number): void {
+    const { context, doStroke, doFill } = this;
+    context.beginPath();
+    context.arcTo(x1, y1, x2, y2, radius);
+    if (doStroke) context.stroke();
+    if (doFill) context.fill();
+  }
+
+  bezier(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    x3: number,
+    y3: number
+  ): void {
+    const { context, doStroke, doFill } = this;
+    context.beginPath();
+    context.bezierCurveTo(x1, y1, x2, y2, x3, y3);
+    if (doStroke) context.stroke();
+    if (doFill) context.fill();
+  }
+
+  curve(x1: number, y1: number, x2: number, y2: number): void {
+    const { context, doStroke, doFill } = this;
+    context.beginPath();
+    context.quadraticCurveTo(x1, y1, x2, y2);
+    if (doStroke) context.stroke();
+    if (doFill) context.fill();
+  }
 }

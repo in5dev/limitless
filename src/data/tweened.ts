@@ -1,17 +1,22 @@
 import { lerp } from '../math';
+import { linear } from './easing';
 import Store from './store';
 
-export default class TweenedStore extends Store<number> {
+export default class Tweened extends Store<number> {
   from = this.value;
   to = this.value;
   time = performance.now();
 
-  constructor(value: number, public duration: number) {
+  constructor(value: number, public duration: number, public easing = linear) {
     super(value);
 
-    function loop(this: TweenedStore) {
+    function loop(this: Tweened) {
       let t = performance.now();
-      this.value = lerp(this.from, this.to, (t - this.time) / this.duration);
+      this.value = lerp(
+        this.from,
+        this.to,
+        this.easing(Math.min(1, (t - this.time) / this.duration))
+      );
       requestAnimationFrame(loop.bind(this));
     }
     loop.call(this);
@@ -25,6 +30,10 @@ export default class TweenedStore extends Store<number> {
   }
 }
 
-export function tweened(value: number, duration: number): TweenedStore {
-  return new TweenedStore(value, duration);
+export function tweened(
+  value: number,
+  duration: number,
+  easing?: (t: number) => number
+): Tweened {
+  return new Tweened(value, duration, easing);
 }

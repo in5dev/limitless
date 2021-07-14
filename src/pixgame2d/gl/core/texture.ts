@@ -8,19 +8,6 @@ export default class Texture {
     this.texture = texture;
 
     this.bind();
-
-    // Blue image before load
-    gl.texImage2D(
-      gl.TEXTURE_2D,
-      0,
-      gl.RGBA,
-      1,
-      1,
-      0,
-      gl.RGBA,
-      gl.UNSIGNED_BYTE,
-      new Uint8Array([0, 0, 255, 255])
-    );
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
@@ -35,6 +22,28 @@ export default class Texture {
         gl.RGBA,
         gl.UNSIGNED_BYTE,
         image
+      );
+      this.unbind();
+    });
+    image.addEventListener('error', () => {
+      this.bind();
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        2,
+        2,
+        0,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        new Uint8Array(
+          [
+            [0, 0, 255, 255], // Purple
+            [0, 0, 0, 255], // Black
+            [0, 0, 0, 255], // Black
+            [0, 0, 255, 255] // Purple
+          ].flat() as unknown as number[]
+        )
       );
       this.unbind();
     });

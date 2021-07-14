@@ -66,6 +66,10 @@ export function factorial(n: number): number {
   return total;
 }
 
+export function log(base: number, x: number): number {
+  return Math.log(x) / Math.log(base);
+}
+
 /**
  * Calculates the greatest common factor between the numbers
  * a and b using the [Euclidean algorithm](https://www.wikiwand.com/en/Euclidean_algorithm)

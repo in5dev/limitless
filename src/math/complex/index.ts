@@ -82,6 +82,14 @@ export default class Complex {
   angle(): number {
     return Math.atan2(this.imaginary, this.real);
   }
+
+  pow(c: Complex): this {
+    const { real, imaginary } = this;
+    const { real: re, imaginary: im } = c;
+    this.real = Math.pow(real, re) * Math.pow(imaginary, im);
+    this.imaginary = Math.pow(real, im) * Math.pow(imaginary, re);
+    return this;
+  }
 }
 
 export function complex(real?: number, imaginary?: number): Complex {

@@ -1,13 +1,13 @@
 import { lerp } from '../math';
 import Store from './store';
 
-export default class LerpedStore extends Store<number> {
+export default class Lerped extends Store<number> {
   target = this.value;
 
   constructor(value: number, public norm: number) {
     super(value);
 
-    function loop(this: LerpedStore) {
+    function loop(this: Lerped) {
       this.value = lerp(this.value, this.target, this.norm);
       requestAnimationFrame(loop.bind(this));
     }
@@ -20,6 +20,6 @@ export default class LerpedStore extends Store<number> {
   }
 }
 
-export function lerped(value: number, norm: number): LerpedStore {
-  return new LerpedStore(value, norm);
+export function lerped(value: number, norm: number): Lerped {
+  return new Lerped(value, norm);
 }
