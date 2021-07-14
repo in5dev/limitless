@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import '../util/array';
 
-export function norm(n: number, min: number, max: number): number {
-  return (n - min) / (max - min);
+export function norm(x: number, min: number, max: number): number {
+  return (x - min) / (max - min);
 }
 
 export function lerp(min: number, max: number, norm: number): number {
@@ -11,13 +11,18 @@ export function lerp(min: number, max: number, norm: number): number {
 }
 
 export function map(
-  n: number,
+  x: number,
   fromMin: number,
   fromMax: number,
   toMin: number,
   toMax: number
 ): number {
-  return lerp(toMin, toMax, norm(n, fromMin, fromMax));
+  return lerp(toMin, toMax, norm(x, fromMin, fromMax));
+}
+
+export function smoothstep(x: number, min: number, max: number) {
+  const n = norm(x, min, max);
+  return n * n * (3 - 2 * n);
 }
 
 export function clamp(n: number, min: number, max: number): number {

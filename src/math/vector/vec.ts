@@ -152,7 +152,6 @@ export default class Vector {
   dist(v: Vector): number {
     return Math.sqrt(this.distSq(v));
   }
-
   distSq(v: Vector): number {
     return Vector.sub(v, this).magSq();
   }
@@ -162,6 +161,22 @@ export default class Vector {
       (sum, x, i) => sum + x * (v.components[i] || 0),
       0
     );
+  }
+
+  sum(): number {
+    return this.components.reduce((sum, x) => sum + x, 0);
+  }
+
+  mean(): number {
+    return this.sum() / this.components.length;
+  }
+
+  variance(): number {
+    return this.components.reduce((sum, x) => sum + (x - this.mean()) ** 2, 0);
+  }
+
+  stddev(): number {
+    return Math.sqrt(this.variance());
   }
 }
 

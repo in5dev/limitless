@@ -18,6 +18,10 @@ export default class Complex {
     return complex(+this.real, -this.imaginary);
   }
 
+  static fromAngle(angle: number, mag = 1): Complex {
+    return complex(Math.cos(angle), Math.sin(angle)).mult(mag);
+  }
+
   add(c: number | Complex): this {
     if (typeof c === 'number') {
       this.real += c;
@@ -73,6 +77,10 @@ export default class Complex {
 
   magSq(): number {
     return this.real ** 2 + this.imaginary ** 2;
+  }
+
+  angle(): number {
+    return Math.atan2(this.imaginary, this.real);
   }
 }
 
