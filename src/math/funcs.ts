@@ -1,6 +1,6 @@
 /* eslint-disable no-multi-assign */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import '../util/array';
+import { mean } from '../util/array';
 
 export function norm(x: number, min: number, max: number): number {
   return (x - min) / (max - min);
@@ -20,7 +20,7 @@ export function map(
   return lerp(toMin, toMax, norm(x, fromMin, fromMax));
 }
 
-export function smoothstep(x: number, min: number, max: number) {
+export function smoothstep(x: number, min: number, max: number): number {
   const n = norm(x, min, max);
   return n * n * (3 - 2 * n);
 }
@@ -94,14 +94,18 @@ export const celsius = (fahrenheit: number): number =>
   (fahrenheit - 32) * (5 / 9);
 export const fahrenheit = (celsius: number): number => celsius * (9 / 5) + 32;
 
+/**
+ * @param points a list of (x,y) points
+ * @returns the line of best fit in terms of m and b in the form y = mx + b
+ */
 export function bestFitLine(
   points: { x: number; y: number }[]
 ): [m: number, b: number] {
   const xs = points.map(p => p.x);
   const ys = points.map(p => p.y);
 
-  const meanX = xs.mean();
-  const meanY = ys.mean();
+  const meanX = mean(xs);
+  const meanY = mean(ys);
 
   let num = 0;
   let den = 0;

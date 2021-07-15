@@ -86,8 +86,8 @@ export default class Complex {
   pow(c: Complex): this {
     const { real, imaginary } = this;
     const { real: re, imaginary: im } = c;
-    this.real = Math.pow(real, re) * Math.pow(imaginary, im);
-    this.imaginary = Math.pow(real, im) * Math.pow(imaginary, re);
+    this.real = real ** re * imaginary ** im;
+    this.imaginary = real ** im * imaginary ** re;
     return this;
   }
 }

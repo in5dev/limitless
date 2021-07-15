@@ -2,7 +2,7 @@
 import type p5 from 'p5';
 
 import Body, { AABB } from '../body';
-import '../../util/number';
+import { toFloor } from '../../util/number';
 
 export default class SpatialHashGrid extends AABB {
   bodies: Body[] = [];
@@ -26,13 +26,13 @@ export default class SpatialHashGrid extends AABB {
 
     const x1 = aabb.x - this.x;
     const y1 = aabb.y - this.y;
-    const mini = x1.toFloor(divisionSize) / divisionSize;
-    const minj = y1.toFloor(divisionSize) / divisionSize;
+    const mini = toFloor(x1, divisionSize) / divisionSize;
+    const minj = toFloor(y1, divisionSize) / divisionSize;
 
     const x2 = x1 + aabb.width;
     const y2 = y1 + aabb.height;
-    const maxi = x2.toFloor(divisionSize) / divisionSize;
-    const maxj = y2.toFloor(divisionSize) / divisionSize;
+    const maxi = toFloor(x2, divisionSize) / divisionSize;
+    const maxj = toFloor(y2, divisionSize) / divisionSize;
 
     return [
       [Math.max(mini, 0), Math.max(minj, 0)],

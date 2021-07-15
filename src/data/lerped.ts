@@ -14,7 +14,7 @@ export default class Lerped extends Store<number> {
     loop.call(this);
   }
 
-  set(value: number) {
+  set(value: number): void {
     this.target = value;
     this.subscribers.forEach(subscriber => subscriber(this.value));
   }

@@ -5,7 +5,7 @@ import type p5 from 'p5';
 import Body, { Collision } from './body';
 import { overlap } from '../../math/funcs';
 import Vector2 from '../../math/vector/vec2';
-import '../../util/array';
+import { average, min, minmax } from '../../util/array';
 import AABB from './aabb';
 import type Circle from './circle';
 import type { RenderOptions } from '../types';
@@ -16,7 +16,7 @@ export default class ConvexPolygon extends Body {
   }
 
   get rotationalInertia(): number {
-    const r = this.vertices.map(v => v.mag()).average();
+    const r = average(this.vertices.map(v => v.mag()));
     return (this.mass * r ** 2) / 2;
   }
 
@@ -26,8 +26,8 @@ export default class ConvexPolygon extends Body {
     const xs = vertices.map(v => v.x);
     const ys = vertices.map(v => v.y);
 
-    const [minx, maxx] = xs.minmax();
-    const [miny, maxy] = ys.minmax();
+    const [minx, maxx] = minmax(xs);
+    const [miny, maxy] = minmax(ys);
 
     return new AABB(x + minx, y + miny, maxx - minx, maxy - miny);
   }
@@ -49,7 +49,7 @@ export default class ConvexPolygon extends Body {
   project(axis: Vector2): [min: number, max: number] {
     const { position, vertices } = this;
     const projections = vertices.map(v => Vector2.add(position, v).dot(axis));
-    return projections.minmax();
+    return minmax(projections);
   }
 
   collides(body: ConvexPolygon | Circle, resolve = false): boolean {
@@ -71,7 +71,7 @@ export default class ConvexPolygon extends Body {
     }
 
     const dists = overlaps.map(o => o.dist);
-    const minDistIndex = dists.indexOf(dists.min());
+    const minDistIndex = dists.indexOf(min(dists));
     const minOverlap = overlaps[minDistIndex]!;
 
     const { normal } = minOverlap;

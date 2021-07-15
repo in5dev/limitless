@@ -1,13 +1,3 @@
-/* eslint-disable func-names */
-
-declare global {
-  interface String {
-    reverse(): string;
-  }
+export function reverse(s: string): string {
+  return s.split('').reverse().join();
 }
-
-String.prototype.reverse = function (): string {
-  return this.split('').reverse().join();
-};
-
-export {};

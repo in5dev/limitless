@@ -1,15 +1,6 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable func-names */
-declare global {
-  interface Number {
-    toFloor(n: number): number;
-    toSuffix(short?: boolean): string;
-  }
+export function toFloor(a: number, n: number): number {
+  return Math.floor(a / n) * n;
 }
-
-Number.prototype.toFloor = function (this: number, n: number): number {
-  return Math.floor(this / n) * n;
-};
 
 // https://minershaven.fandom.com/wiki/Cash_Suffixes#List_of_Cash_Suffixes
 export const suffixes: [
@@ -180,15 +171,12 @@ export const suffixes: [
   ]
 ];
 
-Number.prototype.toSuffix = function (
-  this: number,
-  shortNotation = false
-): string {
-  const power = Math.log10(this);
+export function toSuffix(x: number, shortNotation = false): string {
+  const power = Math.log10(x);
   const order = Math.floor(power);
   const order3 = Math.floor(order / 3);
   // 0-999,999.999
-  if (order3 < 1) return this.toLocaleString();
+  if (order3 < 1) return x.toLocaleString();
 
   const order30 = Math.floor(order3 / 10);
   const suffix = suffixes[order30];
@@ -196,8 +184,9 @@ Number.prototype.toSuffix = function (
     const [[ending, symbol, first = ending, firstSymbol = symbol], prefixes] =
       suffix;
     const index = order3 - order30 * 10 - 1;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const [long, short] = prefixes[index]!;
-    const n = (this / 10 ** (order3 * 3)).toFloor(0.001);
+    const n = toFloor(x / 10 ** (order3 * 3), 0.001);
 
     if (shortNotation) {
       if (index === 0) return `${n} ${firstSymbol}`;
@@ -206,5 +195,5 @@ Number.prototype.toSuffix = function (
     if (index === 0) return `${n} ${first}`;
     return `${n} ${long}${ending}`;
   }
-  return this.toString();
-};
+  return x.toString();
+}

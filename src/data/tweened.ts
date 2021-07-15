@@ -11,7 +11,7 @@ export default class Tweened extends Store<number> {
     super(value);
 
     function loop(this: Tweened) {
-      let t = performance.now();
+      const t = performance.now();
       this.value = lerp(
         this.from,
         this.to,
@@ -22,7 +22,7 @@ export default class Tweened extends Store<number> {
     loop.call(this);
   }
 
-  set(value: number) {
+  set(value: number): void {
     this.from = this.value;
     this.to = value;
     this.time = performance.now();

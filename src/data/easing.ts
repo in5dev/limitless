@@ -53,19 +53,15 @@ export function easeInOutSine(t: number): number {
 }
 
 export function easeInExpo(t: number): number {
-  return t === 0 ? 0 : Math.pow(2, 10 * (t - 1));
+  return t === 0 ? 0 : 2 ** (10 * (t - 1));
 }
 export function easeOutExpo(t: number): number {
-  return t === 1 ? 1 : -Math.pow(2, -10 * t) + 1;
+  return t === 1 ? 1 : -(2 ** (-10 * t)) + 1;
 }
 export function easeInOutExpo(t: number): number {
-  return t === 0
-    ? 0
-    : t === 1
-    ? 1
-    : t < 0.5
-    ? Math.pow(2, 20 * (t - 1)) / 2
-    : -Math.pow(2, -20 * t) / 2 + 1;
+  if (t === 0) return 0;
+  if (t === 1) return 1;
+  return t < 0.5 ? 2 ** (20 * (t - 1)) / 2 : -(2 ** (-20 * t)) / 2 + 1;
 }
 
 export function easeInCirc(t: number): number {
@@ -81,27 +77,21 @@ export function easeInOutCirc(t: number): number {
 }
 
 export function easeInElastic(t: number): number {
-  return t === 0
-    ? 0
-    : t === 1
-    ? 1
-    : -Math.pow(2, 10 * (t - 1)) * Math.sin((t - 1.1) * 5 * Math.PI);
+  if (t === 0) return 0;
+  if (t === 1) return 1;
+  return -(2 ** (10 * (t - 1))) * Math.sin((t - 1.1) * 5 * Math.PI);
 }
 export function easeOutElastic(t: number): number {
-  return t === 0
-    ? 0
-    : t === 1
-    ? 1
-    : Math.pow(2, -10 * t) * Math.sin((t - 0.1) * 5 * Math.PI) + 1;
+  if (t === 0) return 0;
+  if (t === 1) return 1;
+  return 2 ** (-10 * t) * Math.sin((t - 0.1) * 5 * Math.PI) + 1;
 }
 export function easeInOutElastic(t: number): number {
-  return t === 0
-    ? 0
-    : t === 1
-    ? 1
-    : t < 0.5
-    ? -(Math.pow(2, 20 * (t - 1)) * Math.sin((t - 1.1) * 5 * Math.PI)) / 2
-    : (Math.pow(2, -20 * t) * Math.sin((t - 1.1) * 5 * Math.PI)) / 2 + 1;
+  if (t === 0) return 0;
+  if (t === 1) return 1;
+  return t < 0.5
+    ? -(2 ** (20 * (t - 1)) * Math.sin((t - 1.1) * 5 * Math.PI)) / 2
+    : (2 ** (-20 * t) * Math.sin((t - 1.1) * 5 * Math.PI)) / 2 + 1;
 }
 
 export function easeInBack(t: number): number {
@@ -120,11 +110,9 @@ export function easeInBounce(t: number): number {
   return 1 - easeOutBounce(1 - t);
 }
 export function easeOutBounce(t: number): number {
-  return t < 1 / 2.75
-    ? 7.5625 * t * t
-    : t < 2 / 2.75
-    ? 7.5625 * (t -= 1.5 / 2.75) * t + 0.75
-    : t < 2.5 / 2.75
+  if (t < 1 / 2.75) return 7.5625 * t * t;
+  if (t < 2 / 2.75) return 7.5625 * (t -= 1.5 / 2.75) * t + 0.75;
+  return t < 2.5 / 2.75
     ? 7.5625 * (t -= 2.25 / 2.75) * t + 0.9375
     : 7.5625 * (t -= 2.625 / 2.75) * t + 0.984375;
 }

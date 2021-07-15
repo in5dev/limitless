@@ -1,193 +1,139 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable func-names */
-
 declare global {
   interface ReadonlyArray<T> {
     [-1]: T;
-    copy(): T[];
-    random(): T;
-    zip<U>(arr: U[]): Generator<[T, U]>;
   }
   interface Array<T> {
     [-1]: T;
-    copy(): T[];
-    random(): T;
-    zip<U>(arr: U[]): Generator<[T, U]>;
-    swap(i: number, j: number): this;
-    shuffle(): this;
-    remove(item: T): boolean;
-    unorderedRemove(index: number): this;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface Array<T extends number> {
-    min(): number;
-    max(): number;
-    minmax(): [min: number, max: number];
-    sum(): number;
-    mean(): number;
-    average(): number;
-    median(): number;
-    mode(): number[];
-    range(): number;
-    variance(): number;
-    stddev(): number;
-    meanAbsDev(): number;
-  }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface ReadonlyArray<T extends number> {
-    min(): number;
-    max(): number;
-    minmax(): [min: number, max: number];
-    sum(): number;
-    mean(): number;
-    average(): number;
-    median(): number;
-    mode(): number[];
-    range(): number;
-    variance(): number;
-    stddev(): number;
-    meanAbsDev(): number;
   }
 }
 
-Object.defineProperty(Array.prototype, -1, {
-  get<T>(this: T[]) {
-    const { length } = this;
-    if (!length) return undefined;
-    return this[length - 1];
-  },
-  set<T>(this: T[], value: T): void {
-    const { length } = this;
-    if (!length) this[0] = value;
-    else this[this.length - 1] = value;
-  }
-});
+if ([0][-1] !== 0)
+  Object.defineProperty(Array.prototype, -1, {
+    get<T>(this: T[]) {
+      const { length } = this;
+      if (!length) return undefined;
+      return this[length - 1];
+    },
+    set<T>(this: T[], value: T): void {
+      const { length } = this;
+      if (!length) this[0] = value;
+      else this[this.length - 1] = value;
+    }
+  });
 
-Array.prototype.copy = function <T>(this: readonly T[]): T[] {
-  return [...this];
-};
+export function random<T>(arr: T[]): T | undefined {
+  const index = randomInt(arr.length);
+  return arr[index];
+}
 
-Array.prototype.random = function <T>(this: readonly T[]): T {
-  const index = randomInt(this.length);
-  return this[index]!;
-};
-
-Array.prototype.zip = function* <T, U>(
-  this: readonly T[],
-  arr: readonly U[]
-): Generator<[T, U]> {
-  const length = Math.min(this.length, arr.length);
+export function* zip<T, U>(arr1: T[], arr2: U[]): Generator<[T, U]> {
+  const length = Math.min(arr1.length, arr2.length);
   for (let i = 0; i < length; i++) {
-    yield [this[i]!, arr[i]!];
+    yield [arr1[i]!, arr2[i]!];
   }
-};
+}
 
-Array.prototype.swap = function <T>(this: T[], i: number, j: number): T[] {
-  [this[i], this[j]] = [this[j]!, this[i]!];
-  return this;
-};
+export function swap<T>(arr: T[], i: number, j: number): T[] {
+  [arr[i], arr[j]] = [arr[j]!, arr[i]!];
+  return arr;
+}
 
-Array.prototype.shuffle = function <T>(this: T[]): T[] {
-  for (let i = 0, { length } = this; i < length; i++) {
+export function shuffle<T>(arr: T[]): T[] {
+  for (let i = 0, { length } = arr; i < length; i++) {
     const j = randomInt(i, length);
-    this.swap(i, j);
+    swap(arr, i, j);
   }
-  return this;
-};
+  return arr;
+}
 
-Array.prototype.remove = function <T>(this: T[], item: T): boolean {
+export function remove<T>(this: T[], item: T): boolean {
   const index = this.indexOf(item);
   if (index === -1) return false;
   this.splice(index, 1);
   return true;
-};
+}
 
-Array.prototype.unorderedRemove = function <T>(this: T[], index: number): T[] {
-  this.swap(index, this.length - 1);
-  this.pop();
-  return this;
-};
+export function unorderedRemove<T>(arr: T[], index: number): T[] {
+  swap(arr, index, arr.length - 1);
+  arr.pop();
+  return arr;
+}
 
-Array.prototype.min = function (this: readonly number[]): number {
+export function min(arr: number[]): number {
   let min = Infinity;
-  this.forEach(x => {
+  arr.forEach(x => {
     if (x < min) min = x;
   });
   return min;
-};
+}
 
-Array.prototype.max = function (this: readonly number[]): number {
+export function max(arr: number[]): number {
   let max = -Infinity;
-  this.forEach(x => {
+  arr.forEach(x => {
     if (x > max) max = x;
   });
   return max;
-};
+}
 
-Array.prototype.minmax = function (
-  this: readonly number[]
-): [min: number, max: number] {
+export function minmax(arr: number[]): [min: number, max: number] {
   let min = Infinity;
   let max = -Infinity;
-  this.forEach(x => {
+  arr.forEach(x => {
     if (x < min) min = x;
     if (x > max) max = x;
   });
   return [min, max];
-};
+}
 
-Array.prototype.sum = function (this: readonly number[]): number {
-  return this.reduce((sum, cur) => sum + cur, 0);
-};
+export function sum(arr: number[]): number {
+  return arr.reduce((sum, cur) => sum + cur, 0);
+}
 
-Array.prototype.mean = function (this: readonly number[]): number {
-  const { length } = this;
+export function mean(arr: number[]): number {
+  const { length } = arr;
   if (!length) return 0;
-  return this.sum() / length;
-};
+  return sum(arr) / length;
+}
 
-Array.prototype.average = Array.prototype.mean;
+export const average = mean;
 
-Array.prototype.median = function (this: readonly number[]): number {
-  return this.mean();
-};
+export function median(arr: number[]): number {
+  const { length } = arr;
+  if (!length) return 0;
+  const sorted = [...arr].sort((a, b) => a - b);
+  if (length % 2) return sorted[length / 2]!;
+  return (sorted[length / 2 - 1]! + sorted[length / 2]!) / 2;
+}
 
-Array.prototype.mode = function (this: readonly number[]): number[] {
+export function mode(arr: number[]): number[] {
   const counts: Record<number, number> = {};
-  this.forEach(n => (counts[n] ? counts[n]++ : (counts[n] = 1)));
+  arr.forEach(n => (counts[n] ? counts[n]++ : (counts[n] = 1)));
   const sortedCounts = Object.entries(counts).sort((a, b) => a[1] - b[1]);
   const sortedNumbers = sortedCounts.map(n => n[1]);
   return sortedNumbers.filter(n => n === sortedCounts[0]![1]);
-};
+}
 
-Array.prototype.range = function (this: readonly number[]): number {
-  return this.max() - this.min();
-};
+export function range(arr: number[]): number {
+  return max(arr) - min(arr);
+}
 
-Array.prototype.variance = function (this: readonly number[]): number {
-  const mean = this.mean();
-  return this.map(n => (n - mean) ** 2).mean();
-};
+export function variance(arr: number[]): number {
+  const m = mean(arr);
+  return mean(arr.map(n => (n - m) ** 2));
+}
 
-Array.prototype.stddev = function (this: readonly number[]): number {
-  return Math.sqrt(this.variance());
-};
+export function stddev(arr: number[]): number {
+  return Math.sqrt(variance(arr));
+}
 
-Array.prototype.meanAbsDev = function (this: readonly number[]): number {
-  const mean = this.mean();
-  return this.map(n => n - mean).mean();
-};
+export function meanAbsDev(arr: number[]): number {
+  const m = mean(arr);
+  return mean(arr.map(n => n - m));
+}
 
-function random(min?: number, max?: number): number {
-  if (!min) return Math.random();
-  if (!max) return Math.random() * min;
+function randomInt(min: number, max?: number): number {
+  if (!max) return Math.floor(Math.random() * min);
   const Min = Math.min(min, max);
-  return (Math.max(min, max) - Min) * Math.random() + Min;
+  return Math.floor((Math.max(min, max) - Min) * Math.random() + Min);
 }
-
-function randomInt(min?: number, max?: number): number {
-  return Math.floor(random(min, max));
-}
-
-export {};

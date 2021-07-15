@@ -1,4 +1,4 @@
-import '../../util/array';
+import { unorderedRemove } from '../../util/array';
 import type { Vector2 } from '../../math/vector';
 import type Particle from './particle';
 
@@ -25,7 +25,7 @@ export default class ParticleSystem<T extends Particle = Particle> {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const p = particles[i]!;
       p.update(dt);
-      if (p.life <= 0) particles.unorderedRemove(i--);
+      if (p.life <= 0) unorderedRemove(particles, i--);
     }
   }
 }
