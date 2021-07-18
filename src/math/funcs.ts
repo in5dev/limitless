@@ -43,8 +43,8 @@ export function overlap(
   return range1 + range2 - range;
 }
 
-export function minmax(a: number, b: number): [min: number, max: number] {
-  return [Math.min(a, b), Math.max(a, b)];
+export function minmax(...nums: number[]): [min: number, max: number] {
+  return [Math.min(...nums), Math.max(...nums)];
 }
 
 export function random(min?: number, max?: number): number {

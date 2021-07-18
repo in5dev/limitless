@@ -1,6 +1,6 @@
 {
   "name": "@limitlesspc/limitless",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": {
     "name": "Izaak Brown",
     "email": "izaakbthunderbird@gmail.com"
@@ -36,7 +36,7 @@
     "@typescript-eslint/eslint-plugin": "^4.28.3",
     "@typescript-eslint/parser": "^4.28.3",
     "chai": "^4.3.4",
-    "eslint": "^7.30.0",
+    "eslint": "^7.31.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.4",
