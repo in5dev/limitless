@@ -37,7 +37,8 @@ export default class AARect extends Body {
   }
 
   get aabb(): AABB {
-    return new AABB(this.x, this.y, this.width, this.height);
+    const { x, y, width, height } = this;
+    return new AABB(x - width / 2, y - height / 2, width, height);
   }
 
   collides(body: Body, resolve = false): boolean {
