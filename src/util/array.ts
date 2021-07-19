@@ -1,12 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-declare global {
-  interface ReadonlyArray<T> {
-    [-1]: T;
-  }
-  interface Array<T> {
-    [-1]: T;
-  }
-}
 
 if ([0][-1] !== 0)
   Object.defineProperty(Array.prototype, -1, {
