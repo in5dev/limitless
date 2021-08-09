@@ -1,43 +1,34 @@
-import { lerp } from '../math';
+import { get, Writable, writable } from './store';
 import { linear } from './easing';
-import { WritableStore } from './store';
+import { lerp } from '../math';
 
-export default class Tweened extends WritableStore<number> {
-  from = this.value;
-  to = this.value;
-  time = performance.now();
-
-  constructor(value: number, public duration: number, public easing = linear) {
-    super(value, set => {
-      let handle: number;
-      const loop = () => {
-        const t = performance.now();
-        set(
-          lerp(
-            this.from,
-            this.to,
-            this.easing(Math.min(1, (t - this.time) / this.duration))
-          )
-        );
-        handle = requestAnimationFrame(loop);
-      };
-      handle = requestAnimationFrame(loop);
-      return () => cancelAnimationFrame(handle);
-    });
-  }
-
-  set(value: number): void {
-    this.from = this.value;
-    this.to = value;
-    this.time = performance.now();
-    this.subscribers.forEach(subscriber => subscriber(this.value));
-  }
-}
-
-export function tweened(
+export default function tweened(
   value: number,
   duration: number,
-  easing?: (t: number) => number
-): Tweened {
-  return new Tweened(value, duration, easing);
+  easing = linear
+): Writable<number> {
+  let from = value;
+  let to = value;
+  let time = performance.now();
+
+  const store = writable(value, set => {
+    let handle = requestAnimationFrame(loop);
+    function loop() {
+      const t = performance.now();
+      set(lerp(from, to, easing(Math.min(1, (t - time) / duration))));
+      handle = requestAnimationFrame(loop);
+    }
+    return () => cancelAnimationFrame(handle);
+  });
+
+  return {
+    subscribe: store.subscribe,
+    set: (value: number) => {
+      const val = get(store);
+      from = val;
+      to = value;
+      time = performance.now();
+    },
+    update: store.update
+  };
 }

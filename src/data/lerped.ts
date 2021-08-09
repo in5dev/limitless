@@ -1,25 +1,20 @@
+import { writable, Writable } from './store';
 import { lerp } from '../math';
-import Store from './store';
 
-export default class Lerped extends Store<number> {
-  target = this.value;
-
-  constructor(value: number, public norm: number) {
-    super(value);
-
-    function loop(this: Lerped) {
-      this.value = lerp(this.value, this.target, this.norm);
-      requestAnimationFrame(loop.bind(this));
+export default function lerped(value: number, norm: number): Writable<number> {
+  let target = value;
+  const store = writable(value, () => {
+    let handle = requestAnimationFrame(loop);
+    function loop() {
+      store.update(value => lerp(value, target, norm));
+      handle = requestAnimationFrame(loop);
     }
-    loop.call(this);
-  }
+    return () => cancelAnimationFrame(handle);
+  });
 
-  set(value: number): void {
-    this.target = value;
-    this.subscribers.forEach(subscriber => subscriber(this.value));
-  }
-}
-
-export function lerped(value: number, norm: number): Lerped {
-  return new Lerped(value, norm);
+  return {
+    subscribe: store.subscribe,
+    set: (value: number) => (target = value),
+    update: store.update
+  };
 }
