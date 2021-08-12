@@ -12,13 +12,13 @@ export interface Writable<T> extends Readable<T> {
   update(updater: Updater<T>): void;
 }
 
-export function readable<T>(value: T, start?: StartStop<T>): Readable<T> {
+export function readable<T>(value?: T, start?: StartStop<T>): Readable<T> {
   return {
     subscribe: writable(value, start).subscribe
   };
 }
 
-export function writable<T>(value: T, start?: StartStop<T>): Writable<T> {
+export function writable<T>(value?: T, start?: StartStop<T>): Writable<T> {
   const subscribers = new Set<Subscriber<T>>();
   let stop: Unsubscriber | void;
 
@@ -36,9 +36,46 @@ export function writable<T>(value: T, start?: StartStop<T>): Writable<T> {
       subscribers.forEach(subscriber => subscriber(val));
     },
     update(updater: Updater<T>) {
-      this.set(updater(value));
+      this.set(updater(value as T));
     }
   };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Stores = Readable<any> | Readable<any>[];
+type StoreValues<S extends Stores> = S extends Readable<infer T>
+  ? T
+  : { [K in keyof S]: S[K] extends Readable<infer T> ? T : never };
+
+export function derived<S, T>(
+  store: Readable<S>,
+  fn: (value: S) => T,
+  initialValue?: T
+): Readable<T>;
+export function derived<S extends Stores, T>(
+  stores: Stores,
+  fn: (values: StoreValues<S>) => T,
+  initialValue?: T
+): Readable<T>;
+export function derived<S extends Stores, T>(
+  stores: Stores,
+  fn: (values: StoreValues<S>) => T,
+  initialValue?: T
+): Readable<T> {
+  if (Array.isArray(stores))
+    return readable(initialValue, set => {
+      const values = stores.map(store => get(store)) as StoreValues<S>;
+      const unsubscribers = stores.map((store, i) =>
+        store.subscribe(value => {
+          values[i] = value;
+          set(fn(values));
+        })
+      );
+      return () => unsubscribers.forEach(unsubscriber => unsubscriber());
+    });
+  return readable(initialValue, set =>
+    stores.subscribe(value => set(fn(value)))
+  );
 }
 
 export function get<T>(store: Readable<T>): T {
