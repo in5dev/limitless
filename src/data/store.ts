@@ -22,22 +22,25 @@ export function writable<T>(value?: T, start?: StartStop<T>): Writable<T> {
   const subscribers = new Set<Subscriber<T>>();
   let stop: Unsubscriber | void;
 
+  function subscribe(subscriber: Subscriber<T>): Unsubscriber {
+    if (!stop && start) stop = start(set);
+    subscribers.add(subscriber);
+    return () => {
+      subscribers.delete(subscriber);
+      if (!subscribers.size) stop?.();
+    };
+  }
+  function set(val: T): void {
+    value = val;
+    subscribers.forEach(subscriber => subscriber(val));
+  }
+  function update(updater: Updater<T>): void {
+    set(updater(value as T));
+  }
   return {
-    subscribe(subscriber: Subscriber<T>) {
-      if (!stop && start) stop = start(this.set);
-      subscribers.add(subscriber);
-      return () => {
-        subscribers.delete(subscriber);
-        if (!subscribers.size) stop?.();
-      };
-    },
-    set(val: T) {
-      value = val;
-      subscribers.forEach(subscriber => subscriber(val));
-    },
-    update(updater: Updater<T>) {
-      this.set(updater(value as T));
-    }
+    subscribe,
+    set,
+    update
   };
 }
 
