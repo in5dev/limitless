@@ -6,8 +6,8 @@ import Model from './model';
 import DirectionalLight from './lights/directional-light';
 import type { Vector2, Vector3 } from '../../math';
 
-import vertexSource from './shader.vert';
-import fragmentSource from './shader.frag';
+import vertexSource from './shader.vert?raw';
+import fragmentSource from './shader.frag?raw';
 
 export default class GL {
   canvas: HTMLCanvasElement;

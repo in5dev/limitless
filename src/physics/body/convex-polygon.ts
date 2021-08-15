@@ -41,7 +41,7 @@ export default class ConvexPolygon extends Body {
     });
   }
 
-  rotate(angle: number): this {
+  override rotate(angle: number): this {
     this.vertices.forEach(v => v.rotate(angle));
     return super.rotate(angle);
   }

@@ -5,7 +5,7 @@ export default class Particle extends Point {
     super(x, y);
   }
 
-  update(dt: number): this {
+  override update(dt: number): this {
     this.life -= dt;
     return super.update(dt);
   }

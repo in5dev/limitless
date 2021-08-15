@@ -2,7 +2,7 @@
 /* eslint-disable new-cap */
 /* eslint-disable no-new */
 import p5 from 'p5';
-import { Circle, random, Vector2, World } from '../../src';
+import { Circle, random, Vector2, World } from '../../src/limitless';
 
 new p5((p: p5) => {
   let world: World;
@@ -11,7 +11,13 @@ new p5((p: p5) => {
     p.createCanvas(p.windowWidth, p.windowHeight);
 
     const params = p.getURLParams() as Record<string, string>;
-    world = new World(0, 0, p.width, p.height, params.struct as any);
+    world = new World(
+      0,
+      0,
+      p.width,
+      p.height,
+      params['struct'] as 'quadtree' | 'hashgrid' | 'naive'
+    );
 
     const bodies: Circle[] = [];
     for (let i = 0; i < 1000; i++) {

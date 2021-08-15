@@ -81,7 +81,7 @@ export default class QuadTree extends AABB {
     this.se = undefined;
   }
 
-  render(p: p5): void {
+  override render(p: p5): void {
     super.render(p);
     if (this.divided) {
       this.nw?.render(p);

@@ -37,15 +37,15 @@ export default class Rect extends ConvexPolygon {
     this.size.y = height;
   }
 
-  get rotationalInertia(): number {
+  override get rotationalInertia(): number {
     return (this.mass * this.size.magSq()) / 12;
   }
 
-  get normals(): Vector2[] {
+  override get normals(): Vector2[] {
     return [vec2(1, 0), vec2(0, 1)].map(v => v.setAngle(this.angle));
   }
 
-  render(p: p5, options?: RenderOptions): void {
+  override render(p: p5, options?: RenderOptions): void {
     const { x, y, width, height, angle } = this;
     p.push();
     p.translate(x, y);

@@ -2,7 +2,7 @@
 /* eslint-disable new-cap */
 /* eslint-disable no-new */
 import p5 from 'p5';
-import { ConvexPolygon, Rect, vec2, Vector2, World } from '../../src';
+import { ConvexPolygon, Rect, vec2, Vector2, World } from '../../src/limitless';
 
 new p5((p: p5) => {
   let world: World;

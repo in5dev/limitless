@@ -5,8 +5,8 @@ import { Program, Shader, Texture } from './core';
 import Rect from './rect';
 import type { Vector2 } from '../../math';
 
-import vertexSource from './shader.vert';
-import fragmentSource from './shader.frag';
+import vertexSource from './shader.vert?raw';
+import fragmentSource from './shader.frag?raw';
 
 export default class GL {
   canvas: HTMLCanvasElement;

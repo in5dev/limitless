@@ -1,26 +1,33 @@
 {
   "name": "@limitlesspc/limitless",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "author": {
     "name": "Izaak Brown",
     "email": "izaakbthunderbird@gmail.com"
   },
-  "repository": {
-    "url": "git@github.com:limitlesspc/limitless.git"
-  },
+  "repository": "https://github.com:limitlesspc/limitless.git",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
-  "module": "./index.mjs",
-  "main": "./index.js",
-  "types": "./index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/limitless.es.js",
+  "main": "./dist/limitless.umd.js",
+  "types": "./dist/limitless.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/limitless.es.js",
+      "require": "./dist/limitless.umd.js"
+    }
+  },
   "scripts": {
     "setup": "chmod +x ./mjs.sh",
     "dev": "parcel examples/**/index.html",
-    "build": "tsc && tsc -p ./tsconfig.esm.json && ./mjs.sh",
+    "build": "vite build && tsup src/limitless.ts --dts && rm dist/limitless.js",
     "lint": "eslint src/ --ext .ts",
     "test": "ts-mocha src/**/*.test.ts",
-    "pub": "npm run build && cp package.json build/ && cd build/ && npm publish"
+    "pub": "npm run build && npm publish"
   },
   "browserslist": [
     "last 1 Chrome version"
@@ -46,6 +53,8 @@
     "parcel-bundler": "^1.12.5",
     "ts-mocha": "^8.0.0",
     "tslib": "^2.3.1",
-    "typescript": "^4.3.5"
+    "tsup": "^4.13.1",
+    "typescript": "^4.3.5",
+    "vite": "^2.4.4"
   }
 }

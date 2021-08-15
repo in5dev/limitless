@@ -80,7 +80,7 @@ export default class SpatialHashGrid extends AABB {
     }
   }
 
-  render(p: p5): void {
+  override render(p: p5): void {
     super.render(p);
     for (let { x } = this; x < this.x + this.width; x += this.divisionSize) {
       p.line(x, this.y, x, this.y + this.height);

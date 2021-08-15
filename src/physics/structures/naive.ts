@@ -24,7 +24,7 @@ export default class Naive extends AABB {
     this.bodies = [];
   }
 
-  render(p: p5): void {
+  override render(p: p5): void {
     super.render(p);
   }
 }
