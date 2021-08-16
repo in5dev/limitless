@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 if ([0][-1] !== 0)
+  // eslint-disable-next-line no-extend-native
   Object.defineProperty(Array.prototype, -1, {
     get<T>(this: T[]) {
       const { length } = this;
