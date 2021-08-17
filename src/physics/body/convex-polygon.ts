@@ -3,9 +3,9 @@
 import type p5 from 'p5';
 
 import Body, { Collision } from './body';
-import { overlap } from '../../math/funcs';
+import { minmax, overlap } from '../../math/funcs';
 import Vector2 from '../../math/vector/vec2';
-import { average, min, minmax } from '../../util/array';
+import { average, min } from '../../util/array';
 import AABB from './aabb';
 import type Circle from './circle';
 import type { RenderOptions } from '../types';
@@ -26,8 +26,8 @@ export default class ConvexPolygon extends Body {
     const xs = vertices.map(v => v.x);
     const ys = vertices.map(v => v.y);
 
-    const [minx, maxx] = minmax(xs);
-    const [miny, maxy] = minmax(ys);
+    const [minx, maxx] = minmax(...xs);
+    const [miny, maxy] = minmax(...ys);
 
     return new AABB(x + minx, y + miny, maxx - minx, maxy - miny);
   }
@@ -49,7 +49,7 @@ export default class ConvexPolygon extends Body {
   project(axis: Vector2): [min: number, max: number] {
     const { position, vertices } = this;
     const projections = vertices.map(v => Vector2.add(position, v).dot(axis));
-    return minmax(projections);
+    return minmax(...projections);
   }
 
   collides(body: ConvexPolygon | Circle, resolve = false): boolean {

@@ -15,11 +15,6 @@ if ([0][-1] !== 0)
     }
   });
 
-export function random<T>(arr: T[]): T | undefined {
-  const index = randomInt(arr.length);
-  return arr[index];
-}
-
 export function* zip<T, U>(arr1: T[], arr2: U[]): Generator<[T, U]> {
   const length = Math.min(arr1.length, arr2.length);
   for (let i = 0; i < length; i++) {
@@ -67,16 +62,6 @@ export function max(arr: number[]): number {
     if (x > max) max = x;
   });
   return max;
-}
-
-export function minmax(arr: number[]): [min: number, max: number] {
-  let min = Infinity;
-  let max = -Infinity;
-  arr.forEach(x => {
-    if (x < min) min = x;
-    if (x > max) max = x;
-  });
-  return [min, max];
 }
 
 export function sum(arr: number[]): number {

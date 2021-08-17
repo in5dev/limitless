@@ -47,7 +47,14 @@ export function minmax(...nums: number[]): [min: number, max: number] {
   return [Math.min(...nums), Math.max(...nums)];
 }
 
-export function random(min?: number, max?: number): number {
+export function random(min?: number, max?: number): number;
+export function random<T>(arr: T[]): T | undefined;
+export function random<T>(
+  min?: number | T[],
+  max?: number
+): number | T | undefined {
+  if (Array.isArray(min)) return min[Math.floor(Math.random() * min.length)];
+
   if (!min) return Math.random();
   if (!max) return Math.random() * min;
   const Min = Math.min(min, max);
