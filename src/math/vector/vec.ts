@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export default class Vector {
   components!: Float64Array;
 
@@ -87,7 +88,7 @@ export default class Vector {
   static add(v1: Vector, v2: number[]): Vector;
   static add(v1: Vector, v2: number): Vector;
   static add(v1: Vector, v2: Vector | number[] | number): Vector {
-    return v1.copy().add(v2);
+    return v1.copy().add(v2 as any);
   }
 
   /**
@@ -131,7 +132,7 @@ export default class Vector {
   static sub(v1: Vector, v2: number[]): Vector;
   static sub(v1: Vector, v2: number): Vector;
   static sub(v1: Vector, v2: Vector | number[] | number): Vector {
-    return v1.copy().sub(v2);
+    return v1.copy().sub(v2 as any);
   }
 
   /**
@@ -175,7 +176,7 @@ export default class Vector {
   static mult(v1: Vector, v2: number[]): Vector;
   static mult(v1: Vector, v2: number): Vector;
   static mult(v1: Vector, v2: Vector | number[] | number): Vector {
-    return v1.copy().mult(v2);
+    return v1.copy().mult(v2 as any);
   }
 
   /**
@@ -219,7 +220,7 @@ export default class Vector {
   static div(v1: Vector, v2: number[]): Vector;
   static div(v1: Vector, v2: number): Vector;
   static div(v1: Vector, v2: Vector | number[] | number): Vector {
-    return v1.copy().div(v2);
+    return v1.copy().div(v2 as any);
   }
 
   /**
