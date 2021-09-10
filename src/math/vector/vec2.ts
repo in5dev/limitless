@@ -212,6 +212,10 @@ export default class Vector2 {
     return this.set(Math.cos(a) * mag, Math.sin(a) * mag);
   }
 
+  static fromAngle(a: number, mag = 1): Vector2 {
+    return vec2(mag).setAngle(a);
+  }
+
   rotate(angle: number): this {
     const { x, y } = this;
     const cos = Math.cos(angle);

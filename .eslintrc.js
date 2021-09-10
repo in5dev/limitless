@@ -2,25 +2,22 @@ module.exports = {
   ignorePatterns: '*.js',
   root: true,
   env: {
-    es2020: true,
+    es2021: true,
     browser: true
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: 2021,
     sourceType: 'module',
     project: './tsconfig.json'
   },
-  plugins: ['@typescript-eslint', 'svelte3'],
+  plugins: ['@typescript-eslint'],
   extends: [
+    'airbnb-base',
     'airbnb-typescript/base',
     'plugin:@typescript-eslint/recommended',
     'prettier'
   ],
-  overrides: [{ files: ['*.svelte'], processor: 'svelte3/svelte3' }],
-  settings: {
-    'svelte3/typescript': () => require('typescript')
-  },
   rules: {
     'no-bitwise': ['error', { allow: ['|'] }],
     'no-console': 'off',
