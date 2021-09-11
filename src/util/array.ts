@@ -15,11 +15,23 @@ if ([0][-1] !== 0)
     }
   });
 
-export function* zip<T, U>(arr1: T[], arr2: U[]): Generator<[T, U]> {
+export function zip<T, U>(arr1: T[], arr2: U[]): [T, U][] {
   const length = Math.min(arr1.length, arr2.length);
+  const arr = new Array<[T, U]>(length);
   for (let i = 0; i < length; i++) {
-    yield [arr1[i]!, arr2[i]!];
+    arr[i] = [arr1[i]!, arr2[i]!];
   }
+  return arr;
+}
+
+export function unzip<T, U>(arr: [T, U][]): [T[], U[]] {
+  const arr1 = new Array<T>(arr.length);
+  const arr2 = new Array<U>(arr.length);
+  arr.forEach(([a, b], i) => {
+    arr1[i] = a;
+    arr2[i] = b;
+  });
+  return [arr1, arr2];
 }
 
 export function swap<T>(arr: T[], i: number, j: number): T[] {
@@ -46,6 +58,22 @@ export function unorderedRemove<T>(arr: T[], index: number): T[] {
   swap(arr, index, arr.length - 1);
   arr.pop();
   return arr;
+}
+
+export function chunk<T>(arr: ConcatArray<T>, size: number): T[][] {
+  const result: T[][] = [];
+  for (let i = 0; i < arr.length; i += size) {
+    result.push(arr.slice(i, i + size));
+  }
+  return result;
+}
+
+export function intersection<T>(arr1: T[], arr2: T[]): T[] {
+  return arr1.filter(item => arr2.includes(item));
+}
+
+export function union<T>(arr1: T[], arr2: T[]): T[] {
+  return [...arr1, ...arr2.filter(item => !arr1.includes(item))];
 }
 
 export function min(arr: number[]): number {
