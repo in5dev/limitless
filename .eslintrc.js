@@ -24,6 +24,7 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-plusplus': 'off',
     'no-return-assign': 'off',
+    'no-multi-assign': 'off',
     radix: ['error', 'as-needed'],
     'no-restricted-globals': 'off',
     '@typescript-eslint/lines-between-class-members': 'off',

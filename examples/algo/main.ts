@@ -5,17 +5,23 @@ import p5 from 'p5';
 import * as sorts from '../../src/algorithm/sorts';
 import { max, shuffle } from '../../src/util';
 
-const randomNumberArr = shuffle(new Array(100).fill(0).map((_, i) => i + 1));
+const length = 1000;
+const stepsPerFrame = 10;
+
+const randomNumberArr = shuffle(new Array(length).fill(0).map((_, i) => i + 1));
 const m = max(randomNumberArr);
-const iter = sorts.quick(randomNumberArr, (a, b) => a - b);
+const iter = sorts.heap(randomNumberArr, (a, b) => a - b);
 
 let active: number[] = [];
 
 new p5((p: p5) => {
   p.setup = () => {
-    p.createCanvas(400, 400);
+    p.createCanvas(p.windowWidth, p.windowHeight);
     p.noStroke();
-    p.frameRate(10);
+  };
+
+  p.windowResized = () => {
+    p.resizeCanvas(p.windowWidth, p.windowHeight);
   };
 
   p.draw = () => {
@@ -31,6 +37,14 @@ new p5((p: p5) => {
         p.map(n, 0, m, 0, p.height)
       );
     });
-    active = iter.next().value || [];
+    for (let i = 0; i < stepsPerFrame; i++) {
+      const next = iter.next();
+      if (next.done) {
+        active = [];
+        p.noLoop();
+        return;
+      }
+      active = next.value || [];
+    }
   };
 });

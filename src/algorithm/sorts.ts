@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { swap } from '../util';
 
+const gapFactor = 1.3;
+
 export function* bubble<T>(
   arr: T[],
   compare: (a: T, b: T) => number
@@ -104,7 +106,7 @@ export function* shell<T>(
         yield [j, j - gap];
       }
     }
-    gap = Math.floor(gap / 2);
+    gap = Math.floor(gap / gapFactor);
   }
 }
 
@@ -178,5 +180,48 @@ export function* heap<T>(
     swap(arr, 0, i);
     yield [0, i];
     yield* heapify(0, i);
+  }
+}
+
+export function* binaryInsertion<T>(
+  arr: T[],
+  compare: (a: T, b: T) => number
+): Generator<number[]> {
+  const { length } = arr;
+  for (let i = 1; i < length; i++) {
+    const key = arr[i]!;
+    let low = 0;
+    let high = i - 1;
+    while (low <= high) {
+      const mid = Math.floor((low + high) / 2);
+      if (compare(key, arr[mid]!) < 0) high = mid - 1;
+      else low = mid + 1;
+      yield [i, mid];
+    }
+    let j = i;
+    while (j > low) {
+      swap(arr, j, j - 1);
+      j--;
+      yield [j, j - 1];
+    }
+  }
+}
+
+export function* comb<T>(
+  arr: T[],
+  compare: (a: T, b: T) => number
+): Generator<number[]> {
+  const { length } = arr;
+  let gap = Math.floor(length / 2);
+  while (gap > 0) {
+    for (let i = 0; i < length; i++) {
+      for (let j = i; j < length; j += gap) {
+        if (compare(arr[j]!, arr[i]!) < 0) {
+          swap(arr, i, j);
+          yield [i, j];
+        }
+      }
+    }
+    gap = Math.floor(gap / gapFactor);
   }
 }
