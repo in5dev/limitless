@@ -13,7 +13,8 @@ export default class Renderer2D {
   private doStroke = true;
   private doFill = true;
 
-  handle?: number;
+  private callback?: () => void;
+  private handle?: number;
 
   constructor(canvas: HTMLCanvasElement);
   constructor(container: HTMLElement, width: number, height?: number);
@@ -226,14 +227,27 @@ export default class Renderer2D {
   }
 
   render(callback: () => void): void {
+    this.callback = callback;
+    this.start();
+  }
+
+  start(): void {
+    if (!this.callback) return;
+    if (this.handle) cancelAnimationFrame(this.handle);
     const draw = () => {
-      callback();
+      this.callback?.();
       this.handle = requestAnimationFrame(draw);
     };
-    draw();
+    this.handle = requestAnimationFrame(draw);
   }
 
   stop(): void {
     if (this.handle) cancelAnimationFrame(this.handle);
+    this.handle = undefined;
+  }
+
+  remove(): void {
+    this.stop();
+    this.canvas.remove();
   }
 }

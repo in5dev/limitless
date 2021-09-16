@@ -4,6 +4,15 @@ import { swap } from '../util';
 
 const gapFactor = 1.3;
 
+export function* shuffle<T>(arr: T[]): Generator<number[]> {
+  const { length } = arr;
+  for (let i = 0; i < length; i++) {
+    let j = Math.floor(Math.random() * length);
+    swap(arr, i, j);
+    yield [i, j];
+  }
+}
+
 export function* bubble<T>(
   arr: T[],
   compare: (a: T, b: T) => number
