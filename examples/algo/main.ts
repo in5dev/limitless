@@ -8,7 +8,7 @@ const stepsPerFrame = 1;
 
 const randomNumberArr = shuffle(new Array(length).fill(0).map((_, i) => i + 1));
 const m = max(randomNumberArr);
-const iter = sorts.heap(randomNumberArr, (a, b) => a - b);
+const iter = sorts.comb(randomNumberArr, (a, b) => a - b);
 
 let active: number[] = [];
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { swap } from '../util';
 
@@ -223,5 +224,56 @@ export function* comb<T>(
       }
     }
     gap = Math.floor(gap / gapFactor);
+  }
+}
+
+export function* gnome<T>(
+  arr: T[],
+  compare: (a: T, b: T) => number
+): Generator<number[]> {
+  const { length } = arr;
+  let i = 0;
+  while (i < length) {
+    if (!i) i++;
+    if (compare(arr[i]!, arr[i - 1]!) > 0) i++;
+    else {
+      swap(arr, i, i - 1);
+      yield [i, i - 1];
+      i--;
+    }
+  }
+}
+
+export function* cycle<T>(
+  arr: T[],
+  compare: (a: T, b: T) => number
+): Generator<number[]> {
+  const { length } = arr;
+  for (let start = 0; start < length - 1; start++) {
+    let item = arr[start]!;
+
+    let pos = start;
+    for (let i = start + 1; i < length; i++) {
+      if (compare(arr[i]!, item) < 0) pos++;
+      yield [start, i];
+    }
+
+    if (pos === start) continue;
+
+    while (item === arr[pos]) pos++;
+    [arr[pos], item] = [item, arr[pos]!];
+    yield [start, pos];
+
+    while (pos !== start) {
+      pos = start;
+      for (let i = start + 1; i < length; i++) {
+        if (compare(arr[i]!, item) < 0) pos++;
+        yield [start, i];
+      }
+
+      while (item === arr[pos]) pos++;
+      [arr[pos], item] = [item, arr[pos]!];
+      yield [start, pos];
+    }
   }
 }
