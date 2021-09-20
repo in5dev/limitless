@@ -2,13 +2,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { ReadonlyMat2, ReadonlyMat3, ReadonlyMat4 } from 'gl-matrix';
 
+import Shader from './shader';
 import Texture from './texture';
 import screenSource from './screen.vert?raw';
-
-interface GLShader {
-  shader: WebGLShader;
-  source: string;
-}
 
 interface GLBuffer {
   buffer: WebGLBuffer;
@@ -70,8 +66,8 @@ export default class GL {
 
   program!: WebGLProgram;
 
-  vertexShader!: GLShader;
-  fragmentShader!: GLShader;
+  vertexShader!: Shader;
+  fragmentShader!: Shader;
 
   vertexBuffer!: GLBuffer;
   indexBuffer!: GLBuffer;
@@ -155,44 +151,16 @@ export default class GL {
    * Creates a vertex shader from its source text
    * @param source the source of the vertex shader
    */
-  createVertexShader(source: string): WebGLShader {
-    const { gl } = this;
-    // Create the vertex shader and bind the source
-    const shader = gl.createShader(gl.VERTEX_SHADER) as WebGLShader;
-    gl.shaderSource(shader, source);
-
-    // Check for shader errors
-    gl.compileShader(shader);
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-      console.error(
-        'Error compiling vertex shader:',
-        gl.getShaderInfoLog(shader)
-      );
-
-    this.vertexShader = { shader, source };
-    return shader;
+  createVertexShader(source: string): Shader {
+    return new Shader(this.gl, 'vertex', source);
   }
 
   /**
    * Creates a fragment shader from its source text
    * @param source the source of the fragment shader
    */
-  createFragmentShader(source: string): WebGLShader {
-    const { gl } = this;
-    // Create the fragment shader and bind the source
-    const shader = gl.createShader(gl.FRAGMENT_SHADER) as WebGLShader;
-    gl.shaderSource(shader, source);
-
-    // Check for shader errors
-    gl.compileShader(shader);
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-      console.error(
-        'Error compiling fragment shader:',
-        gl.getShaderInfoLog(shader)
-      );
-
-    this.fragmentShader = { shader, source };
-    return shader;
+  createFragmentShader(source: string): Shader {
+    return new Shader(this.gl, 'fragment', source);
   }
 
   /**
@@ -200,15 +168,12 @@ export default class GL {
    * @param vertexShader
    * @param fragmentShader
    */
-  createProgram(
-    vertexShader: WebGLShader,
-    fragmentShader: WebGLShader
-  ): WebGLProgram {
+  createProgram(vertexShader: Shader, fragmentShader: Shader): WebGLProgram {
     const { gl } = this;
     // Create the program and bind the vertex and fragment shaders
-    const program = gl.createProgram() as WebGLProgram;
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
+    const program = gl.createProgram()!;
+    vertexShader.attach(program);
+    fragmentShader.attach(program);
 
     // Check for program errors
     gl.linkProgram(program);
