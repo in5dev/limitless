@@ -2,141 +2,198 @@
 precision highp float;
 
 #define INFINTY 1.0e6
-#define EPSILON 0.0001
+#define EPSILON 0.01
+#define PI 3.1415926535897932384626433832795
 
 out vec4 fragColor;
 
 uniform vec2 resolution;
+uniform float passes;
 
-struct AmbientLight {
-    vec3 color;
-    float intensity;
-};
-uniform AmbientLight ambientLight;
+uniform sampler2D tex;
 
-struct PointLight {
-    vec3 position;
-    vec3 color;
-    float intensity;
+struct Camera {
+    vec3 origin;
+    vec3 direction;
+    float fov;
 };
-uniform PointLight pointLight;
-
-struct Material {
-    vec3 color;
-    float shininess;
-    float reflectivity;
-};
+uniform Camera camera;
 
 struct Sphere {
     vec3 center;
     float radius;
-    Material material;
+    vec3 color;
+    int reflectionType;
+    vec3 emission;
 };
-#define SPHERES 2
+#define SPHERES 9
 uniform Sphere spheres[SPHERES];
-
-struct Plane {
-    vec3 position;
-    vec3 normal;
-    Material material;
-};
-#define PLANES 1
-uniform Plane planes[PLANES];
-
-uniform int maxReflections;
 
 struct Ray {
     vec3 origin;
     vec3 direction;
 };
 
-float hitPlane(Ray ray, Plane plane) {
-    float denom = dot(ray.direction, plane.normal);
-    if (abs(denom) < EPSILON) return -1.0;
-    float t = dot(plane.position - ray.origin, plane.normal) / denom;
-    if (t < EPSILON) return -1.0;
-    return t;
+uniform float time;
+
+float rand(inout float seed) {
+    float a = 12.9898;
+    float b = 78.233;
+    float c = 43758.5453;
+    float dt = dot(gl_FragCoord.xy, vec2(a, b));
+    float sn = mod(dt, 3.14);
+    float r = fract(sin(sn + time + seed) * c);
+    seed += 1.0;
+    return r;
 }
 
-float hitSphere(Ray ray, Sphere sphere) {
-    vec3 oc = ray.origin - sphere.center;
-    float a = dot(ray.direction, ray.direction);
-    float b = 2.0 * dot(oc, ray.direction);
-    float c = dot(oc, oc) - sphere.radius * sphere.radius;
-    float discriminant = b * b - 4.0 * a * c;
-    if (discriminant < 0.0) return -1.0;
-
-    float t = (-b - sqrt(discriminant)) / (2.0 * a);
-    if (t < EPSILON) t = (-b + sqrt(discriminant)) / (2.0 * a);
-    if (t < EPSILON) return -1.0;
-    return t;
+float intersect_sphere(Ray ray, Sphere sphere) {
+    vec3 op = sphere.center - ray.origin;
+    float b = dot(op, ray.direction);
+    float det = b * b - dot(op, op) + sphere.radius * sphere.radius;
+    if (det < 0.0) return 0.0;
+    det = sqrt(det);
+    float t;
+    return (t = b - det) > EPSILON ? t : (t = b + det) > EPSILON ? t : 0.0;
 }
 
 struct Hit {
     float t;
-    vec3 position;
+    Sphere sphere;
     vec3 normal;
-    Material material;
 };
-
-Hit trace(Ray ray) {
-    Hit hit = Hit(INFINTY, vec3(0.0), vec3(0.0), Material(vec3(0.0), 0.0, 0.0));
-
+Hit intersect(Ray ray) {
+    Hit closest = Hit(INFINTY, spheres[0], vec3(0.0));
     for (int i = 0; i < SPHERES; i++) {
         Sphere sphere = spheres[i];
-        float t = hitSphere(ray, sphere);
-        if (t > 0.0) {
-            hit.t = min(hit.t, t);
-            hit.position = ray.origin + ray.direction * hit.t;
-            hit.normal = normalize(hit.position - sphere.center);
-            hit.material = sphere.material;
+        float d = intersect_sphere(ray, sphere);
+        if (d != 0.0 && d < closest.t) {
+            closest.t = d;
+            closest.sphere = sphere;
         }
     }
-    for (int i = 0; i < PLANES; i++) {
-        Plane plane = planes[i];
-        float t = hitPlane(ray, plane);
-        if (t > 0.0) {
-            hit.t = min(hit.t, t);
-            hit.material = plane.material;
-            hit.normal = plane.normal;
-        }
-    }
-    hit.position = ray.origin + ray.direction * hit.t;
-
-    if (hit.t == INFINTY) hit.t = -1.0;
-    return hit;
+    closest.normal = normalize(ray.origin + closest.t * ray.direction - closest.sphere.center);
+    return closest;
 }
 
-vec3 phong(Ray ray, Hit hit) {
-    vec3 normal = hit.normal;
-    vec3 lightDir = normalize(pointLight.position - hit.position);
-    vec3 viewDir = -ray.direction;
-    vec3 reflectDir = reflect(-lightDir, normal);
 
-    Ray shadowRay = Ray(hit.position + hit.normal * EPSILON, lightDir);
-    Hit shadowHit = trace(shadowRay);
-    float shadow = shadowHit.t > 0.0 ? 0.0 : 1.0;
+float reflectance0(float n1, float n2) {
+    float sqrt_R0 = (n1 - n2) / (n1 + n2);
+    return sqrt_R0 * sqrt_R0;
+}
 
-    vec3 ambient = ambientLight.color * ambientLight.intensity;
-    float diffuse = max(dot(lightDir, normal), 0.0);
-    float specular = pow(max(dot(viewDir, reflectDir), 0.0), hit.material.shininess);
+float schlick_reflectance(float n1, float n2, float c) {
+    float R0 = reflectance0(n1, n2);
+    return R0 + (1.0 - R0) * c * c * c * c * c;
+}
 
-    return hit.material.color * (ambient + pointLight.color * pointLight.intensity * (diffuse + specular) * shadow);
+struct Transmit {
+    vec3 dTr;
+    float pr;
+};
+Transmit specular_transmit(
+    vec3 d,
+    vec3 n,
+    float n_out,
+    float n_in,
+    inout float seed
+) {
+    vec3 d_Re = reflect(d, n);
+
+    bool out_to_in = dot(n, d) < 0.0;
+    vec3 nl = out_to_in ? n : -n;
+    float nn = out_to_in ? n_out / n_in : n_in / n_out;
+    float cos_theta = dot(d, nl);
+    float cos2_phi = 1.0 - nn * nn * (1.0 - cos_theta * cos_theta);
+
+    // Total Internal Reflection
+    if (cos2_phi < 0.0) return Transmit(d_Re, 1.0);
+
+    vec3 d_Tr = normalize(d * nn - nl * (nn * cos_theta + sqrt(cos2_phi)));
+    float c = 1.0 - (out_to_in ? -cos_theta : dot(d_Tr, n));
+
+    float Re = schlick_reflectance(n_out, n_in, c);
+    float p_Re = 0.25 + 0.5 * Re;
+    if (rand(seed) < p_Re) return Transmit(d_Re, Re / p_Re);
+    
+    float Tr = 1.0 - Re;
+    float p_Tr = 1.0 - p_Re;
+    return Transmit(d_Tr, Tr / p_Tr);
+}
+
+vec3 cosine_weighted_sample_on_hemisphere(float u1, float u2) {
+  float cos_theta = sqrt(1.0 - u1);
+  float sin_theta = sqrt(u1);
+  float phi = 2.0 * PI * u2;
+  return vec3(cos(phi) * sin_theta, sin(phi) * sin_theta, cos_theta);
+}
+
+vec3 radiance(Ray ray, inout float seed) {
+    int depth = 0;
+    vec3 L = vec3(0.0);
+    vec3 F = vec3(1.0);
+
+    while (true) {
+        if (depth > 600) break;
+        Hit hit = intersect(ray);
+        float t = hit.t;
+        if (t == INFINTY) return vec3(0.0);
+        Sphere sphere = hit.sphere;
+        vec3 p = ray.origin + t * ray.direction;
+        vec3 n = hit.normal;
+
+        L += F * sphere.emission;
+        F *= sphere.color;
+
+        if (depth > 4) {
+            float continueProbability = max(sphere.color.x, max(sphere.color.y, sphere.color.z));
+            if (rand(seed) >= continueProbability) return L;
+            F /= continueProbability;
+        }
+        depth++;
+
+        switch (sphere.reflectionType) {
+            case 0: {
+                vec3 w = dot(n, ray.direction) < 0.0 ? n : -n;
+                vec3 u = normalize(cross(abs(w.x) > 0.1 ? vec3(0.0, 1.0, 0.0) : vec3(1.0, 0.0, 0.0), w));
+                vec3 v = cross(w, u);
+
+                vec3 sample_d = cosine_weighted_sample_on_hemisphere(rand(seed), rand(seed));
+                vec3 d = normalize(u * sample_d.x + v * sample_d.y + w * sample_d.z);
+                ray = Ray(p, d);
+                break;
+            }
+            case 1: {
+                vec3 d = reflect(ray.direction, n);
+                ray = Ray(p, d);
+                break;
+            }
+            default: {
+                Transmit transmit = specular_transmit(ray.direction, n, 1.0, 1.5, seed);
+                F *= transmit.pr;
+                vec3 d = transmit.dTr;
+                ray = Ray(p, d);
+            }
+        }
+    }
 }
 
 void main() {
-    vec2 uv = gl_FragCoord.xy / resolution.x;
-    Ray ray = Ray(vec3(0.0), normalize(vec3(uv - vec2(0.5), -1.0)));
-    
-    vec3 color = vec3(0.0);
-    float reflectivity = 1.0;
-    for (int i = 0; i < maxReflections + 1; i++) {
-        Hit hit = trace(ray);
-        if (hit.t < 0.0) break;
-        color += phong(ray, hit) * reflectivity;
-        reflectivity *= hit.material.reflectivity;
-        // Slight offset to remove graininess
-        ray = Ray(hit.position + hit.normal * EPSILON, reflect(ray.direction, hit.normal));
-    }
-    fragColor = vec4(color / float(maxReflections + 1), 1.0);
+    vec2 uv = gl_FragCoord.xy / resolution.xy;
+    float width = resolution.x;
+    float height = resolution.y;
+    float seed = 0.0;
+
+    vec3 cx = vec3((width * camera.fov) / height, 0.0, 0.0);
+    vec3 cy = normalize(cross(cx, camera.direction)) * camera.fov;
+
+    vec2 u2 = vec2(rand(seed), rand(seed));
+    vec2 cs = (gl_FragCoord.xy + u2) / resolution - vec2(0.5);
+    vec3 d = camera.direction + cs.x * cx + cs.y * cy;
+    Ray ray = Ray(camera.origin + d * 130.0, normalize(d));
+    vec3 color = radiance(ray, seed);
+
+    color += texture(tex, uv).rgb * passes;
+    color /= passes + 1.0;
+    fragColor = vec4(color, 1.0);
 }
