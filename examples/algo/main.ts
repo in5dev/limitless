@@ -30,7 +30,7 @@ function run() {
     p.resize(window.innerWidth, window.innerHeight)
   );
 
-  let iter = sorts.shuffle(arr);
+  let iter = sorts.shuffleGen(arr);
 
   function chooseRandom() {
     const iters = [
@@ -69,7 +69,7 @@ function run() {
           chooseRandom();
           sortNext = false;
         } else {
-          iter = sorts.shuffle(arr);
+          iter = sorts.shuffleGen(arr);
           sortNext = true;
         }
         p.start();

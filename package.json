@@ -1,6 +1,6 @@
 {
   "name": "@limitlesspc/limitless",
-  "version": "1.3.5",
+  "version": "1.3.6",
   "author": {
     "name": "Izaak Brown",
     "email": "izaakbthunderbird@gmail.com"
@@ -19,7 +19,8 @@
     ".": {
       "import": "./dist/limitless.es.js",
       "require": "./dist/limitless.umd.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
     "dev": "vite",

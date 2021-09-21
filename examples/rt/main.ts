@@ -38,7 +38,12 @@ const spheres = [
     vec3(0.75, 0.75, 0.75),
     ReflectionType.DIFFUSE
   ), // Back
-  new Sphere(vec3(50, 40.8, -1e4 + 170), 1e4, vec3(), ReflectionType.DIFFUSE), // Front
+  new Sphere(
+    vec3(50, 40.8, -1e4 + 170),
+    1e4,
+    vec3(1, 0, 1),
+    ReflectionType.DIFFUSE
+  ), // Front
   new Sphere(
     vec3(50, 1e4, 81.6),
     1e4,
@@ -81,7 +86,7 @@ gl.uniform(
   )
 );
 
-const texture = gl.createScreenTexture();
+gl.createScreenTexture();
 
 let passes = 0;
 let frames = 0;
@@ -90,7 +95,8 @@ function render() {
   gl.uniform('passes', 'float', passes);
   gl.render();
 
-  if (++passes > 20e6) {
+  if (++passes > 1000) {
+    return;
     gl.gl.texImage2D(
       gl.gl.TEXTURE_2D,
       0,

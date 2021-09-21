@@ -4,7 +4,7 @@ import { swap } from '../util';
 
 const gapFactor = 1.3;
 
-export function* shuffle<T>(arr: T[]): Generator<number[]> {
+export function* shuffleGen<T>(arr: T[]): Generator<number[]> {
   const { length } = arr;
   for (let i = 0; i < length; i++) {
     let j = Math.floor(Math.random() * length);
