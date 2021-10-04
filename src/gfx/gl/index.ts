@@ -88,7 +88,7 @@ export default class GL {
     document.body.appendChild(canvas);
     this.canvas = canvas;
 
-    let gl = canvas.getContext('webgl2');
+    const gl = canvas.getContext('webgl2');
     if (!gl) throw new Error('WebGL2 not supported');
     this.gl = gl;
 

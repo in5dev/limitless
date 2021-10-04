@@ -24,11 +24,12 @@ export default class Sphere {
     const { position, radius } = this;
     const op = Vector3.sub(position, ray.origin);
     let t: number;
-    let eps = 1e-4;
-    let b = op.dot(ray.direction);
+    const eps = 1e-4;
+    const b = op.dot(ray.direction);
     let det = b * b - op.dot(op) + radius * radius;
     if (det < 0) return 0;
     det = Math.sqrt(det);
+    // eslint-disable-next-line no-nested-ternary
     return (t = b - det) > eps ? t : (t = b + det) > eps ? t : 0;
   }
 }

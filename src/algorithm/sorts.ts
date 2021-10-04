@@ -7,7 +7,7 @@ const gapFactor = 1.3;
 export function* shuffleGen<T>(arr: T[]): Generator<number[]> {
   const { length } = arr;
   for (let i = 0; i < length; i++) {
-    let j = Math.floor(Math.random() * length);
+    const j = Math.floor(Math.random() * length);
     swap(arr, i, j);
     yield [i, j];
   }

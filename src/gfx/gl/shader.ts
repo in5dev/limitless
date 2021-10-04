@@ -9,6 +9,7 @@ export default class Shader {
     readonly source: string
   ) {
     // Create the vertex shader and bind the source
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const shader = gl.createShader(
       type === 'vertex' ? gl.VERTEX_SHADER : gl.FRAGMENT_SHADER
     )!;
@@ -24,15 +25,15 @@ export default class Shader {
     this.shader = shader;
   }
 
-  attach(program: WebGLProgram) {
+  attach(program: WebGLProgram): void {
     this.gl.attachShader(program, this.shader);
   }
 
-  detach(program: WebGLProgram) {
+  detach(program: WebGLProgram): void {
     this.gl.detachShader(program, this.shader);
   }
 
-  remove() {
+  remove(): void {
     this.gl.deleteShader(this.shader);
   }
 }

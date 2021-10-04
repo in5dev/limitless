@@ -1,3 +1,5 @@
+/* eslint-disable no-constant-condition */
+/* eslint-disable @typescript-eslint/naming-convention */
 import Ray from './ray';
 import { ReflectionType } from './sphere';
 import { vec3, Vector3 } from '../../math';
@@ -21,8 +23,9 @@ export default class RayTracer {
     this.canvas = canvas;
   }
 
-  async render(samples = 4) {
+  async render(samples = 4): Promise<void> {
     const { canvas, camera, width, height } = this;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const ctx = canvas.getContext('2d')!;
 
     let passes = 0;
@@ -131,44 +134,38 @@ function specular_transmit(
   n_out: number,
   n_in: number
 ): [Vector3, number] {
-  let d_Re: Vector3 = Vector3.reflect(d, n);
+  const d_Re: Vector3 = Vector3.reflect(d, n);
 
-  let out_to_in: boolean = n.dot(d) < 0;
-  let nl: Vector3 = out_to_in ? n : n.neg();
-  let nn: number = out_to_in ? n_out / n_in : n_in / n_out;
-  let cos_theta: number = d.dot(nl);
-  let cos2_phi: number = 1.0 - nn * nn * (1.0 - cos_theta * cos_theta);
+  const out_to_in: boolean = n.dot(d) < 0;
+  const nl: Vector3 = out_to_in ? n : n.neg();
+  const nn: number = out_to_in ? n_out / n_in : n_in / n_out;
+  const cos_theta: number = d.dot(nl);
+  const cos2_phi: number = 1.0 - nn * nn * (1.0 - cos_theta * cos_theta);
 
   // Total Internal Reflection
   if (cos2_phi < 0) {
     return [d_Re, 1.0];
   }
 
-  let d_Tr: Vector3 = Vector3.sub(
+  const d_Tr: Vector3 = Vector3.sub(
     Vector3.mult(d, nn),
     Vector3.mult(nl, nn * cos_theta + Math.sqrt(cos2_phi))
   ).normalize();
-  let c: number = 1.0 - (out_to_in ? -cos_theta : d_Tr.dot(n));
+  const c: number = 1.0 - (out_to_in ? -cos_theta : d_Tr.dot(n));
 
-  let Re: number = schlick_reflectance(n_out, n_in, c);
-  let p_Re: number = 0.25 + 0.5 * Re;
+  const Re: number = schlick_reflectance(n_out, n_in, c);
+  const p_Re: number = 0.25 + 0.5 * Re;
   if (Math.random() < p_Re) {
     return [d_Re, Re / p_Re];
   }
-  let Tr: number = 1.0 - Re;
-  let p_Tr: number = 1.0 - p_Re;
+  const Tr: number = 1.0 - Re;
+  const p_Tr: number = 1.0 - p_Re;
   return [d_Tr, Tr / p_Tr];
 }
 
-function uniform_sample_on_hemisphere(u1: number, u2: number): Vector3 {
-  let sin_theta: number = Math.sqrt(Math.max(0.0, 1.0 - u1 * u1));
-  let phi: number = 2.0 * Math.PI * u2;
-  return vec3(Math.cos(phi) * sin_theta, Math.sin(phi) * sin_theta, u1);
-}
-
 function cosine_weighted_sample_on_hemisphere(u1: number, u2: number): Vector3 {
-  let cos_theta: number = Math.sqrt(1.0 - u1);
-  let sin_theta: number = Math.sqrt(u1);
-  let phi: number = 2.0 * Math.PI * u2;
+  const cos_theta: number = Math.sqrt(1.0 - u1);
+  const sin_theta: number = Math.sqrt(u1);
+  const phi: number = 2.0 * Math.PI * u2;
   return vec3(Math.cos(phi) * sin_theta, Math.sin(phi) * sin_theta, cos_theta);
 }

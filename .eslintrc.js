@@ -20,7 +20,8 @@ module.exports = {
   ],
   overrides: [{ files: ['*.svelte'], processor: 'svelte3/svelte3' }],
   settings: {
-    'svelte3/typescript': () => require('typescript')
+    'svelte3/typescript': true,
+    'svelte3/ignore-styles': () => true
   },
   rules: {
     'no-bitwise': ['error', { allow: ['|'] }],
@@ -29,6 +30,10 @@ module.exports = {
     'no-plusplus': 'off',
     'no-return-assign': 'off',
     'no-multi-assign': 'off',
+    'no-cond-assign': 'off',
+    'no-await-in-loop': 'off',
+    'no-continue': 'off',
+    'default-case': 'off',
     radix: ['error', 'as-needed'],
     'no-restricted-globals': 'off',
     '@typescript-eslint/lines-between-class-members': 'off',

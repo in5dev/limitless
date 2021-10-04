@@ -15,18 +15,19 @@ export default class Scene {
     normal: Vector3;
   } {
     const { spheres } = this;
-    let closest = {
+    const closest = {
       t: Infinity,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       sphere: spheres[0]!,
       normal: vec3()
     };
-    for (let sphere of spheres) {
+    spheres.forEach(sphere => {
       const d = sphere.intersect(ray);
       if (d && d < closest.t) {
         closest.t = d;
         closest.sphere = sphere;
       }
-    }
+    });
     closest.normal = closest.sphere.getNormal(ray.at(closest.t));
     return closest;
   }
