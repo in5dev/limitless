@@ -1,6 +1,6 @@
 {
   "name": "@limitlesspc/limitless",
-  "version": "1.3.8",
+  "version": "1.3.9",
   "author": {
     "name": "Izaak Brown",
     "email": "izaakbthunderbird@gmail.com"
@@ -17,12 +17,13 @@
   "main": "./dist/limitless.umd.js",
   "types": "./dist/limitless.d.ts",
   "exports": {
-    ".": {
+    "node": {
       "import": "./dist/limitless.es.js",
       "require": "./dist/limitless.umd.js"
     },
     "default": "./dist/limitless.es.js",
-    "./package.json": "./package.json"
+    "import": "./dist/limitless.es.js",
+    "require": "./dist/limitless.umd.js"
   },
   "scripts": {
     "dev": "vite",
