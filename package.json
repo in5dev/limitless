@@ -1,11 +1,11 @@
 {
   "name": "@limitlesspc/limitless",
-  "version": "1.3.9",
+  "version": "1.3.10",
   "author": {
     "name": "Izaak Brown",
     "email": "izaakbthunderbird@gmail.com"
   },
-  "repository": "https://github.com:limitlesspc/limitless.git",
+  "repository": "github:limitlesspc/limitless",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
@@ -17,13 +17,11 @@
   "main": "./dist/limitless.umd.js",
   "types": "./dist/limitless.d.ts",
   "exports": {
-    "node": {
+    ".": {
       "import": "./dist/limitless.es.js",
       "require": "./dist/limitless.umd.js"
     },
-    "default": "./dist/limitless.es.js",
-    "import": "./dist/limitless.es.js",
-    "require": "./dist/limitless.umd.js"
+    "./package.json": "./package.json"
   },
   "scripts": {
     "dev": "vite",
@@ -35,11 +33,11 @@
     "pub": "run-s build && npm publish"
   },
   "dependencies": {
-    "gl-matrix": "^3.3.0",
+    "gl-matrix": "^3.4.3",
     "p5": "^1.4.0"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.26",
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",
     "@types/chai": "^4.2.22",
     "@types/mocha": "^9.0.0",
     "@types/p5": "^1.3.1",
@@ -50,17 +48,17 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-airbnb-typescript": "^14.0.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-svelte3": "^3.2.1",
-    "mocha": "^9.1.2",
+    "mocha": "^9.1.3",
     "npm-run-all": "^4.1.5",
-    "sass": "^1.42.1",
-    "svelte": "^3.43.1",
+    "sass": "^1.43.3",
+    "svelte": "^3.44.0",
     "svelte-preprocess": "^4.9.8",
-    "ts-node": "^10.2.1",
+    "ts-node": "^10.4.0",
     "tslib": "^2.3.1",
-    "tsup": "^5.2.1",
-    "typescript": "^4.4.3",
-    "vite": "^2.6.2"
+    "tsup": "^5.5.0",
+    "typescript": "^4.4.4",
+    "vite": "^2.6.11"
   }
 }
