@@ -78,6 +78,8 @@ export function log(base: number, x: number): number {
   return Math.log(x) / Math.log(base);
 }
 
+export const ln = Math.log;
+
 /**
  * Calculates the greatest common factor between the numbers
  * a and b using the [Euclidean algorithm](https://www.wikiwand.com/en/Euclidean_algorithm)
@@ -127,4 +129,12 @@ export function bestFitLine(
   const m = num / den;
   const b = meanY - m * meanX;
   return [m, b];
+}
+
+export function derivative(
+  f: (x: number) => number,
+  x: number,
+  h = 0.00001
+): number {
+  return (f(x + h) - f(x)) / h;
 }

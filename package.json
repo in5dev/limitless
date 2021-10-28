@@ -1,6 +1,6 @@
 {
   "name": "@limitlesspc/limitless",
-  "version": "1.3.10",
+  "version": "1.3.11",
   "author": {
     "name": "Izaak Brown",
     "email": "izaakbthunderbird@gmail.com"
@@ -13,7 +13,6 @@
     "dist"
   ],
   "module": "./dist/limitless.es.js",
-  "browser": "./dist/limitless.es.js",
   "main": "./dist/limitless.umd.js",
   "types": "./dist/limitless.d.ts",
   "exports": {

@@ -11,10 +11,3 @@ export function relu(x: number): number {
 export function drelu(y: number): number {
   return y > 0 ? 1 : 0;
 }
-
-export function tanh(x: number): number {
-  return Math.tanh(x);
-}
-export function dtanh(y: number): number {
-  return 1 - y * y;
-}
