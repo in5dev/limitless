@@ -40,6 +40,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': 'off',
     '@typescript-eslint/no-use-before-define': ['error', 'nofunc'],
     '@typescript-eslint/no-useless-constructor': 'off',
+    'import/extensions': 'off',
     'import/prefer-default-export': 'off'
   }
 };
