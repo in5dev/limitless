@@ -11,18 +11,13 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json'
   },
-  plugins: ['@typescript-eslint', 'svelte3'],
+  plugins: ['@typescript-eslint'],
   extends: [
     'airbnb-base',
     'airbnb-typescript/base',
     'plugin:@typescript-eslint/recommended',
     'prettier'
   ],
-  overrides: [{ files: ['*.svelte'], processor: 'svelte3/svelte3' }],
-  settings: {
-    'svelte3/typescript': true,
-    'svelte3/ignore-styles': () => true
-  },
   rules: {
     'no-bitwise': ['error', { allow: ['|'] }],
     'no-console': 'off',
@@ -33,6 +28,9 @@ module.exports = {
     'no-cond-assign': 'off',
     'no-await-in-loop': 'off',
     'no-continue': 'off',
+    'no-promise-executor-return': 'off',
+    'no-restricted-exports': 'off',
+    'default-param-last': 'off',
     'default-case': 'off',
     radix: ['error', 'as-needed'],
     'no-restricted-globals': 'off',

@@ -1,20 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-if ([0][-1] !== 0)
-  // eslint-disable-next-line no-extend-native
-  Object.defineProperty(Array.prototype, -1, {
-    get<T>(this: T[]) {
-      const { length } = this;
-      if (!length) return undefined;
-      return this[length - 1];
-    },
-    set<T>(this: T[], value: T): void {
-      const { length } = this;
-      if (!length) this[0] = value;
-      else this[this.length - 1] = value;
-    }
-  });
-
 export function zip<T, U>(arr1: T[], arr2: U[]): [T, U][] {
   const length = Math.min(arr1.length, arr2.length);
   const arr = new Array<[T, U]>(length);
@@ -47,10 +32,10 @@ export function shuffle<T>(arr: T[]): T[] {
   return arr;
 }
 
-export function remove<T>(this: T[], item: T): boolean {
-  const index = this.indexOf(item);
+export function remove<T>(arr: T[], item: T): boolean {
+  const index = arr.indexOf(item);
   if (index === -1) return false;
-  this.splice(index, 1);
+  arr.splice(index, 1);
   return true;
 }
 
