@@ -19,12 +19,16 @@ struct Camera {
 };
 uniform Camera camera;
 
+struct Material {
+    int reflectionType;
+    float indexOfRefraction;
+    vec3 emission;
+};
 struct Sphere {
     vec3 center;
     float radius;
     vec3 color;
-    int reflectionType;
-    vec3 emission;
+    Material material;
 };
 #define SPHERES 9
 uniform Sphere spheres[SPHERES];
@@ -142,7 +146,7 @@ vec3 radiance(Ray ray, inout float seed) {
         vec3 p = ray.origin + t * ray.direction;
         vec3 n = hit.normal;
 
-        L += F * sphere.emission;
+        L += F * sphere.material.emission;
         F *= sphere.color;
 
         if (depth > 4) {
@@ -152,7 +156,8 @@ vec3 radiance(Ray ray, inout float seed) {
         }
         depth++;
 
-        switch (sphere.reflectionType) {
+        switch (sphere.material.reflectionType) {
+            // Diffuse
             case 0: {
                 vec3 w = dot(n, ray.direction) < 0.0 ? n : -n;
                 vec3 u = normalize(cross(abs(w.x) > 0.1 ? vec3(0.0, 1.0, 0.0) : vec3(1.0, 0.0, 0.0), w));
@@ -163,13 +168,15 @@ vec3 radiance(Ray ray, inout float seed) {
                 ray = Ray(p, d);
                 break;
             }
+            // Specular
             case 1: {
                 vec3 d = reflect(ray.direction, n);
                 ray = Ray(p, d);
                 break;
             }
+            // Refractive
             default: {
-                Transmit transmit = specular_transmit(ray.direction, n, 1.0, 1.5, seed);
+                Transmit transmit = specular_transmit(ray.direction, n, 1.0, sphere.material.indexOfRefraction, seed);
                 F *= transmit.pr;
                 vec3 d = transmit.dTr;
                 ray = Ray(p, d);
