@@ -2,11 +2,12 @@
 /* eslint-disable no-restricted-syntax */
 import type p5 from 'p5';
 
-import Body, { Collision } from './body';
+import Body from './body';
 import { minmax, overlap } from '../../math/funcs';
 import Vector2 from '../../math/vector/vec2';
 import { average, min } from '../../util/array';
 import AABB from './aabb';
+import type { Collision } from './body';
 import type Circle from './circle';
 import type { RenderOptions } from '../types';
 
