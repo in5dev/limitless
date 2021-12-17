@@ -2,7 +2,7 @@
 /* eslint-disable no-new */
 import p5 from 'p5';
 
-import { NeuralNetwork, random } from '../../src/limitless';
+import { NeuralNetwork, random } from '../../src';
 
 const nn = new NeuralNetwork([2, 10, 10, 10, 1]);
 let lrSlider: p5.Element;
@@ -28,7 +28,7 @@ new p5((p: p5) => {
   p.draw = () => {
     p.background(0);
 
-    nn.setLearnRate(lrSlider.value() as number);
+    nn.learningRate = lrSlider.value() as number;
 
     for (let i = 0; i < tpf; i++) {
       const data = p.random(trainingData);

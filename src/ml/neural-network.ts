@@ -3,6 +3,7 @@ import Layer from './layer';
 
 export default class NeuralNetwork {
   layers: Layer[] = [];
+  learningRate = 0.01;
 
   constructor(nodes: [number, ...number[], number]) {
     for (let i = 1; i < nodes.length; i++) {
@@ -12,10 +13,6 @@ export default class NeuralNetwork {
     }
   }
 
-  setLearnRate(rate: number): void {
-    this.layers.forEach(layer => (layer.learningRate = rate));
-  }
-
   predict(inputArray: number[]): number[] {
     let outputs = [...inputArray];
     this.layers.forEach(layer => (outputs = layer.predict(outputs)));
@@ -23,12 +20,12 @@ export default class NeuralNetwork {
   }
 
   train(inputArray: number[], targets: number[]): void {
-    const { layers } = this;
+    const { layers, learningRate } = this;
     this.predict(inputArray);
     let errors: number[] | undefined;
     for (let i = layers.length - 1; i >= 0; i--) {
       const layer = layers[i]!;
-      layer.train(targets, errors);
+      layer.train(targets, learningRate, errors);
     }
   }
 }

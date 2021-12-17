@@ -30,6 +30,7 @@ module.exports = {
     'no-continue': 'off',
     'no-promise-executor-return': 'off',
     'no-restricted-exports': 'off',
+    'no-restricted-syntax': 'off',
     'default-param-last': 'off',
     'default-case': 'off',
     radix: ['error', 'as-needed'],

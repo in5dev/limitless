@@ -1,5 +1,5 @@
 import GL from '../gl';
-import fragmentSource from './shader.frag?raw';
+import fragmentSource from './shader';
 import type Camera from './camera';
 import type Sphere from './sphere';
 

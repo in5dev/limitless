@@ -1,4 +1,4 @@
-#version 300 es
+export default `#version 300 es
 precision highp float;
 
 #define INFINTY 1.0e6
@@ -203,4 +203,4 @@ void main() {
     color += texture(tex, uv).rgb * passes;
     color /= passes + 1.0;
     fragColor = vec4(color, 1.0);
-}
+}`;

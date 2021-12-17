@@ -4,7 +4,15 @@ import type { ReadonlyMat2, ReadonlyMat3, ReadonlyMat4 } from 'gl-matrix';
 
 import Shader from './shader';
 import Texture from './texture';
-import screenSource from './screen.vert?raw';
+
+const screenSource = `#version 300 es
+precision highp float;
+
+in vec2 position;
+
+void main() {
+	gl_Position = vec4(position, 0.0, 1.0);
+}`;
 
 interface GLBuffer {
   buffer: WebGLBuffer;
