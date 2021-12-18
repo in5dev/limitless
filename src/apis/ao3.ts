@@ -1,4 +1,4 @@
-import got from 'got';
+import axios from 'axios';
 import cheerio from 'cheerio';
 
 const AO3Query = 'https://archiveofourown.org/works/';
@@ -34,8 +34,8 @@ export interface Work {
   };
 }
 export async function getWork(id: string): Promise<Work> {
-  const response = await got(`${AO3Query}${id}`);
-  const html = response.body;
+  const response = await axios(`${AO3Query}${id}`);
+  const html = response.data as string;
   const $ = cheerio.load(html);
 
   const series = $(
