@@ -45,7 +45,7 @@ export async function getWork(id: string): Promise<Work> {
 
   return {
     id,
-    title: $('h2.title').text(),
+    title: $('h2.title').text().trim(),
     rating: $(
       '#main > div.work > div.wrapper > dl > dd.rating.tags > ul > li > a'
     ).text(),
@@ -80,17 +80,17 @@ export async function getWork(id: string): Promise<Work> {
         }
       : undefined,
     stats: {
-      published: new Date(`${stats.find('.published').text()} `),
-      updated: new Date(`${stats.find('.status').text()} `),
-      words: parseInt(stats.find('.words').text()),
+      published: new Date(`${stats.find('dd.published').text()} `),
+      updated: new Date(`${stats.find('dd.status').text()} `),
+      words: parseInt(stats.find('dd.words').text()),
       chapters: stats
-        .find('.chapters')
+        .find('dd.chapters')
         .text()
         .split('/')
         .map(x => parseInt(x)) as [number, number],
-      kudos: parseInt(stats.find('.kudos').text()),
-      bookmarks: parseInt(stats.find('.bookmarks a').text()),
-      hits: parseInt(stats.find('.hits').text())
+      kudos: parseInt(stats.find('dd.kudos').text()),
+      bookmarks: parseInt(stats.find('dd.bookmarks a').text()),
+      hits: parseInt(stats.find('dd.hits').text())
     }
   };
 }
