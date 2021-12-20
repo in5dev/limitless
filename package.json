@@ -1,6 +1,6 @@
 {
   "name": "@limitlesspc/limitless",
-  "version": "1.3.17",
+  "version": "1.3.18",
   "type": "module",
   "author": {
     "name": "Izaak Brown",
@@ -19,7 +19,18 @@
   "exports": {
     ".": {
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/esm/index.d.ts"
+    },
+    "./apis": {
+      "import": "./dist/esm/apis/index.js",
+      "require": "./dist/cjs/apis/index.js",
+      "types": "./dist/esm/apis/index.d.ts"
+    },
+    "./math": {
+      "import": "./dist/esm/math/index.js",
+      "require": "./dist/cjs/math/index.js",
+      "types": "./dist/esm/math/index.d.ts"
     },
     "./package.json": "./package.json"
   },
