@@ -1,6 +1,6 @@
 {
   "name": "@limitlesspc/limitless",
-  "version": "1.3.21",
+  "version": "1.3.23",
   "type": "module",
   "author": {
     "name": "Izaak Brown",
@@ -18,16 +18,8 @@
   "types": "./dist/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
-    "./*": {
-      "import": "./dist/*.js",
-      "require": "./dist/*.js",
-      "types": "./dist/*.d.ts"
-    },
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
+    "./*": "./dist/*",
+    ".": "./dist/index"
   },
   "scripts": {
     "dev": "vite",
