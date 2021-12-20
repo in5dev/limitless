@@ -12,6 +12,7 @@ export function getWorkId(url: string): string {
 export interface Work {
   id: string;
   title: string;
+  author: string;
   rating: string;
   warnings: string[];
   categories: string[];
@@ -46,6 +47,7 @@ export async function getWork(id: string): Promise<Work> {
   return {
     id,
     title: $('h2.title').text().trim(),
+    author: $('#workskin > div.preface.group > h3 > a').text(),
     rating: $(
       '#main > div.work > div.wrapper > dl > dd.rating.tags > ul > li > a'
     ).text(),
