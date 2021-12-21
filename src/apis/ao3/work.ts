@@ -30,7 +30,7 @@ export type Warning = keyof typeof contentWarnings;
 export const relationshipOrientations = {
   lesbian: 'F/F',
   straight: 'F/M',
-  gen: 'gen',
+  gen: 'Gen',
   gay: 'M/M',
   multi: 'Multi',
   other: 'Other'
