@@ -1,12 +1,14 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 
-const AO3Query = 'https://archiveofourown.org/works/';
-const ao3Regex = /https:\/\/archiveofourown\.org\/works\/(\d+)/;
+import ORIGIN from './origin';
+
+const query = `${ORIGIN}/works/`;
+const ao3Regex = new RegExp(`${query}(\\d+)`);
 
 export function getWorkId(url: string): string {
-  if (!url.match(ao3Regex)) throw new Error('Invalid AO3 URL');
-  return url.replace(AO3Query, '').split(/\/|\?|#/)[0] || '';
+  if (!url.match(ao3Regex)) return '';
+  return url.replace(query, '').split(/\/|\?|#/)[0] || '';
 }
 
 export interface Work {
@@ -16,6 +18,7 @@ export interface Work {
   rating: string;
   warnings: string[];
   categories: string[];
+  fandoms: string[];
   relationships: string[];
   characters: string[];
   tags: string[];
@@ -35,7 +38,7 @@ export interface Work {
   };
 }
 export async function getWork(id: string): Promise<Work> {
-  const response = await axios(`${AO3Query}${id}`);
+  const response = await axios(`${query}${id}`);
   const html = response.data as string;
   const $ = cheerio.load(html);
 
@@ -56,6 +59,11 @@ export async function getWork(id: string): Promise<Work> {
       .get(),
     categories: $(
       '#main > div.work > div.wrapper > dl > dd.category.tags > ul a'
+    )
+      .map((_, el) => $(el).text())
+      .get(),
+    fandoms: $(
+      '#main > div.work > div.wrapper > dl > dd.fandom.tags > ul > li > a'
     )
       .map((_, el) => $(el).text())
       .get(),
