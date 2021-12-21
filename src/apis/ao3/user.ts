@@ -23,8 +23,8 @@ export async function getUser(name: string): Promise<User> {
   return {
     name,
     iconUrl:
-      $(
-        '#main > div.user.pseud.home > div.primary.header.module > p > a > img'
-      ).attr('src') || ''
+      $('#main > div.user.home > div.primary.header.module > p > a > img').attr(
+        'src'
+      ) || ''
   };
 }
