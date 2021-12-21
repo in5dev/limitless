@@ -87,7 +87,7 @@ export interface Work {
   };
   stats: {
     published: Date;
-    updated: Date;
+    updated?: Date;
     words: number;
     chapters: [current: number, total: number];
     kudos: number;
@@ -107,20 +107,19 @@ export async function getWork(id: string): Promise<Work> {
   const $ = cheerio.load(html);
 
   const rating = $(
-    '#main > div.work > div.wrapper > dl > dd.rating.tags > ul > li > a'
+    '#main > div.wrapper > dl > dd.rating.tags > ul > li > a'
   ).text();
-  const warnings = $('#main > div.work > div.wrapper > dl > dd.warning.tags a')
+  const warnings = $('#main > div.wrapper > dl > dd.warning.tags a')
     .map((_, el) => $(el).text())
     .get();
-  const categories = $(
-    '#main > div.work > div.wrapper > dl > dd.category.tags > ul a'
-  )
+  const categories = $('#main > div.wrapper > dl > dd.category.tags > ul a')
     .map((_, el) => $(el).text())
     .get();
   const series = $(
-    '#main > div.work > div.wrapper > dl > dd.series > span > span.position > a'
+    '#main div.wrapper > dl > dd.series > span > span.position > a'
   );
-  const stats = $('#main > div.work > div.wrapper > dl > dd.stats > dl');
+  const stats = $('#main div.wrapper > dl > dd.stats > dl');
+  const status = stats.find('dd.status').text();
 
   const work = {
     id,
@@ -146,27 +145,19 @@ export async function getWork(id: string): Promise<Work> {
           ([, x]) => category === x
         )?.[0] || 'other'
     ) as RelationshipOrientation[],
-    fandoms: $(
-      '#main > div.work > div.wrapper > dl > dd.fandom.tags > ul > li > a'
-    )
+    fandoms: $('#main > div.wrapper > dl > dd.fandom.tags > ul > li > a')
       .map((_, el) => $(el).text())
       .get(),
-    relationships: $(
-      '#main > div.work > div.wrapper > dl > dd.relationship.tags > ul a'
-    )
+    relationships: $('#main > div.wrapper > dl > dd.relationship.tags > ul a')
       .map((_, el) => $(el).text() as RelationshipOrientation)
       .get(),
-    characters: $(
-      '#main > div.work > div.wrapper > dl > dd.character.tags > ul a'
-    )
+    characters: $('#main > div.wrapper > dl > dd.character.tags > ul a')
       .map((_, el) => $(el).text())
       .get(),
-    tags: $('#main > div.work > div.wrapper > dl > dd.freeform.tags > ul a')
+    tags: $('#main > div.wrapper > dl > dd.freeform.tags > ul a')
       .map((_, el) => $(el).text())
       .get(),
-    language: $('#main > div.work > div.wrapper > dl > dd.language')
-      .text()
-      .trim(),
+    language: $('#main > div.wrapper > dl > dd.language').text().trim(),
     series: series.length
       ? {
           id: series.attr('href')?.replace('/series/', '') || '',
@@ -175,7 +166,7 @@ export async function getWork(id: string): Promise<Work> {
       : undefined,
     stats: {
       published: new Date(`${stats.find('dd.published').text()} `),
-      updated: new Date(`${stats.find('dd.status').text()} `),
+      updated: status ? new Date(`${status} `) : undefined,
       words: parseInt(stats.find('dd.words').text()),
       chapters: stats
         .find('dd.chapters')
