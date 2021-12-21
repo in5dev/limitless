@@ -1,3 +1,3 @@
-import { getUser } from '../src/apis/ao3';
+import { getWork } from '../src/apis/ao3';
 
-getUser('A_dork').then(console.log);
+getWork('35478529').then(console.log);

@@ -31,6 +31,7 @@ module.exports = {
     'no-promise-executor-return': 'off',
     'no-restricted-exports': 'off',
     'no-restricted-syntax': 'off',
+    'no-nested-ternary': 'off',
     'default-param-last': 'off',
     'default-case': 'off',
     radix: ['error', 'as-needed'],
