@@ -191,9 +191,12 @@ export async function getWork(id: string): Promise<Work> {
     ...work,
     symbols: {
       rating: `${symbolsOrigin + symbols.rating[work.rating || 'none']}.png`,
-      orientation: `${
-        symbolsOrigin + symbols.orientation[work.categories[0] || 'none']
-      }.png`,
+      orientation:
+        work.categories.length > 1
+          ? `${symbolsOrigin + symbols.orientation.multi}.png`
+          : `${
+              symbolsOrigin + symbols.orientation[work.categories[0] || 'none']
+            }.png`,
       warning: `${
         symbolsOrigin +
         symbols.warning[
