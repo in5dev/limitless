@@ -13,7 +13,7 @@ export function getWorkId(url: string): string {
 
 export const ratings = {
   general: 'General Audiences',
-  teen: 'Teen and Up Audiences',
+  teen: 'Teen And Up Audiences',
   mature: 'Mature',
   explicit: 'Explicit'
 } as const;
