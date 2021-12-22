@@ -26,7 +26,7 @@ export interface Series {
   };
 }
 export async function getSeries(id: string): Promise<Series> {
-  const response = await axios(`${query}${id}`);
+  const response = await axios.get(`${query}${id}`);
   const html = response.data as string;
   const $ = cheerio.load(html);
 

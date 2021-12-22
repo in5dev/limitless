@@ -103,7 +103,7 @@ export interface Work {
   };
 }
 export async function getWork(id: string): Promise<Work> {
-  const response = await axios(`${query}${id}?view_adult=true`);
+  const response = await axios.get(`${query}${id}?view_adult=true`);
   const html = response.data as string;
   const $ = cheerio.load(html);
 

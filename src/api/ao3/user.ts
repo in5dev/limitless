@@ -17,7 +17,7 @@ export interface User {
   iconUrl: string;
 }
 export async function getUser(name: string): Promise<User> {
-  const response = await axios(`${query}${name}`);
+  const response = await axios.get(`${query}${name}`);
   const html = response.data as string;
   const $ = cheerio.load(html);
 
