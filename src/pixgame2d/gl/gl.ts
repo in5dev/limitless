@@ -5,8 +5,35 @@ import { Program, Shader, Texture } from './core';
 import Rect from './rect';
 import type { Vector2 } from '../../math';
 
-import vertexSource from './shader.vert?raw';
-import fragmentSource from './shader.frag?raw';
+const vertexSource = `#version 300 es
+precision highp float;
+
+in vec2 position;
+in vec2 uv;
+
+out vec2 uvCoords;
+
+uniform mat3 modelViewMatrix;
+uniform mat3 projectionMatrix;
+
+void main() {
+    uvCoords = uv;
+    mat3 matrix = projectionMatrix * modelViewMatrix;
+    vec3 pos = matrix * vec3(position, 1.0);
+    gl_Position = vec4(pos, 1.0);
+}`;
+const fragmentSource = `#version 300 es
+precision highp float;
+
+in vec2 uvCoords;
+
+out vec4 color;
+
+uniform sampler2D sprite;
+
+void main() {
+    color = texture(sprite, uvCoords);
+}`;
 
 export default class GL {
   canvas: HTMLCanvasElement;

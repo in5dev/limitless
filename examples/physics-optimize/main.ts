@@ -2,7 +2,7 @@
 /* eslint-disable new-cap */
 /* eslint-disable no-new */
 import p5 from 'p5';
-import { Circle, random, Vector2, World } from '../../src/limitless';
+import { Circle, random, Vector2, World } from '../../src';
 
 new p5((p: p5) => {
   let world: World;

@@ -1,7 +1,8 @@
+import test from 'ava';
 import { assert } from 'chai';
 import Matrix, { mat } from './mat';
 
-describe('mat', () => {
+test('mat', () => {
   const a = mat(4, 3).set([
     [1, 5, 4],
     [8, 0, 4],
@@ -14,7 +15,7 @@ describe('mat', () => {
     [0, 8]
   ]);
 
-  it('multiply', () => {
+  test('multiply', () => {
     const ans = Matrix.mult(a, b);
     ans.log();
     assert(

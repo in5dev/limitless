@@ -1,7 +1,8 @@
+import test from 'ava';
 import { expect } from 'chai';
 import { toSuffix } from './number';
 
-describe('number', () => {
+test('number', () => {
   expect(toSuffix(14)).to.equal('14');
   expect(toSuffix(123_456)).to.equal('123.456 thousand');
   expect(toSuffix(3.6e15)).to.equal('3.6 quadrillion');

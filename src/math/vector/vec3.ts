@@ -29,6 +29,17 @@ export default class Vector3 {
     return vec3(+this.x, +this.y, +this.z);
   }
 
+  bool(): boolean {
+    return this.x !== 0 || this.y !== 0 || this.z !== 0;
+  }
+
+  min(): number {
+    return Math.min(this.x, this.y, this.z);
+  }
+  max(): number {
+    return Math.max(this.x, this.y, this.z);
+  }
+
   set(x: First, y?: number, z?: number): this {
     if (x instanceof Vector3) {
       this.x = x.x;
@@ -62,6 +73,10 @@ export default class Vector3 {
       return this.x === x[0] && this.y === x[1] && this.z === x[2];
 
     return this.x === x && this.y === y && this.z === z;
+  }
+
+  neg(): Vector3 {
+    return vec3(-this.x, -this.y, -this.z);
   }
 
   add(x: First, y?: number, z?: number): this {
@@ -253,6 +268,16 @@ export default class Vector3 {
 
   reflect(normal: Vector3): this {
     return this.sub(Vector3.mult(normal, 2 * this.dot(normal)));
+  }
+  static reflect(v: Vector3, normal: Vector3): Vector3 {
+    return v.copy().reflect(normal);
+  }
+
+  refract(normal: Vector3, eta: number): this {
+    const nDot = this.dot(normal);
+    const k = 1 - eta * eta * (1 - nDot * nDot);
+    if (k < 0) return this;
+    return this.sub(Vector3.mult(normal, eta * nDot + Math.sqrt(k)));
   }
 }
 

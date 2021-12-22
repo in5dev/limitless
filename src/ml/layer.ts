@@ -1,47 +1,69 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Matrix from '../math/matrix';
-import { dsigmoid, sigmoid } from './functions';
+import activations from './activations';
+import type { Activation } from './activations';
 
 export default class Layer {
   weights: Matrix;
   biases: Matrix;
 
-  learningRate = 0.01;
+  activation: Activation;
 
   inputArray: number[] = [];
   outputs: number[] = [];
 
-  constructor(readonly nodes: number, readonly inputNodes: number) {
+  constructor(
+    readonly nodes: number,
+    readonly inputNodes: number,
+    activation: keyof typeof activations = 'sigmoid'
+  ) {
     this.weights = Matrix.random(nodes, inputNodes);
     this.biases = Matrix.random(nodes, 1);
+    this.activation = activations[activation];
   }
 
   predict(inputArray: number[]): number[] {
+    const {
+      weights,
+      biases,
+      activation: { f }
+    } = this;
     const inputs = Matrix.fromArray(inputArray);
-    const outputs = Matrix.mult(this.weights, inputs);
-    outputs.add(this.biases);
-    outputs.map(sigmoid);
+    const outputs = Matrix.mult(weights, inputs);
+    outputs.add(biases);
+    outputs.map(f);
 
     this.outputs = outputs.toArray();
     this.inputArray = inputArray;
     return this.outputs;
   }
 
-  train(targets: number[], errorArray?: number[]): number[] {
-    const outputsMat = Matrix.fromArray(this.outputs);
+  train(
+    targets: number[],
+    learningRate: number,
+    errorArray?: number[]
+  ): number[] {
+    const {
+      weights,
+      biases,
+      activation: { df },
+      inputArray,
+      outputs
+    } = this;
+    const outputsMat = Matrix.fromArray(outputs);
     const errors = errorArray
       ? Matrix.fromArray(errorArray)
       : Matrix.sub(Matrix.fromArray(targets), outputsMat);
 
-    const gradients = Matrix.map(outputsMat, dsigmoid)
+    const gradients = Matrix.map(outputsMat, df)
       .mult(errors)
-      .mult(this.learningRate);
+      .mult(learningRate);
 
-    const inputs = Matrix.transpose(Matrix.fromArray(this.inputArray));
+    const inputs = Matrix.transpose(Matrix.fromArray(inputArray));
     const deltas = Matrix.mult(gradients, inputs);
 
-    this.weights.add(deltas);
-    this.biases.add(gradients);
+    weights.add(deltas);
+    biases.add(gradients);
 
     return errors.toArray();
   }

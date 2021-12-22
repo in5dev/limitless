@@ -16,11 +16,11 @@ export default class World {
     width: number,
     height: number,
     structure: 'quadtree' | 'hashgrid' | 'naive' = 'quadtree',
-    options?: {
+    options: {
       capacity?: number;
       divisionSize?: number;
       doCollisions?: boolean;
-    }
+    } = {}
   ) {
     this.doCollisions = options?.doCollisions ?? true;
     switch (structure) {

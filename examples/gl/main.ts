@@ -1,4 +1,4 @@
-import GL from '../../src/graphics/gl/gl';
+import GL from '../../src/gfx/lib/gl';
 import { vec3 } from '../../src/math';
 
 const gl = new GL().fullscreen().background(0, 0, 0);
