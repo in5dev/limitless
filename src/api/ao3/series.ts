@@ -13,6 +13,7 @@ export function getSeriesId(url: string): string {
 
 export interface Series {
   id: string;
+  url: string;
   title: string;
   creators: string[];
   begun: Date;
@@ -31,6 +32,7 @@ export async function getSeries(id: string): Promise<Series> {
 
   return {
     id,
+    url: `${query}${id}`,
     title: $('h2.title').text().trim(),
     creators: $('#main > div.wrapper > dl > dd:nth-child(2) > a')
       .map((_, el) => $(el).text())

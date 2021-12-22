@@ -71,6 +71,7 @@ const symbols = {
 
 export interface Work {
   id: string;
+  url: string;
   title: string;
   author: string;
   rating?: Rating;
@@ -123,6 +124,7 @@ export async function getWork(id: string): Promise<Work> {
 
   const work = {
     id,
+    url: `${query}${id}`,
     title: $('h2.title').text().trim(),
     author: $('#workskin > div.preface.group > h3 > a').text(),
     rating: Object.entries(ratings).find(([, x]) => rating === x)?.[0] as

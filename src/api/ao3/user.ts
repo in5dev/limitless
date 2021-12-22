@@ -13,6 +13,7 @@ export function getNameFromURL(url: string): string {
 
 export interface User {
   name: string;
+  url: string;
   iconUrl: string;
 }
 export async function getUser(name: string): Promise<User> {
@@ -22,6 +23,7 @@ export async function getUser(name: string): Promise<User> {
 
   return {
     name,
+    url: `${query}${name}`,
     iconUrl:
       $('#main > div.user.home > div.primary.header.module > p > a > img').attr(
         'src'
