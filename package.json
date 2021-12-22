@@ -15,7 +15,7 @@
     "build:clean": "rm -rf dist",
     "build:ts": "tsc",
     "build:package": "cp package.json dist",
-    "lint": "eslint --ignore-path .gitignore .",
+    "lint": "eslint src",
     "test": "ava",
     "pub": "run-s build && cd dist && npm publish && cd .."
   },
