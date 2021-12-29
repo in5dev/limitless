@@ -1,5 +1,5 @@
 import axios from 'axios';
-import cheerio from 'cheerio';
+import { load } from 'cheerio';
 
 import ORIGIN from './origin';
 
@@ -28,7 +28,7 @@ export interface Series {
 export async function getSeries(id: string): Promise<Series> {
   const response = await axios.get(`${query}${id}`);
   const html = response.data as string;
-  const $ = cheerio.load(html);
+  const $ = load(html);
 
   return {
     id,

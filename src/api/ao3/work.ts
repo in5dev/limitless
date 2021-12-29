@@ -1,5 +1,5 @@
 import axios from 'axios';
-import cheerio from 'cheerio';
+import { load } from 'cheerio';
 
 import ORIGIN from './origin';
 
@@ -105,7 +105,7 @@ export interface Work {
 export async function getWork(id: string): Promise<Work> {
   const response = await axios.get(`${query}${id}?view_adult=true`);
   const html = response.data as string;
-  const $ = cheerio.load(html);
+  const $ = load(html);
 
   const rating = $(
     '#main > div.wrapper > dl > dd.rating.tags > ul > li > a'
