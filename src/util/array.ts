@@ -105,8 +105,33 @@ export function mode(arr: number[]): number[] {
   return sortedNumbers.filter(n => n === sortedCounts[0]![1]);
 }
 
-export function range(arr: number[]): number {
-  return max(arr) - min(arr);
+export function range(max: number): Generator<number>;
+export function range(
+  min: number,
+  max: number,
+  step?: number
+): Generator<number>;
+export function range(max: number): number;
+export function* range(
+  minOrMaxOrArr: number | number[],
+  maxValue?: number,
+  step = 1
+): number | Generator<number> {
+  if (Array.isArray(minOrMaxOrArr))
+    return max(minOrMaxOrArr) - min(minOrMaxOrArr);
+  if (maxValue !== undefined) {
+    const absStep = Math.abs(step);
+    if (maxValue > minOrMaxOrArr) {
+      for (let i = 0; i <= maxValue; i += absStep) {
+        yield i;
+      }
+    } else {
+      for (let i = maxValue; i >= minOrMaxOrArr; i -= absStep) {
+        yield i;
+      }
+    }
+  }
+  return range(0, minOrMaxOrArr);
 }
 
 export function variance(arr: number[]): number {
@@ -121,6 +146,11 @@ export function stddev(arr: number[]): number {
 export function meanAbsDev(arr: number[]): number {
   const m = mean(arr);
   return mean(arr.map(n => n - m));
+}
+
+export function pick<T>(arr: T[], numItems: number): T[] {
+  if (!arr.length || !numItems) return [];
+  return new Array(numItems).fill(0).map(() => arr[randomInt(arr.length)]!);
 }
 
 function randomInt(min: number, max?: number): number {
