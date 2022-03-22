@@ -153,6 +153,30 @@ export function pick<T>(arr: T[], numItems: number): T[] {
   return new Array(numItems).fill(0).map(() => arr[randomInt(arr.length)]!);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function arraysEqual(a: ArrayLike<any>, b: ArrayLike<any>): boolean {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
+
+export function dedupe<T extends { [K in keyof T]: T[K] }>(
+  array: readonly T[],
+  key: keyof T
+): T[] {
+  const arr = [...array];
+  const values = new Set<string>();
+  for (let i = arr.length - 1; i >= 0; i--) {
+    const item = arr[i]!;
+    const value = item[key];
+    if (values.has(value)) arr.splice(i, 1);
+    else values.add(value);
+  }
+  return arr;
+}
+
 function randomInt(min: number, max?: number): number {
   if (!max) return Math.floor(Math.random() * min);
   const Min = Math.min(min, max);
