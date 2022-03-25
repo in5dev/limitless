@@ -68,9 +68,17 @@ interface StructType<T extends keyof UniformData> {
   data: UniformData[T];
 }
 
+interface GLOptions {
+  depth?: boolean;
+  cull?: boolean;
+}
+
 export default class GL {
   canvas: HTMLCanvasElement;
   gl: WebGL2RenderingContext;
+
+  width: number;
+  height: number;
 
   program!: WebGLProgram;
 
@@ -85,20 +93,38 @@ export default class GL {
   textures: Texture[] = [];
 
   onResize?: () => void;
+  private animateHandle = NaN;
 
+  constructor(canvas: HTMLCanvasElement, options?: GLOptions);
+  constructor(width: number, height?: number, options?: GLOptions);
   constructor(
-    readonly width: number,
-    readonly height = width,
-    { depth = false, cull = false }: { depth?: boolean; cull?: boolean } = {}
+    canvasOrWidth: number | HTMLCanvasElement,
+    optionsOrHeight?: GLOptions | number,
+    options: GLOptions = {}
   ) {
-    const canvas = document.createElement('canvas');
-    canvas.textContent = 'HTML5 not supported';
-    document.body.appendChild(canvas);
-    this.canvas = canvas;
+    if (canvasOrWidth instanceof HTMLCanvasElement) {
+      this.canvas = canvasOrWidth;
+    } else {
+      const canvas = document.createElement('canvas');
+      canvas.textContent = 'HTML5 not supported';
+      document.body.appendChild(canvas);
+      this.canvas = canvas;
+    }
 
-    const gl = canvas.getContext('webgl2');
+    const gl = this.canvas.getContext('webgl2');
     if (!gl) throw new Error('WebGL2 not supported');
     this.gl = gl;
+
+    let depth: boolean;
+    let cull: boolean;
+
+    if (typeof optionsOrHeight === 'object') {
+      depth = optionsOrHeight?.depth || false;
+      cull = optionsOrHeight?.cull || false;
+    } else {
+      depth = options?.depth || false;
+      cull = options?.cull || false;
+    }
 
     if (depth) {
       gl.enable(gl.DEPTH_TEST);
@@ -109,7 +135,18 @@ export default class GL {
       gl.cullFace(gl.BACK);
       gl.frontFace(gl.CCW);
     }
-    this.resize(width, height);
+
+    if (
+      typeof canvasOrWidth === 'number' &&
+      typeof optionsOrHeight !== 'object'
+    ) {
+      this.width = canvasOrWidth;
+      this.height = optionsOrHeight || canvasOrWidth;
+    } else {
+      this.width = this.canvas.width;
+      this.height = this.canvas.height;
+    }
+    this.resize(this.width, this.height);
   }
 
   static async fullscreen(
@@ -514,11 +551,21 @@ export default class GL {
     return buffer;
   }
 
+  animate() {
+    const fn = () => {
+      this.render();
+      this.animateHandle = requestAnimationFrame(fn);
+    };
+    this.animateHandle = requestAnimationFrame(fn);
+    return () => cancelAnimationFrame(this.animateHandle);
+  }
+
   remove(): void {
     const { gl, textures } = this;
     textures.forEach(texture => texture.remove());
     gl.deleteBuffer(this.indexBuffer.buffer);
     gl.deleteBuffer(this.vertexBuffer.buffer);
+    cancelAnimationFrame(this.animateHandle);
     if (this.onResize) window.removeEventListener('resize', this.onResize);
   }
 
