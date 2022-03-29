@@ -1,7 +1,6 @@
 {
   "name": "@limitlesspc/limitless",
-  "version": "0.2.0",
-  "type": "module",
+  "version": "0.2.4",
   "author": {
     "name": "Izaak Brown",
     "email": "izaakbthunderbird@gmail.com"

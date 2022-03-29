@@ -19,7 +19,7 @@ module.exports = {
     'prettier'
   ],
   rules: {
-    'no-bitwise': ['error', { allow: ['|'] }],
+    'no-bitwise': 'off',
     'no-console': 'off',
     'no-param-reassign': 'off',
     'no-plusplus': 'off',
