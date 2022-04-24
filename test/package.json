@@ -1,0 +1,16 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "scripts": {
+    "qoi": "ts-node ./qoi.ts"
+  },
+  "dependencies": {
+    "axios": "^0.26.1",
+    "canvas": "^2.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.25",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3"
+  }
+}
