@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { mat3 } from './mat3';
 
@@ -5,21 +6,37 @@ type Vec4 = [number, number, number, number];
 type Mat4 = [...Vec4, ...Vec4, ...Vec4, ...Vec4];
 
 export default class Matrix4 {
+  // @ts-ignore
   [0]: number;
+  // @ts-ignore
   [1]: number;
+  // @ts-ignore
   [2]: number;
+  // @ts-ignore
   [3]: number;
+  // @ts-ignore
   [4]: number;
+  // @ts-ignore
   [5]: number;
+  // @ts-ignore
   [6]: number;
+  // @ts-ignore
   [7]: number;
+  // @ts-ignore
   [8]: number;
+  // @ts-ignore
   [9]: number;
+  // @ts-ignore
   [10]: number;
+  // @ts-ignore
   [11]: number;
+  // @ts-ignore
   [12]: number;
+  // @ts-ignore
   [13]: number;
+  // @ts-ignore
   [14]: number;
+  // @ts-ignore
   [15]: number;
   [i: number]: number;
 

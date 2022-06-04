@@ -1,16 +1,26 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 type Vec3 = [number, number, number];
 type Mat3 = [...Vec3, ...Vec3, ...Vec3];
 
 export default class Matrix3 {
+  // @ts-ignore
   [0]: number;
+  // @ts-ignore
   [1]: number;
+  // @ts-ignore
   [2]: number;
+  // @ts-ignore
   [3]: number;
+  // @ts-ignore
   [4]: number;
+  // @ts-ignore
   [5]: number;
+  // @ts-ignore
   [6]: number;
+  // @ts-ignore
   [7]: number;
+  // @ts-ignore
   [8]: number;
   [i: number]: number;
 
