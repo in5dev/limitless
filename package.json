@@ -1,24 +1,21 @@
 {
   "name": "@limitlesspc/limitless",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "My TypeScript library",
   "author": "limitlesspc",
   "repository": {
     "type": "git",
     "url": "https://github.com/limitlesspc/limitless.git"
   },
-  "keywords": [],
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "dev": "vite",
     "build": "run-s build:*",
     "build:clean": "rm -rf dist",
     "build:ts": "tsc",
+    "build:package": "cp package.json dist",
     "lint": "eslint src",
     "test": "ava",
-    "pub": "run-s build && npm publish"
+    "pub": "run-s build && cd dist && npm publish && cd .."
   },
   "dependencies": {
     "axios": "^0.27.2",
