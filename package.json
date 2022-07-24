@@ -1,42 +1,33 @@
 {
-  "name": "@limitlesspc/limitless",
-  "version": "0.0.2",
-  "description": "My TypeScript library",
+  "name": "limitless",
+  "version": "1.0.0",
+  "private": true,
   "author": "limitlesspc",
   "repository": {
     "type": "git",
     "url": "https://github.com/limitlesspc/limitless.git"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "run-s build:*",
-    "build:clean": "rm -rf dist",
-    "build:ts": "tsc",
-    "build:package": "cp package.json dist",
-    "lint": "eslint src",
-    "test": "ava",
-    "pub": "run-s build && cd dist && npm publish && cd .."
+    "lint": "eslint .",
+    "test": "ava"
   },
   "dependencies": {
     "axios": "^0.27.2",
-    "cheerio": "^1.0.0-rc.11",
+    "cheerio": "1.0.0-rc.12",
     "gl-matrix": "^3.4.3",
-    "p5": "^1.4.1",
-    "tslib": "^2.4.0"
+    "p5": "^1.4.2"
   },
   "devDependencies": {
+    "@swc-node/register": "^1.5.1",
     "@types/p5": "^1.4.2",
-    "@typescript-eslint/eslint-plugin": "^5.29.0",
-    "@typescript-eslint/parser": "^5.29.0",
-    "ava": "^4.3.0",
-    "eslint": "^8.18.0",
+    "@typescript-eslint/eslint-plugin": "^5.30.7",
+    "@typescript-eslint/parser": "^5.30.7",
+    "ava": "^4.3.1",
+    "eslint": "^8.20.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
-    "npm-run-all": "^4.1.5",
-    "ts-node": "^10.8.1",
-    "typescript": "^4.7.4",
-    "vite": "^2.9.12"
+    "typescript": "^4.7.4"
   }
 }

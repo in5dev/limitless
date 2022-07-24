@@ -1,8 +1,5 @@
 module.exports = {
   extensions: ['ts'],
-  nodeArguments: [
-    '--loader=ts-node/esm',
-    '--experimental-specifier-resolution=node'
-  ],
-  files: ['src/**/*.test.ts']
+  nodeArguments: ['--loader=@swc-node/register'],
+  files: ['**/*.test.ts']
 };
