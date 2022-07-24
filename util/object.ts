@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+export const objectKeys = Object.keys as <T>(obj: T) => (keyof T)[];
 
 export const hasOwn = (obj: any, key: PropertyKey) =>
   Object.prototype.hasOwnProperty.call(obj, key);

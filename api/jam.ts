@@ -1,4 +1,4 @@
-import axios from 'axios';
+import fetch from 'cross-fetch';
 import { load } from 'cheerio';
 
 export const titles = [
@@ -45,8 +45,8 @@ interface Episode {
   words: number;
 }
 export async function getEpisode(url: string): Promise<Episode> {
-  const response = await axios.get<string>(url);
-  const html = response.data;
+  const response = await fetch(url);
+  const html = await response.text();
   const $ = load(html);
 
   const title = $('#firstHeading').text().trim() as Title;

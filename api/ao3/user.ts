@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { load } from 'cheerio';
+import fetch from 'cross-fetch';
 
 import ORIGIN from './origin';
 
@@ -14,19 +14,21 @@ export function getNameFromURL(url: string): string {
 export interface User {
   name: string;
   url: string;
-  iconUrl: string;
+  iconURL: string;
 }
 export async function getUser(name: string): Promise<User> {
-  const response = await axios.get(`${query}${name}`);
-  const html = response.data as string;
-  const $ = load(html);
+  name = name.split('(')[0]?.trim() || '';
+  const url = `${query}${name}`;
+  const response = await fetch(url);
+  const html = await response.text();
+  const $ = await load(html);
+
+  let iconURL = $('img.icon').attr('src') || '';
+  if (!iconURL.startsWith('http')) iconURL = `${ORIGIN}${iconURL}`;
 
   return {
     name,
-    url: `${query}${name}`,
-    iconUrl:
-      $('#main > div.user.home > div.primary.header.module > p > a > img').attr(
-        'src'
-      ) || ''
+    url,
+    iconURL
   };
 }

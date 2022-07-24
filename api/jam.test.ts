@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import { getEpisode, getURL } from './index';
+import { getEpisode, getURL } from './jam';
 
 test('get E1S1', async t => {
   const url = getURL('Prologue');

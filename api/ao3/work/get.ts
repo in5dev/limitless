@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { load } from 'cheerio';
+import fetch from 'cross-fetch';
 
-import ORIGIN from './origin';
+import ORIGIN from '../origin';
 
-const query = `${ORIGIN}/works/`;
+export const query = `${ORIGIN}/works/`;
 const ao3Regex = new RegExp(`${query}(\\d+)`);
 
 export function getWorkId(url: string): string {
@@ -16,30 +16,31 @@ export const ratings = {
   teen: 'Teen And Up Audiences',
   mature: 'Mature',
   explicit: 'Explicit'
-} as const;
+};
 export type Rating = keyof typeof ratings;
 
 export const contentWarnings = {
+  choosenot: 'Creator Chose Not To Use Archive Warnings',
   violence: 'Graphic Depictions of Violence',
   death: 'Major Character Death',
   rape: 'Rape/Non-Con',
   underage: 'Underage Sex'
-} as const;
+};
 export type Warning = keyof typeof contentWarnings;
 
-export const relationshipOrientations = {
+export const categories = {
   lesbian: 'F/F',
   straight: 'F/M',
   gen: 'Gen',
   gay: 'M/M',
   multi: 'Multi',
   other: 'Other'
-} as const;
-export type RelationshipOrientation = keyof typeof relationshipOrientations;
+};
+export type Category = keyof typeof categories;
 
-const symbolsOrigin =
+export const symbolsOrigin =
   'https://archiveofourown.org/images/skins/iconsets/default/';
-const symbols = {
+export const symbols = {
   rating: {
     general: 'rating-general-audience',
     teen: 'rating-teen',
@@ -47,7 +48,7 @@ const symbols = {
     explicit: 'rating-explicit',
     none: 'rating-notrated'
   },
-  orientation: {
+  category: {
     lesbian: 'category-femslash',
     straight: 'category-het',
     gen: 'category-gen',
@@ -57,10 +58,10 @@ const symbols = {
     none: 'category-none'
   },
   warning: {
-    undefined: 'warning-choosenotto',
+    choosenot: 'warning-choosenotto',
     yes: 'warning-yes',
     no: 'warning-no',
-    external: 'warning-external'
+    external: 'warning-external-work'
   },
   complete: {
     yes: 'complete-yes',
@@ -69,14 +70,15 @@ const symbols = {
   }
 };
 
+type ObjectValues<T> = T[keyof T];
+
 export interface Work {
   id: string;
-  url: string;
   title: string;
   author: string;
   rating?: Rating;
-  warnings?: Warning[];
-  categories: RelationshipOrientation[];
+  warnings: Warning[];
+  categories: Category[];
   fandoms: string[];
   relationships: string[];
   characters: string[];
@@ -96,16 +98,16 @@ export interface Work {
     hits: number;
   };
   symbols: {
-    rating: string;
-    orientation: string;
-    warning: string;
-    complete: string;
+    rating: ObjectValues<typeof symbols.rating>;
+    category: ObjectValues<typeof symbols.category>;
+    warning: ObjectValues<typeof symbols.warning>;
+    complete: ObjectValues<typeof symbols.complete>;
   };
 }
 export async function getWork(id: string): Promise<Work> {
-  const response = await axios.get(`${query}${id}?view_adult=true`);
-  const html = response.data as string;
-  const $ = load(html);
+  const response = await fetch(`${query}${id}?view_adult=true`);
+  const html = await response.text();
+  const $ = await load(html);
 
   const rating = $(
     '#main > div.wrapper > dl > dd.rating.tags > ul > li > a'
@@ -124,8 +126,7 @@ export async function getWork(id: string): Promise<Work> {
 
   const work = {
     id,
-    url: `${query}${id}`,
-    title: $('h2.title').text().trim(),
+    title: $('h2.title').text(),
     author: $('#workskin > div.preface.group > h3 > a').text(),
     rating: Object.entries(ratings).find(([, x]) => rating === x)?.[0] as
       | Rating
@@ -133,8 +134,6 @@ export async function getWork(id: string): Promise<Work> {
     warnings:
       warnings[0] === 'No Archive Warnings Apply'
         ? []
-        : warnings[0] === 'Creator Chose Not To Use Archive Warnings'
-        ? undefined
         : (warnings.map(
             warning =>
               Object.entries(contentWarnings).find(
@@ -143,15 +142,14 @@ export async function getWork(id: string): Promise<Work> {
           ) as Warning[]),
     categories: categories.map(
       category =>
-        Object.entries(relationshipOrientations).find(
-          ([, x]) => category === x
-        )?.[0] || 'other'
-    ) as RelationshipOrientation[],
+        Object.entries(categories).find(([, x]) => category === x)?.[0] ||
+        'other'
+    ) as Category[],
     fandoms: $('#main > div.wrapper > dl > dd.fandom.tags > ul > li > a')
       .map((_, el) => $(el).text())
       .get(),
     relationships: $('#main > div.wrapper > dl > dd.relationship.tags > ul a')
-      .map((_, el) => $(el).text() as RelationshipOrientation)
+      .map((_, el) => $(el).text() as Category)
       .get(),
     characters: $('#main > div.wrapper > dl > dd.character.tags > ul a')
       .map((_, el) => $(el).text())
@@ -160,7 +158,7 @@ export async function getWork(id: string): Promise<Work> {
       .map((_, el) => $(el).text())
       .get(),
     language: $('#main > div.wrapper > dl > dd.language').text().trim(),
-    series: series.length
+    series: series
       ? {
           id: series.attr('href')?.replace('/series/', '') || '',
           title: series.text()
@@ -183,25 +181,19 @@ export async function getWork(id: string): Promise<Work> {
   return {
     ...work,
     symbols: {
-      rating: `${symbolsOrigin + symbols.rating[work.rating || 'none']}.png`,
-      orientation:
+      rating: symbols.rating[work.rating || 'none'],
+      category:
         work.categories.length > 1
-          ? `${symbolsOrigin + symbols.orientation.multi}.png`
-          : `${
-              symbolsOrigin + symbols.orientation[work.categories[0] || 'none']
-            }.png`,
-      warning: `${
-        symbolsOrigin +
+          ? symbols.category.multi
+          : symbols.category[work.categories[0] || 'none'],
+      warning:
         symbols.warning[
-          work.warnings ? (work.warnings.length ? 'yes' : 'no') : 'undefined'
-        ]
-      }.png`,
-      complete: `${
-        symbolsOrigin +
+          work.warnings ? (work.warnings.length ? 'yes' : 'no') : 'choosenot'
+        ],
+      complete:
         symbols.complete[
           work.stats.chapters[0] >= work.stats.chapters[1] ? 'yes' : 'no'
         ]
-      }.png`
     }
   };
 }

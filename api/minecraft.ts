@@ -1,15 +1,17 @@
-import axios from 'axios';
+import fetch from 'cross-fetch';
 
 export async function getUUID(username: string): Promise<string> {
-  const response = await axios.get(
+  const response = await fetch(
     `https://api.mojang.com/users/profiles/minecraft/${username}`
   );
-  return response.data.id;
+  const data = await response.json();
+  return data.id;
 }
 
 export async function getUsername(uuid: string): Promise<string> {
-  const response = await axios.get(
+  const response = await fetch(
     `https://api.mojang.com/user/profiles/${uuid}/names`
   );
-  return response.data[response.data.length - 1].name;
+  const data = await response.json();
+  return data[data.length - 1].name;
 }
