@@ -9,7 +9,8 @@ import {
   Work as IWork
 } from './get';
 import { objectKeys } from '../../../util';
-import type languages from './languages.json';
+import type languages from './languages';
+import { Language } from './languages';
 
 interface Work extends IWork {
   summary: string;
@@ -117,7 +118,7 @@ interface SearchParams {
   'work_search[word_count]'?: string;
 
   // Language
-  'work_search[language_id]'?: keyof typeof languages;
+  'work_search[language_id]'?: Language;
 
   // Fandoms
   'work_search[fandom_names]'?: string; // Comma-separated list
