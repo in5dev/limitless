@@ -1,12 +1,19 @@
-import type { Attachment, User, ChatInputCommandInteraction } from 'discord.js';
+import type {
+  Attachment,
+  User,
+  ChatInputCommandInteraction,
+  APIInteractionDataResolvedChannel,
+  GuildBasedChannel
+} from 'discord.js';
 
 export interface CommandOptionType {
   string: string;
   int: number;
   float: number;
   bool: boolean;
-  user: User;
   choice: string;
+  user: User;
+  channel: APIInteractionDataResolvedChannel | GuildBasedChannel;
   attachment: Attachment;
 }
 type Type = keyof CommandOptionType;
