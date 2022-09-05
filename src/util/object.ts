@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const objectKeys = Object.keys as <T>(obj: T) => (keyof T)[];
 
@@ -8,6 +9,7 @@ export function shallowEquals<
   A extends Record<any, any>,
   B extends Record<any, any>
 >(a: A, b: B): boolean {
+  // @ts-ignore
   if (a === b) return true;
   for (const key in a) {
     if (hasOwn(a, key) && !hasOwn(b, key)) return false;
@@ -22,12 +24,14 @@ export function deepEquals<
   A extends Record<any, any>,
   B extends Record<any, any>
 >(a: A, b: B): boolean {
+  // @ts-ignore
   if (a === b) return true;
   if (a == null || b == null) return false;
   if (a.constructor !== b.constructor) return false;
   for (const key in a) {
     if (hasOwn(a, key)) {
       if (!hasOwn(b, key)) return false;
+      // @ts-ignore
       if (a[key] === b[key]) continue;
       if (typeof a[key] !== 'object') return false;
       if (!deepEquals(a[key], b[key])) return false;
@@ -36,6 +40,7 @@ export function deepEquals<
   for (const key in b) {
     if (hasOwn(b, key)) {
       if (!hasOwn(a, key)) return false;
+      // @ts-ignore
       if (a[key] === b[key]) continue;
       if (typeof b[key] !== 'object') return false;
       if (!deepEquals(a[key], b[key])) return false;

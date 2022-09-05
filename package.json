@@ -1,6 +1,6 @@
 {
   "name": "@limitlesspc/limitless",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "My TypeScript library",
   "author": "limitlesspc",
   "repository": {
@@ -18,24 +18,26 @@
     "pub": "run-s build && cd dist && npm publish && cd .."
   },
   "dependencies": {
+    "@discordjs/rest": "^1.1.0",
     "cheerio": "1.0.0-rc.12",
     "cross-fetch": "^3.1.5",
+    "discord-api-types": "^0.37.5",
     "gl-matrix": "^3.4.3",
     "p5": "^1.4.2"
   },
   "devDependencies": {
     "@swc-node/register": "^1.5.1",
     "@types/p5": "^1.4.2",
-    "@typescript-eslint/eslint-plugin": "^5.30.7",
-    "@typescript-eslint/parser": "^5.30.7",
-    "ava": "^4.3.1",
-    "discord.js": "^14.0.3",
-    "eslint": "^8.20.0",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "ava": "^4.3.3",
+    "discord.js": "^14.3.0",
+    "eslint": "^8.23.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "npm-run-all": "^4.1.5",
-    "typescript": "^4.7.4"
+    "typescript": "^4.8.2"
   }
 }
