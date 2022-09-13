@@ -1,11 +1,12 @@
 {
-  "name": "@limitlesspc/limitless",
-  "version": "0.0.5",
-  "description": "My TypeScript library",
-  "author": "limitlesspc",
+  "name": "@in5net/limitless",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "A TypeScript library",
+  "author": "in5dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/limitlesspc/limitless.git"
+    "url": "https://github.com/in5dev/limitless.git"
   },
   "scripts": {
     "dev": "vite",
@@ -15,7 +16,7 @@
     "build:package": "cp package.json dist",
     "lint": "eslint src",
     "test": "ava",
-    "pub": "run-s build && cd dist && npm publish && cd .."
+    "pub": "run-s build && cd dist && npm publish --access=public && cd .."
   },
   "dependencies": {
     "@discordjs/rest": "^1.1.0",
