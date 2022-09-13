@@ -27,7 +27,7 @@
     "build": "vite build && tsc",
     "lint": "eslint src",
     "test": "ava",
-    "pub": "run-s build && npm publish --access=public"
+    "pub": "npm run build && npm publish --access=public"
   },
   "dependencies": {
     "@discordjs/rest": "^1.1.0",
