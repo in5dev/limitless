@@ -1,44 +1,55 @@
 {
   "name": "@in5net/limitless",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A TypeScript library",
   "author": "in5dev",
   "repository": {
     "type": "git",
     "url": "https://github.com/in5dev/limitless.git"
   },
+  "module": "index.mjs",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "dev": "vite",
-    "build": "run-s build:*",
-    "build:clean": "rm -rf dist",
-    "build:ts": "tsc",
-    "build:package": "cp package.json dist",
+    "build": "vite build && tsc",
     "lint": "eslint src",
     "test": "ava",
-    "pub": "run-s build && cd dist && npm publish --access=public && cd .."
+    "pub": "run-s build && npm publish --access=public"
   },
   "dependencies": {
     "@discordjs/rest": "^1.1.0",
     "cheerio": "1.0.0-rc.12",
     "cross-fetch": "^3.1.5",
-    "discord-api-types": "^0.37.5",
+    "discord-api-types": "^0.37.9",
     "gl-matrix": "^3.4.3",
     "p5": "^1.4.2"
   },
   "devDependencies": {
     "@swc-node/register": "^1.5.1",
     "@types/p5": "^1.4.2",
-    "@typescript-eslint/eslint-plugin": "^5.36.1",
-    "@typescript-eslint/parser": "^5.36.1",
+    "@typescript-eslint/eslint-plugin": "^5.37.0",
+    "@typescript-eslint/parser": "^5.37.0",
     "ava": "^4.3.3",
     "discord.js": "^14.3.0",
-    "eslint": "^8.23.0",
+    "eslint": "^8.23.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
-    "npm-run-all": "^4.1.5",
-    "typescript": "^4.8.2"
+    "typescript": "^4.8.3",
+    "vite": "^3.1.0"
   }
 }
