@@ -1,12 +1,11 @@
 {
   "name": "@in5net/limitless",
-  "type": "module",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A TypeScript library",
   "author": "in5dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/in5dev/limitless.git"
+    "url": "https://github.com/in5net/limitless.git"
   },
   "module": "index.mjs",
   "main": "index.js",
