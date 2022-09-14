@@ -5,7 +5,7 @@
   "author": "in5dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/in5net/limitless.git"
+    "url": "https://github.com/in5dev/limitless.git"
   },
   "scripts": {
     "build": "rm -rf dist && tsc",
