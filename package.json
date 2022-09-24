@@ -1,6 +1,6 @@
 {
   "name": "@in5net/limitless",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "type": "module",
   "description": "A TypeScript library",
   "author": "in5dev",
@@ -8,11 +8,76 @@
     "type": "git",
     "url": "https://github.com/in5dev/limitless.git"
   },
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./algorithm": {
+      "types": "./dist/algorithm/index.d.ts",
+      "import": "./dist/algorithm/index.js"
+    },
+    "./api": {
+      "types": "./dist/api/index.d.ts",
+      "import": "./dist/api/index.js"
+    },
+    "./audio": {
+      "types": "./dist/audio/index.d.ts",
+      "import": "./dist/audio/index.js"
+    },
+    "./card": {
+      "types": "./dist/card/index.d.ts",
+      "import": "./dist/card/index.js"
+    },
+    "./data": {
+      "types": "./dist/data/index.d.ts",
+      "import": "./dist/data/index.js"
+    },
+    "./discord": {
+      "types": "./dist/discord/index.d.ts",
+      "import": "./dist/discord/index.js"
+    },
+    "./formats": {
+      "types": "./dist/formats/index.d.ts",
+      "import": "./dist/formats/index.js"
+    },
+    "./gfx": {
+      "types": "./dist/gfx/index.d.ts",
+      "import": "./dist/gfx/index.js"
+    },
+    "./math": {
+      "types": "./dist/math/index.d.ts",
+      "import": "./dist/math/index.js"
+    },
+    "./ml": {
+      "types": "./dist/ml/index.d.ts",
+      "import": "./dist/ml/index.js"
+    },
+    "./physics": {
+      "types": "./dist/physics/index.d.ts",
+      "import": "./dist/physics/index.js"
+    },
+    "./pixgame2d": {
+      "types": "./dist/pixgame2d/index.d.ts",
+      "import": "./dist/pixgame2d/index.js"
+    },
+    "./util": {
+      "types": "./dist/util/index.d.ts",
+      "import": "./dist/util/index.js"
+    }
+  },
   "scripts": {
     "build": "rm -rf dist && tsc",
     "lint": "eslint src",
     "test": "ava",
-    "pub": "npm run build && cp package.json dist && cd dist && npm publish --access=public && cd .."
+    "pub": "npm run build && npm publish --access=public"
   },
   "dependencies": {
     "@discordjs/rest": "^1.1.0",
