@@ -1,5 +1,5 @@
-import { Vector2 } from '../../../math';
-import type Shader from './shader';
+import { Vector2 } from '../../../math/index.js';
+import type Shader from './shader.js';
 
 export default class Program {
   program: WebGLProgram;

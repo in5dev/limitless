@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { ReadonlyMat2, ReadonlyMat3, ReadonlyMat4 } from 'gl-matrix';
 
-import Shader from './shader';
-import Texture from './texture';
+import Shader from './shader.js';
+import Texture from './texture.js';
 
 const screenSource = `#version 300 es
 precision highp float;

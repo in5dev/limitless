@@ -1,8 +1,8 @@
 import type p5 from 'p5';
-import AABB from './aabb';
 
-import Body from './body';
-import type Circle from './circle';
+import AABB from './aabb.js';
+import Body from './body.js';
+import type Circle from './circle.js';
 
 export default class Point extends Body {
   rotationalInertia = Infinity;

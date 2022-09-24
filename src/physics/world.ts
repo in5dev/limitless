@@ -1,8 +1,8 @@
 import type p5 from 'p5';
 
-import { QuadTree, SpatialHashGrid, Naive } from './structures';
-import type Body from './body';
-import type { RenderOptions } from './types';
+import { QuadTree, SpatialHashGrid, Naive } from './structures/index.js';
+import type Body from './body/index.js';
+import type { RenderOptions } from './types.js';
 
 export default class World {
   bodies: Body[] = [];

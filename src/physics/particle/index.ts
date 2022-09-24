@@ -1,4 +1,4 @@
-import Particle from './particle';
+import Particle from './particle.js';
 
 export default Particle;
-export { default as ParticleSystem } from './particle-system';
+export { default as ParticleSystem } from './particle-system.js';

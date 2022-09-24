@@ -1,3 +1,3 @@
-import Game from './game';
+import Game from './game.js';
 
 export default Game;

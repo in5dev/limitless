@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import Layer from './layer';
+import Layer from './layer.js';
 
 export default class NeuralNetwork {
   layers: Layer[] = [];

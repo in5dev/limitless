@@ -1,5 +1,5 @@
 import { mat4 } from 'gl-matrix';
-import { vec3 } from '../../math';
+import { vec3 } from '../../math/index.js';
 
 export default class Camera {
   position = vec3();

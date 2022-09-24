@@ -1,7 +1,7 @@
 import { mat4 } from 'gl-matrix';
 
-import { vec3 } from '../../math';
-import type Geometry from './geometries/geometry';
+import { vec3 } from '../../math/index.js';
+import type Geometry from './geometries/geometry.js';
 
 export default class Model {
   position = vec3();

@@ -1,7 +1,7 @@
-export * from './character';
-export * from './fandom';
-export * from './relationship';
-export * from './tag';
-export * from './user';
+export * from './character.js';
+export * from './fandom.js';
+export * from './relationship.js';
+export * from './tag.js';
+export * from './user.js';
 
-export * from './work';
+export * from './work/index.js';

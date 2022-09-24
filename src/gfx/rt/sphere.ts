@@ -1,5 +1,5 @@
-import Material from './material';
-import type { Vector3 } from '../../math';
+import Material from './material.js';
+import type { Vector3 } from '../../math/index.js';
 
 export default class Sphere {
   constructor(

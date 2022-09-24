@@ -1,7 +1,7 @@
-export * from './array';
-export * from './string';
-export * from './object';
-export * from './function';
+export * from './array.js';
+export * from './string.js';
+export * from './object.js';
+export * from './function.js';
 
-export * from './word';
-export * from './time';
+export * from './word.js';
+export * from './time.js';

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type p5 from 'p5';
 
-import Body, { AABB } from '../body';
-import { toFloor } from '../../util/number';
+import Body, { AABB } from '../body/index.js';
+import { toFloor } from '../../util/number.js';
 
 export default class SpatialHashGrid extends AABB {
   bodies: Body[] = [];

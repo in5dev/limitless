@@ -1,10 +1,10 @@
 import type p5 from 'p5';
 
-import Body from './body';
-import AABB from './aabb';
-import Vector2 from '../../math/vector/vec2';
-import type ConvexPolygon from './convex-polygon';
-import type { RenderOptions } from '../types';
+import Body from './body.js';
+import AABB from './aabb.js';
+import Vector2 from '../../math/vector/vec2.js';
+import type ConvexPolygon from './convex-polygon.js';
+import type { RenderOptions } from '../types.js';
 
 export default class Circle extends Body {
   constructor(x: number, y: number, public radius: number, mass?: number) {

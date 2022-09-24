@@ -1,2 +1,2 @@
-export * from './angle';
-export * from './funcs';
+export * from './angle.js';
+export * from './funcs.js';

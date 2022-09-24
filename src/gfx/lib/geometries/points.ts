@@ -1,6 +1,6 @@
-import { VertexBuffer } from '../core';
-import type { Vector2 } from '../../../math';
-import type Geometry from './geometry';
+import { VertexBuffer } from '../core/index.js';
+import type { Vector2 } from '../../../math/index.js';
+import type Geometry from './geometry.js';
 
 export default class Points implements Geometry {
   private buffer: VertexBuffer;

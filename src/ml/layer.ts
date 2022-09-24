@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import Matrix from '../math/matrix';
-import activations from './activations';
-import type { Activation } from './activations';
+import Matrix from '../math/matrix/index.js';
+import activations from './activations.js';
+import type { Activation } from './activations.js';
 
 export default class Layer {
   weights: Matrix;

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import GL from './gl';
-import Sprite from './sprite';
+import GL from './gl/index.js';
+import Sprite from './sprite.js';
 
 export default class Game {
   gl = new GL();

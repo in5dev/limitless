@@ -1,1 +1,1 @@
-export { default as Renderer2D } from './2d';
+export { default as Renderer2D } from './2d/index.js';

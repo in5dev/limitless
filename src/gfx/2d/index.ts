@@ -1,4 +1,4 @@
-import { TAU } from '../../math/constants';
+import { TAU } from '../../math/constants.js';
 
 interface Point {
   x: number;

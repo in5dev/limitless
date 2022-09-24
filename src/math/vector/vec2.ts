@@ -1,4 +1,4 @@
-import { clamp, lerp, random } from '../funcs';
+import { clamp, lerp, random } from '../funcs.js';
 
 type First = Vector2 | [x: number, y: number] | number;
 

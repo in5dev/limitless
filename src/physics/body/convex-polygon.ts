@@ -2,14 +2,14 @@
 /* eslint-disable no-restricted-syntax */
 import type p5 from 'p5';
 
-import Body from './body';
-import { minmax, overlap } from '../../math/funcs';
-import Vector2 from '../../math/vector/vec2';
-import { average, min } from '../../util/array';
-import AABB from './aabb';
-import type { Collision } from './body';
-import type Circle from './circle';
-import type { RenderOptions } from '../types';
+import Body from './body.js';
+import { minmax, overlap } from '../../math/funcs.js';
+import Vector2 from '../../math/vector/vec2.js';
+import { average, min } from '../../util/array.js';
+import AABB from './aabb.js';
+import type { Collision } from './body.js';
+import type Circle from './circle.js';
+import type { RenderOptions } from '../types.js';
 
 export default class ConvexPolygon extends Body {
   constructor(x: number, y: number, public vertices: Vector2[], mass?: number) {

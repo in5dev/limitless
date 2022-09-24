@@ -1,6 +1,6 @@
 import type p5 from 'p5';
 
-import Body, { AABB } from '../body';
+import Body, { AABB } from '../body/index.js';
 
 export default class Naive extends AABB {
   bodies: Body[] = [];

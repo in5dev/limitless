@@ -1,6 +1,6 @@
 import fetch from 'cross-fetch';
 
-import ORIGIN from './origin';
+import ORIGIN from './origin.js';
 
 const ENDPOINT = `${ORIGIN}/autocomplete/freeform`;
 

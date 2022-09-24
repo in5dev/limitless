@@ -1,7 +1,7 @@
 import { load } from 'cheerio';
 import fetch from 'cross-fetch';
 
-import { random } from '../math';
+import { random } from '../math/index.js';
 
 export const FILES_ORIGIN = 'https://files.yyyyyyy.info';
 

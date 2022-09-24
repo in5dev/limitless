@@ -1,8 +1,8 @@
 import type p5 from 'p5';
 
-import ConvexPolygon from './convex-polygon';
-import { vec2, Vector2 } from '../../math/vector';
-import type { RenderOptions } from '../types';
+import ConvexPolygon from './convex-polygon.js';
+import { vec2, Vector2 } from '../../math/vector/index.js';
+import type { RenderOptions } from '../types.js';
 
 export default class Rect extends ConvexPolygon {
   size: Vector2;

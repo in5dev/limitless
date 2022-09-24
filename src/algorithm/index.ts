@@ -1,1 +1,1 @@
-export * from './sorts';
+export * from './sorts.js';

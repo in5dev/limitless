@@ -1,4 +1,4 @@
-export { default as World } from './world';
-export * from './body';
-export * from './particle';
-export * from './structures';
+export { default as World } from './world.js';
+export * from './body/index.js';
+export * from './particle/index.js';
+export * from './structures/index.js';

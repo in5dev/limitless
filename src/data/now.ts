@@ -1,4 +1,4 @@
-import { readable } from './store';
+import { readable } from './store.js';
 
 const now = readable(new Date(), set => {
   let handle = requestAnimationFrame(loop);

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { mat3 } from 'gl-matrix';
 
-import { Program, Shader, Texture } from './core';
-import Rect from './rect';
-import type { Vector2 } from '../../math';
+import { Program, Shader, Texture } from './core/index.js';
+import Rect from './rect.js';
+import type { Vector2 } from '../../math/index.js';
 
 const vertexSource = `#version 300 es
 precision highp float;

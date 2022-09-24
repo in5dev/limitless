@@ -1,7 +1,7 @@
-import GL from '../gl';
-import fragmentSource from './shader';
-import type Camera from './camera';
-import type Sphere from './sphere';
+import GL from '../gl/index.js';
+import fragmentSource from './shader.js';
+import type Camera from './camera.js';
+import type Sphere from './sphere.js';
 
 export default class RayTracer {
   private onResize: () => void;

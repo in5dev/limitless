@@ -1,11 +1,11 @@
 import type p5 from 'p5';
 
-import Body from './body';
-import AABB from './aabb';
-import ConvexPolygon from './convex-polygon';
-import Rect from './rect';
-import { vec2, Vector2 } from '../../math/vector';
-import type { RenderOptions } from '../types';
+import Body from './body.js';
+import AABB from './aabb.js';
+import ConvexPolygon from './convex-polygon.js';
+import Rect from './rect.js';
+import { vec2, Vector2 } from '../../math/index.js';
+import type { RenderOptions } from '../types.js';
 
 export default class AARect extends Body {
   size: Vector2;

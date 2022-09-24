@@ -1,6 +1,6 @@
-import { unorderedRemove } from '../../util/array';
-import type { Vector2 } from '../../math/vector';
-import type Particle from './particle';
+import { unorderedRemove } from '../../util/array.js';
+import type { Vector2 } from '../../math/vector/index.js';
+import type Particle from './particle.js';
 
 export default class ParticleSystem<T extends Particle = Particle> {
   constructor(public particles: T[] = []) {}

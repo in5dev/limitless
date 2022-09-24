@@ -1,5 +1,10 @@
-import { IndexBuffer, Program, VertexArrayObject, VertexBuffer } from '../core';
-import type Geometry from './geometry';
+import {
+  IndexBuffer,
+  Program,
+  VertexArrayObject,
+  VertexBuffer
+} from '../core/index.js';
+import type Geometry from './geometry.js';
 
 export default class Box implements Geometry {
   private vao: VertexArrayObject;

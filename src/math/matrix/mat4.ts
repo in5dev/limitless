@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { mat3 } from './mat3';
+import { mat3 } from './mat3.js';
 
 type Vec4 = [number, number, number, number];
 type Mat4 = [...Vec4, ...Vec4, ...Vec4, ...Vec4];

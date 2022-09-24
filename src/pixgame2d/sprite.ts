@@ -1,7 +1,7 @@
 import { mat3 } from 'gl-matrix';
 
-import { vec2 } from '../math';
-import type { Rect, Texture } from './gl';
+import { vec2 } from '../math/index.js';
+import type { Rect, Texture } from './gl/index.js';
 
 export default class Sprite {
   position = vec2();

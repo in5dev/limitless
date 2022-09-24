@@ -1,4 +1,4 @@
-import notes from './notes';
+import notes from './notes.js';
 
 let ctx: AudioContext | undefined;
 

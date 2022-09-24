@@ -1,5 +1,5 @@
-import { ln } from '../funcs';
-import { cos, cot, csc, sec, sin, tan } from '../trigonometry';
+import { ln } from '../funcs.js';
+import { cos, cot, csc, sec, sin, tan } from '../trigonometry/index.js';
 
 export const dsin = cos;
 export const dcos = (x: number): number => -sin(x);

@@ -1,6 +1,6 @@
 /* eslint-disable no-continue */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { swap } from '../util';
+import { swap } from '../util/index.js';
 
 const gapFactor = 1.3;
 

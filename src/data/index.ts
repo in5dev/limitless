@@ -1,4 +1,4 @@
-export * from './store';
-export { default as tweened } from './tweened';
-export { default as lerped } from './lerped';
-export { default as now } from './now';
+export * from './store.js';
+export { default as tweened } from './tweened.js';
+export { default as lerped } from './lerped.js';
+export { default as now } from './now.js';

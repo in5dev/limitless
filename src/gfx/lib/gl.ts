@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Box } from './geometries';
-import { Program, Shader } from './core';
-import Camera from './camera';
-import Model from './model';
-import DirectionalLight from './lights/directional-light';
-import type { Vector2, Vector3 } from '../../math';
+import { Box } from './geometries/index.js';
+import { Program, Shader } from './core/index.js';
+import Camera from './camera.js';
+import Model from './model.js';
+import DirectionalLight from './lights/directional-light.js';
+import type { Vector2, Vector3 } from '../../math/index.js';
 
 const vertexSource = `#version 300 es
 precision highp float;

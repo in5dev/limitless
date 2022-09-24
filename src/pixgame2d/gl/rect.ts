@@ -1,4 +1,9 @@
-import { IndexBuffer, Program, VertexArrayObject, VertexBuffer } from './core';
+import {
+  IndexBuffer,
+  Program,
+  VertexArrayObject,
+  VertexBuffer
+} from './core/index.js';
 
 export default class Rect {
   private vao: VertexArrayObject;

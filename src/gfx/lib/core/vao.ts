@@ -1,5 +1,5 @@
-import type { IndexBuffer, VertexBuffer } from './buffer';
-import type Program from './program';
+import type { IndexBuffer, VertexBuffer } from './buffer.js';
+import type Program from './program.js';
 
 export default class VertexArrayObject {
   private vao: WebGLVertexArrayObject;

@@ -1,8 +1,8 @@
 import type p5 from 'p5';
 
-import { vec2, Vector2 } from '../../math/vector';
-import type AABB from './aabb';
-import type { RenderOptions } from '../types';
+import { vec2, Vector2 } from '../../math/index.js';
+import type AABB from './aabb.js';
+import type { RenderOptions } from '../types.js';
 
 export interface Collision {
   normal: Vector2;
