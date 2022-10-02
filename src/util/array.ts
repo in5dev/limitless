@@ -1,5 +1,4 @@
 // deno-lint-ignore-file no-explicit-any
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 export function zip<T, U>(arr1: T[], arr2: U[]): [T, U][] {
   const length = Math.min(arr1.length, arr2.length);
@@ -154,7 +153,6 @@ export function pick<T>(arr: T[], numItems: number): T[] {
   return new Array(numItems).fill(0).map(() => arr[randomInt(arr.length)]!);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function arraysEqual(a: ArrayLike<any>, b: ArrayLike<any>): boolean {
   if (a.length !== b.length) return false;
   for (let i = 0; i < a.length; i++) {

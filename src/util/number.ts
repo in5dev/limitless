@@ -184,7 +184,6 @@ export function toSuffix(x: number, shortNotation = false): string {
     const [[ending, symbol, first = ending, firstSymbol = symbol], prefixes] =
       suffix;
     const index = order3 - order30 * 10 - 1;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const [long, short] = prefixes[index]!;
     const n = toFloor(x / 10 ** (order3 * 3), 0.001);
 

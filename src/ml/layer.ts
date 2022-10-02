@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Matrix from '../math/matrix/mod.ts';
 import activations from './activations.ts';
 import type { Activation } from './activations.ts';

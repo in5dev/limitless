@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 // deno-lint-ignore-file ban-ts-comment
 import { mat3 } from './mat3.ts';
 

@@ -1,6 +1,5 @@
 // deno-lint-ignore-file ban-ts-comment
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 type Vec2 = [number, number];
 type Mat2 = [...Vec2, ...Vec2];
 

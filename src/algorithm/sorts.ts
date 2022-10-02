@@ -1,5 +1,3 @@
-/* eslint-disable no-continue */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { swap } from '../util/mod.ts';
 
 const gapFactor = 1.3;

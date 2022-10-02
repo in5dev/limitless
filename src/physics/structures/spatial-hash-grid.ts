@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 import Body, { AABB } from '../body/mod.ts';
 import { toFloor } from '../../util/number.ts';
 

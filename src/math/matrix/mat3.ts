@@ -1,6 +1,5 @@
 // deno-lint-ignore-file ban-ts-comment
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 type Vec3 = [number, number, number];
 type Mat3 = [...Vec3, ...Vec3, ...Vec3];
 

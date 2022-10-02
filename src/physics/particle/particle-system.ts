@@ -22,7 +22,6 @@ export default class ParticleSystem<T extends Particle = Particle> {
   update(dt: number): void {
     const { particles } = this;
     for (let i = 0; i < particles.length; i++) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const p = particles[i]!;
       p.update(dt);
       if (p.life <= 0) unorderedRemove(particles, i--);

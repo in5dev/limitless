@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import Layer from './layer.ts';
 
 export default class NeuralNetwork {

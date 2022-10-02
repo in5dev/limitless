@@ -1,5 +1,4 @@
 // deno-lint-ignore-file no-explicit-any
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 type Subscriber<T> = (value: T) => void;
 type Unsubscriber = () => void;
 type Updater<T> = (value: T) => T;
@@ -46,7 +45,6 @@ export function writable<T>(value?: T, start?: StartStop<T>): Writable<T> {
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Stores = Readable<any> | Readable<any>[];
 type StoreValues<S extends Stores> = S extends Readable<infer T>
   ? T

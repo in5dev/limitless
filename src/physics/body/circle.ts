@@ -36,7 +36,6 @@ export default class Circle extends Body {
     return o.collides(this);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   project(_axis: Vector2): [min: number, max: number] {
     const { radius } = this;
     return [-radius, radius];

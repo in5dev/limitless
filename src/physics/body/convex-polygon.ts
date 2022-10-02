@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable no-restricted-syntax */
-
 import Body from './body.ts';
 import { minmax, overlap } from '../../math/funcs.ts';
 import Vector2 from '../../math/vector/vec2.ts';

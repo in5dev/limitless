@@ -1,6 +1,5 @@
 // deno-lint-ignore-file ban-ts-comment no-explicit-any
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export const objectKeys = Object.keys as <T>(obj: T) => (keyof T)[];
 
 export const hasOwn = (obj: any, key: PropertyKey) =>
@@ -52,7 +51,6 @@ export function deepEquals<
 
 export function deepCopy<T>(obj: T): T {
   if (obj == null) return obj;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   if (Array.isArray(obj)) return obj.map(deepCopy);
   if (typeof obj !== 'object') return obj;
