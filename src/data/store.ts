@@ -66,19 +66,17 @@ export function derived<S extends Stores, T>(
   initialValue?: T
 ): Readable<T> {
   if (Array.isArray(stores))
-    return readable(initialValue, se()=> {
+    return readable(initialValue, () => {
       const values = stores.map(store => get(store)) as StoreValues<S>;
       const unsubscribers = stores.map((store, i) =>
         store.subscribe(value => {
           values[i] = value;
-          set(fn(values));
+          fn(values);
         })
       );
       return () => unsubscribers.forEach(unsubscriber => unsubscriber());
     });
-  return readable(initialValue, se()=>
-    stores.subscribe(value => set(fn(value)))
-  );
+  return readable(initialValue, () => stores.subscribe(value => fn(value)));
 }
 
 export function get<T>(store: Readable<T>): T {

@@ -47,7 +47,7 @@ const colorWithDifference = ({ r, g, b, a }: Color, d: Omit<Color, 'a'>) => ({
   a
 });
 
-export function decode(bytes: Uint8Array): QOI {
+export function decodeQOI(bytes: Uint8Array): QOI {
   if (!startsWith(bytes, magicBytes))
     throw new Error(`Invalid magic: ${bytes.slice(0, 4)}`);
 
