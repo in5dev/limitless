@@ -1,23 +1,25 @@
-import test from 'ava';
-
-import Matrix2, { mat2 } from './mat2';
+import {
+  assert,
+  assertEquals
+} from 'https://deno.land/std@0.158.0/testing/asserts.ts';
+import Matrix2, { mat2 } from './mat2.ts';
 
 const a = mat2([5, 8, 3, 8]);
 const b = mat2([3, 8, 8, 9]);
 
-test('add', t => {
+Deno.test('add', () => {
   const ans = Matrix2.add(a, b);
-  t.assert(ans.equals([8, 16, 11, 17]));
+  assert(ans.equals([8, 16, 11, 17]));
 });
-test('subtract', t => {
+Deno.test('subtract', () => {
   const ans = Matrix2.sub(a, b);
-  t.assert(ans.equals([2, 0, -5, -1]));
+  assert(ans.equals([2, 0, -5, -1]));
 });
-test('multiply', t => {
+Deno.test('multiply', () => {
   const ans = Matrix2.mult(a, b);
-  t.assert(ans.equals([79, 112, 73, 96]));
+  assert(ans.equals([79, 112, 73, 96]));
 });
-test('determinant', t => {
+Deno.test('determinant', () => {
   const ans = a.det();
-  t.is(ans, 16);
+  assertEquals(ans, 16);
 });

@@ -1,6 +1,6 @@
 import { readable } from './store.ts';
 
-const now = readable(new Date(), set => {
+const now = readable(new Date(), se()=> {
   let handle = requestAnimationFrame(loop);
   function loop() {
     set(new Date());

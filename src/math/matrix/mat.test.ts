@@ -1,6 +1,5 @@
-import test from 'ava';
-
-import Matrix, { mat } from './mat';
+import { assert } from 'https://deno.land/std@0.158.0/testing/asserts.ts';
+import Matrix, { mat } from './mat.ts';
 
 const a = mat(4, 3).set([
   [1, 5, 4],
@@ -14,10 +13,10 @@ const b = mat([
   [0, 8]
 ]);
 
-test('multiply', t => {
+Deno.test('multiply', () => {
   const ans = Matrix.mult(a, b);
   ans.log();
-  t.assert(
+  assert(
     ans.equals([
       [16, 49],
       [8, 48],

@@ -66,7 +66,7 @@ export function derived<S extends Stores, T>(
   initialValue?: T
 ): Readable<T> {
   if (Array.isArray(stores))
-    return readable(initialValue, set => {
+    return readable(initialValue, se()=> {
       const values = stores.map(store => get(store)) as StoreValues<S>;
       const unsubscribers = stores.map((store, i) =>
         store.subscribe(value => {
@@ -76,7 +76,7 @@ export function derived<S extends Stores, T>(
       );
       return () => unsubscribers.forEach(unsubscriber => unsubscriber());
     });
-  return readable(initialValue, set =>
+  return readable(initialValue, se()=>
     stores.subscribe(value => set(fn(value)))
   );
 }

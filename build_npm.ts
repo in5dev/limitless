@@ -3,7 +3,7 @@ import { build, emptyDir } from 'https://deno.land/x/dnt@0.31.0/mod.ts';
 await emptyDir('./npm');
 
 await build({
-  entryPoints: ['./mod.ts'],
+  entryPoints: ['./src/mod.ts'],
   outDir: './npm',
   compilerOptions: {
     target: 'ES2021'
@@ -24,6 +24,5 @@ await build({
   }
 });
 
-// post build steps
 Deno.copyFileSync('LICENSE', 'npm/LICENSE');
 Deno.copyFileSync('README.md', 'npm/README.md');

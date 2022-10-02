@@ -12,7 +12,7 @@ export default function tweened(
   let to = value;
   let time = performance.now();
 
-  const store = writable(value, set => {
+  const store = writable(value, se()=> {
     let handle = requestAnimationFrame(loop);
     function loop() {
       const t = performance.now();

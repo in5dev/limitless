@@ -34,7 +34,7 @@ export const titles = [
 ] as const;
 export type Title = typeof titles[number];
 
-export const ORIGIN = 'https://jenniferandmya.fandom.com/wiki';
+export const ORIGIN = 'https://evieandmya.fandom.com/wiki';
 
 export const getURL = (title: Title) =>
   `${ORIGIN}/${title.replaceAll(' ', '_').replaceAll("'", '%27')}`;

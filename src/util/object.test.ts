@@ -1,17 +1,20 @@
-import test from 'ava';
+import {
+  assert,
+  assertEquals,
+  assertFalse
+} from 'https://deno.land/std@0.158.0/testing/asserts.ts';
+import { deepCopy, deepEquals, hasOwn, shallowEquals } from './object.ts';
 
-import { deepCopy, deepEquals, hasOwn, shallowEquals } from './object';
-
-test('hasOwn', t => {
+Deno.test('hasOwn', () => {
   const obj = {
     a: 1,
     b: 2
   };
-  t.true(hasOwn(obj, 'a'));
-  t.false(hasOwn(obj, 'c'));
+  assert(hasOwn(obj, 'a'));
+  assertFalse(hasOwn(obj, 'c'));
 });
 
-test('shallowEquals', t => {
+Deno.test('shallowEquals', () => {
   const a = {
     a: 1,
     b: 2
@@ -20,10 +23,10 @@ test('shallowEquals', t => {
     a: 1,
     b: 2
   };
-  t.true(shallowEquals(a, b));
+  assert(shallowEquals(a, b));
 });
 
-test('deepEquals', t => {
+Deno.test('deepEquals', () => {
   const a = {
     a: 1,
     b: 2
@@ -32,7 +35,7 @@ test('deepEquals', t => {
     a: 1,
     b: 2
   };
-  t.true(deepEquals(a, b));
+  assert(deepEquals(a, b));
 
   const c = {
     a: 1,
@@ -50,7 +53,7 @@ test('deepEquals', t => {
       b: 2
     }
   };
-  t.true(deepEquals(c, d));
+  assert(deepEquals(c, d));
 
   const e = {
     a: 1,
@@ -62,7 +65,7 @@ test('deepEquals', t => {
     b: 2,
     c: [1, 2]
   };
-  t.true(deepEquals(e, f));
+  assert(deepEquals(e, f));
 
   const g = {
     a: 1,
@@ -74,14 +77,14 @@ test('deepEquals', t => {
     b: 2,
     c: [1, 3]
   };
-  t.false(deepEquals(g, h));
+  assertFalse(deepEquals(g, h));
 });
 
-test('deepCopy', t => {
+Deno.test('deepCopy', () => {
   const a = {
     a: 1,
     b: 2
   };
   const b = deepCopy(a);
-  t.deepEqual(a, b);
+  assertEquals(a, b);
 });
