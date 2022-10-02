@@ -1,6 +1,6 @@
 {
   "name": "@in5net/limitless",
-  "version": "0.0.11",
+  "version": "0.1.0",
   "type": "module",
   "description": "A TypeScript library",
   "author": "in5dev",
@@ -31,25 +31,14 @@
     "test": "ava",
     "pub": "npm run build && npm publish --access=public"
   },
-  "dependencies": {
-    "@discordjs/rest": "^1.1.0",
-    "cheerio": "1.0.0-rc.12",
-    "cross-fetch": "^3.1.5",
-    "discord-api-types": "^0.37.10",
-    "gl-matrix": "^3.4.3",
-    "p5": "^1.4.2"
-  },
   "devDependencies": {
-    "@types/p5": "^1.4.3",
-    "@typescript-eslint/eslint-plugin": "^5.38.0",
-    "@typescript-eslint/parser": "^5.38.0",
-    "ava": "^4.3.3",
-    "discord.js": "^14.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
     "eslint": "^8.24.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
-    "typescript": "^4.8.3"
+    "typescript": "^4.8.4"
   }
 }
