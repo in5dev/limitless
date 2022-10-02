@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type p5 from 'p5';
 
-import Body, { AABB } from '../body/index.js';
-import { toFloor } from '../../util/number.js';
+import Body, { AABB } from '../body/mod.ts';
+import { toFloor } from '../../util/number.ts';
 
 export default class SpatialHashGrid extends AABB {
   bodies: Body[] = [];
@@ -77,16 +76,6 @@ export default class SpatialHashGrid extends AABB {
       for (let j = 0; j < this.height / this.divisionSize; j++) {
         this.grid[i]![j] = [];
       }
-    }
-  }
-
-  override render(p: p5): void {
-    super.render(p);
-    for (let { x } = this; x < this.x + this.width; x += this.divisionSize) {
-      p.line(x, this.y, x, this.y + this.height);
-    }
-    for (let { y } = this; y < this.y + this.width; y += this.divisionSize) {
-      p.line(this.x, y, this.x + this.width, y);
     }
   }
 }

@@ -1,8 +1,5 @@
-import type p5 from 'p5';
-
-import { vec2, Vector2 } from '../../math/index.js';
-import type AABB from './aabb.js';
-import type { RenderOptions } from '../types.js';
+import { vec2, Vector2 } from '../../math/mod.ts';
+import type AABB from './aabb.ts';
 
 export interface Collision {
   normal: Vector2;
@@ -86,8 +83,6 @@ export default abstract class Body {
 
     return this;
   }
-
-  abstract render(p: p5, options?: RenderOptions): void;
 
   abstract collides(other: Body, resolve?: boolean): boolean;
 

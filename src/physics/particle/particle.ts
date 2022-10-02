@@ -1,4 +1,4 @@
-import { Point } from '../body/index.js';
+import { Point } from '../body/mod.ts';
 
 export default class Particle extends Point {
   constructor(x: number, y: number, public life = 4) {

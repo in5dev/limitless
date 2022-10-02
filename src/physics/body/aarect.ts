@@ -1,11 +1,8 @@
-import type p5 from 'p5';
-
-import Body from './body.js';
-import AABB from './aabb.js';
-import ConvexPolygon from './convex-polygon.js';
-import Rect from './rect.js';
-import { vec2, Vector2 } from '../../math/index.js';
-import type { RenderOptions } from '../types.js';
+import Body from './body.ts';
+import AABB from './aabb.ts';
+import ConvexPolygon from './convex-polygon.ts';
+import Rect from './rect.ts';
+import { vec2, Vector2 } from '../../math/mod.ts';
 
 export default class AARect extends Body {
   size: Vector2;
@@ -48,36 +45,5 @@ export default class AARect extends Body {
       return body.collides(rect, resolve);
     }
     return body.collides(this, resolve);
-  }
-
-  render(p: p5, options?: RenderOptions): void {
-    const { x, y, width, height } = this;
-    p.push();
-    p.translate(x, y);
-
-    p.stroke(61, 69, 224);
-    p.strokeWeight(2);
-    p.fill(81, 89, 232);
-    p.rectMode(p.CENTER);
-    p.rect(0, 0, width, height);
-    p.rectMode(p.CORNER);
-
-    p.stroke(0);
-    p.strokeWeight(4);
-    if (options?.position) p.point(0, 0);
-    if (options?.vertices) {
-      p.point(-width / 2, -height / 2);
-      p.point(+width / 2, -height / 2);
-      p.point(-width / 2, +height / 2);
-      p.point(+width / 2, +height / 2);
-    }
-    if (options?.normals) {
-      p.stroke(0, 0, 255);
-      p.strokeWeight(2);
-      p.line(width / 2, 0, width / 2 + 20, 0);
-      p.line(0, height / 2, 0, height / 2 + 20);
-    }
-
-    p.pop();
   }
 }

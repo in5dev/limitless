@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable no-restricted-syntax */
-import type p5 from 'p5';
 
-import Body from './body.js';
-import { minmax, overlap } from '../../math/funcs.js';
-import Vector2 from '../../math/vector/vec2.js';
-import { average, min } from '../../util/array.js';
-import AABB from './aabb.js';
-import type { Collision } from './body.js';
-import type Circle from './circle.js';
-import type { RenderOptions } from '../types.js';
+import Body from './body.ts';
+import { minmax, overlap } from '../../math/funcs.ts';
+import Vector2 from '../../math/vector/vec2.ts';
+import { average, min } from '../../util/array.ts';
+import AABB from './aabb.ts';
+import type { Collision } from './body.ts';
+import type Circle from './circle.ts';
 
 export default class ConvexPolygon extends Body {
   constructor(x: number, y: number, public vertices: Vector2[], mass?: number) {
@@ -83,36 +81,5 @@ export default class ConvexPolygon extends Body {
     if (resolve) this.resolveCollision(body, minOverlap);
 
     return true;
-  }
-
-  render(p: p5, options?: RenderOptions): void {
-    const { x, y, vertices } = this;
-    p.push();
-    p.translate(x, y);
-
-    p.stroke(46, 184, 22);
-    p.strokeWeight(2);
-    p.fill(61, 227, 32);
-    p.beginShape();
-    vertices.forEach(v => p.vertex(v.x, v.y));
-    p.endShape(p.CLOSE);
-
-    p.stroke(0);
-    p.strokeWeight(4);
-    if (options?.position) p.point(0, 0);
-    if (options?.vertices) vertices.forEach(v => p.point(v.x, v.y));
-    if (options?.normals) {
-      p.stroke(0, 0, 255);
-      p.strokeWeight(2);
-      for (let i = 0; i < vertices.length; i++) {
-        const v1 = vertices[i]!;
-        const v2 = vertices[i + 1]! || vertices[0]!;
-        const mid = Vector2.lerp(v1, v2, 0.5);
-        const normal = Vector2.sub(v2, v1).perp().setMag(20);
-        p.line(mid.x, mid.y, mid.x + normal.x, mid.y + normal.y);
-      }
-    }
-
-    p.pop();
   }
 }

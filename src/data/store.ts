@@ -1,3 +1,5 @@
+// deno-lint-ignore-file no-explicit-any
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 type Subscriber<T> = (value: T) => void;
 type Unsubscriber = () => void;
 type Updater<T> = (value: T) => T;
@@ -84,7 +86,7 @@ export function derived<S extends Stores, T>(
 export function get<T>(store: Readable<T>): T {
   let value: T;
   store.subscribe(v => (value = v))();
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // deno-lint-ignore ban-ts-comment
   // @ts-ignore
   return value;
 }

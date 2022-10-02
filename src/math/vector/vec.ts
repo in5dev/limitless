@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default class Vector {
   components!: Float64Array;

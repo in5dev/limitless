@@ -1,16 +1,15 @@
 import { load } from 'cheerio';
-import fetch from 'cross-fetch';
 
-import ORIGIN from '../origin.js';
+import ORIGIN from '../origin.ts';
 import {
   contentWarnings,
   symbols,
   Warning as IWarning,
   Work as IWork
-} from './get.js';
-import { objectKeys } from '../../../util/index.js';
-import type languages from './languages.js';
-import type { Language } from './languages.js';
+} from './get.ts';
+import { objectKeys } from '../../../util/mod.ts';
+import type languages from './languages.ts';
+import type { Language } from './languages.ts';
 
 interface Work extends IWork {
   summary: string;

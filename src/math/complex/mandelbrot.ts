@@ -1,4 +1,4 @@
-import type Complex from './index.js';
+import type Complex from './mod.ts';
 
 export default function mandelbrot(
   c: Complex,

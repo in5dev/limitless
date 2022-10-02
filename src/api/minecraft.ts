@@ -1,5 +1,3 @@
-import fetch from 'cross-fetch';
-
 export async function getUUID(username: string): Promise<string> {
   const response = await fetch(
     `https://api.mojang.com/users/profiles/minecraft/${username}`

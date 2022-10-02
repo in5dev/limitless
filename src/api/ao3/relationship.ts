@@ -1,6 +1,4 @@
-import fetch from 'cross-fetch';
-
-import ORIGIN from './origin.js';
+import ORIGIN from './origin.ts';
 
 const ENDPOINT = `${ORIGIN}/autocomplete/relationship`;
 

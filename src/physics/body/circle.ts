@@ -1,10 +1,7 @@
-import type p5 from 'p5';
-
-import Body from './body.js';
-import AABB from './aabb.js';
-import Vector2 from '../../math/vector/vec2.js';
-import type ConvexPolygon from './convex-polygon.js';
-import type { RenderOptions } from '../types.js';
+import Body from './body.ts';
+import AABB from './aabb.ts';
+import Vector2 from '../../math/vector/vec2.ts';
+import type ConvexPolygon from './convex-polygon.ts';
 
 export default class Circle extends Body {
   constructor(x: number, y: number, public radius: number, mass?: number) {
@@ -43,29 +40,5 @@ export default class Circle extends Body {
   project(_axis: Vector2): [min: number, max: number] {
     const { radius } = this;
     return [-radius, radius];
-  }
-
-  render(p: p5, options?: RenderOptions): void {
-    const { x, y, radius } = this;
-    p.push();
-    p.translate(x, y);
-
-    p.stroke(199, 48, 28);
-    p.strokeWeight(2);
-    p.fill(247, 68, 45);
-    p.circle(0, 0, radius * 2);
-
-    if (options?.position) {
-      p.stroke(0);
-      p.strokeWeight(4);
-      p.point(0, 0);
-    }
-    if (options?.normals) {
-      p.stroke(0, 0, 255);
-      p.strokeWeight(2);
-      p.line(0, 0, radius, 0);
-    }
-
-    p.pop();
   }
 }

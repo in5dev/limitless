@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import { mean } from '../util/array.js';
+import { mean } from '../util/array.ts';
 
 export function norm(x: number, min: number, max: number): number {
   return (x - min) / (max - min);

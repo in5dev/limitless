@@ -1,7 +1,6 @@
 import { load } from 'cheerio';
-import fetch from 'cross-fetch';
 
-import ORIGIN from './origin.js';
+import ORIGIN from './origin.ts';
 
 const query = `${ORIGIN}/users/`;
 const ao3Regex = new RegExp(`${query}(.+)`);

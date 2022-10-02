@@ -1,6 +1,4 @@
-import type p5 from 'p5';
-
-import Body, { AABB } from '../body/index.js';
+import Body, { AABB } from '../body/mod.ts';
 
 export default class QuadTree extends AABB {
   bodies: Body[] = [];
@@ -79,15 +77,5 @@ export default class QuadTree extends AABB {
     this.ne = undefined;
     this.sw = undefined;
     this.se = undefined;
-  }
-
-  override render(p: p5): void {
-    super.render(p);
-    if (this.divided) {
-      this.nw?.render(p);
-      this.ne?.render(p);
-      this.sw?.render(p);
-      this.se?.render(p);
-    }
   }
 }

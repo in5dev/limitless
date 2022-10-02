@@ -1,6 +1,4 @@
-import type p5 from 'p5';
-
-import Body, { AABB } from '../body/index.js';
+import Body, { AABB } from '../body/mod.ts';
 
 export default class Naive extends AABB {
   bodies: Body[] = [];
@@ -22,9 +20,5 @@ export default class Naive extends AABB {
 
   reset(): void {
     this.bodies = [];
-  }
-
-  override render(p: p5): void {
-    super.render(p);
   }
 }

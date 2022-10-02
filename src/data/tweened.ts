@@ -1,7 +1,7 @@
-import { get, writable } from './store.js';
-import { linear } from './easing.js';
-import { lerp } from '../math/index.js';
-import type { Writable } from './store.js';
+import { get, writable } from './store.ts';
+import { linear } from './easing.ts';
+import { lerp } from '../math/mod.ts';
+import type { Writable } from './store.ts';
 
 export default function tweened(
   value: number,

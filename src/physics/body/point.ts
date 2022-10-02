@@ -1,8 +1,6 @@
-import type p5 from 'p5';
-
-import AABB from './aabb.js';
-import Body from './body.js';
-import type Circle from './circle.js';
+import AABB from './aabb.ts';
+import Body from './body.ts';
+import type Circle from './circle.ts';
 
 export default class Point extends Body {
   rotationalInertia = Infinity;
@@ -19,12 +17,5 @@ export default class Point extends Body {
     if (o instanceof Point) return false;
     const { position } = this;
     return position.distSq(o.position) < o.radius;
-  }
-
-  render(p: p5): void {
-    const { x, y } = this.position;
-    p.noStroke();
-    p.fill(0);
-    p.circle(x, y, 4);
   }
 }

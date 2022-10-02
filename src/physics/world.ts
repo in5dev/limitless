@@ -1,8 +1,5 @@
-import type p5 from 'p5';
-
-import { QuadTree, SpatialHashGrid, Naive } from './structures/index.js';
-import type Body from './body/index.js';
-import type { RenderOptions } from './types.js';
+import { QuadTree, SpatialHashGrid, Naive } from './structures/mod.ts';
+import type Body from './body/mod.ts';
 
 export default class World {
   bodies: Body[] = [];
@@ -82,18 +79,6 @@ export default class World {
 
       body.update(dt);
     });
-    return this;
-  }
-
-  render(p: p5, options?: RenderOptions): this {
-    const { bodies, structure } = this;
-
-    if (options?.structure) structure.render(p);
-    bodies.forEach(body => {
-      if (options?.aabb) body.aabb.render(p);
-      body.render(p, options);
-    });
-
     return this;
   }
 }

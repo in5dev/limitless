@@ -1,6 +1,6 @@
-import { writable } from './store.js';
-import { lerp } from '../math/index.js';
-import type { Writable } from './store.js';
+import { writable } from './store.ts';
+import { lerp } from '../math/mod.ts';
+import type { Writable } from './store.ts';
 
 export default function lerped(value: number, norm: number): Writable<number> {
   let target = value;

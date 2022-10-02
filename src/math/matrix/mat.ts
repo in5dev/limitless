@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { random } from '../funcs.js';
+import { random } from '../funcs.ts';
 
 type Mat = number[][];
 

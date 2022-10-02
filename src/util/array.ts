@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 export function zip<T, U>(arr1: T[], arr2: U[]): [T, U][] {

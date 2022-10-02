@@ -1,4 +1,4 @@
-import { complex } from './complex/index.js';
+import { complex } from './complex/mod.ts';
 
 export const π = Math.PI;
 export const τ = 2 * π;

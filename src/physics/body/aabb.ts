@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type p5 from 'p5';
-
 export default class AABB {
   constructor(
     public x: number,
@@ -15,13 +12,5 @@ export default class AABB {
     if (x + width <= ox || x >= ox + owidth) return false;
     if (y + height <= oy || y >= oy + oheight) return false;
     return true;
-  }
-
-  render(p: p5): void {
-    const { x, y, width, height } = this;
-    p.stroke(127);
-    p.strokeWeight(2);
-    p.noFill();
-    p.rect(x, y, width, height);
   }
 }

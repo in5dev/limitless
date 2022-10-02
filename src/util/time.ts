@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 export const pause = (ms: number): Promise<void> =>
   new Promise(resolve => setTimeout(resolve, ms));
 
