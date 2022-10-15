@@ -8,7 +8,11 @@ for await (const { name, isDirectory } of Deno.readDir('./src')) {
 }
 
 await build({
-  entryPoints: ['./src/mod.ts', ...dirs.map(d => `./src/${d}/mod.ts`)],
+  entryPoints: [
+    './src/mod.ts',
+    ...dirs.map(d => `./src/${d}/mod.ts`),
+    './src/api/ao3/work/search.ts'
+  ],
   outDir: './npm',
   importMap: './import_map.json',
   packageManager: 'bun',
