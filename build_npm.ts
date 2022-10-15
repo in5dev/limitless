@@ -2,8 +2,13 @@ import { build, emptyDir } from 'https://deno.land/x/dnt@0.31.0/mod.ts';
 
 await emptyDir('./npm');
 
+const dirs: string[] = [];
+for await (const { name, isDirectory } of Deno.readDir('./src')) {
+  if (isDirectory) dirs.push(name);
+}
+
 await build({
-  entryPoints: ['./src/mod.ts'],
+  entryPoints: ['./src/mod.ts', ...dirs.map(d => `./src/${d}/mod.ts`)],
   outDir: './npm',
   importMap: './import_map.json',
   packageManager: 'bun',
