@@ -45,3 +45,4 @@ pkg.exports['./*'] = {
     types: './types/*.d.ts'
   }
 };
+Deno.writeTextFileSync('npm/package.json', JSON.stringify(pkg, null, 2));
